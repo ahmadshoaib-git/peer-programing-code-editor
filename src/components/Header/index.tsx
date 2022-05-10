@@ -1,7 +1,7 @@
 import React from "react";
-
+import { HeaderWrapper } from "./header.style";
 const Header = () => {
-  return <div>Header</div>;
+  return <HeaderWrapper>Header</HeaderWrapper>;
 };
 
 export default Header;
