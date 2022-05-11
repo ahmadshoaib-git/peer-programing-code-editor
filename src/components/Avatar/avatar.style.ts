@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Avatar } from "antd";
+import { Avatar, Badge } from "antd";
 
 export const CustomAvatar = styled(Avatar)`
   height: ${({ theme: { layout } }) => layout.iconButton.height};
@@ -10,3 +10,5 @@ export const CustomAvatar = styled(Avatar)`
   align-items: center;
   cursor: pointer;
 `;
+
+export const CustomBadge = styled(Badge)``;

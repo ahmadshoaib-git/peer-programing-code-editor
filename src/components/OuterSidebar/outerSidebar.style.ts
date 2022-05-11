@@ -35,7 +35,12 @@ export const OuterSidebarFooter = styled.div`
   button {
     margin-bottom: 0.25rem;
   }
-  div > .ant-avatar {
+  div .ant-badge-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    min-width: 0.5rem;
+  }
+  div .ant-avatar {
     background-color: rgba(255, 20, 147, 0.1);
     color: rgba(255, 20, 147, 1);
   }

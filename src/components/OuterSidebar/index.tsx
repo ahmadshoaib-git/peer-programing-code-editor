@@ -25,7 +25,7 @@ const OuterSidebar = () => {
       </OuterSidebarMiddle>
       <OuterSidebarFooter>
         <div>
-          <Avatar title="Ahmad Shoaib" placement="right">
+          <Avatar hasBadge={true} title="Ahmad Shoaib" placement="right">
             A
           </Avatar>
         </div>
