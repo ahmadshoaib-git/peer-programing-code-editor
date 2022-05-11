@@ -10,6 +10,9 @@ export const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* .ant-avatar-group {
+    padding-right: 0.8rem;
+  } */
   /* > h1 {
     font-family: ${({ theme: { fonts } }) => fonts.heading};
     font-size: ${({ theme: { fontSizes } }) => fontSizes.heading};
@@ -24,4 +27,14 @@ export const HeaderHeading = styled.h1`
   margin: 0;
   padding: 0;
   cursor: pointer;
+`;
+
+export const HeaderRightSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div,
+  button {
+    margin-right: 0.4rem;
+  }
 `;
