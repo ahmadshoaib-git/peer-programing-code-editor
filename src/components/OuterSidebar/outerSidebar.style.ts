@@ -26,5 +26,14 @@ export const OuterSidebarMiddle = styled.div`
 export const OuterSidebarFooter = styled.div`
   ${CenteralizeStyles}
   /* justify-content: flex-end; */
-  height: ${({ theme: { layout } }) => layout.footer.height};
+  /* height: ${({ theme: { layout } }) => layout.footer.height}; */
+  height: auto;
+  div,
+  button {
+    margin-bottom: 0.25rem;
+  }
+  div > .ant-avatar {
+    background-color: rgba(255, 20, 147, 0.1);
+    color: rgba(255, 20, 147, 1);
+  }
 `;

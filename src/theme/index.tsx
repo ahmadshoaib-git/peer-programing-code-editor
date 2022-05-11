@@ -7,6 +7,7 @@ const theme = {
     white: "#FFFFFF",
     borderWhite: "#cfcfcf",
     tooltipColor: "#2f54eb",
+    tooltipBackground: "rgb(47 84 235 / 10%)",
   },
   fonts: {
     primary: "sans-serif",
@@ -25,7 +26,7 @@ const theme = {
     },
     header: {
       width: "100%",
-      height: "3rem",
+      height: "2.5rem",
     },
     outerSideBar: {
       width: "3rem",
@@ -33,11 +34,15 @@ const theme = {
     },
     main: {
       width: "100%",
-      height: "calc(100% - 6rem)",
+      height: "calc(100% - 5rem)",
     },
     footer: {
       width: "100%",
-      height: "3rem",
+      height: "2.5rem",
+    },
+    iconButton: {
+      height: "2rem",
+      width: "2.2rem",
     },
   },
 };

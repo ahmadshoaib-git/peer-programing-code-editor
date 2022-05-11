@@ -1,6 +1,7 @@
 import React from "react";
 import { VscMenu, VscCode } from "react-icons/vsc";
 import IconButton from "../IconButton";
+import Avatar from "../Avatar";
 import { middleOuterBarIcons } from "./outerSidebar.config";
 import {
   OuterSidebarWrapper,
@@ -26,6 +27,11 @@ const OuterSidebar: React.FC<Props> = ({}) => {
         ))}
       </OuterSidebarMiddle>
       <OuterSidebarFooter>
+        <div>
+          <Avatar title="Ahmad Shoaib" placement="right">
+            A
+          </Avatar>
+        </div>
         <IconButton title="Setting">
           <VscMenu />
         </IconButton>
