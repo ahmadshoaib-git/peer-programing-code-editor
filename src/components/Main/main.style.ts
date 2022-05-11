@@ -9,4 +9,5 @@ export const MainWrapper = styled.main`
   font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
   width: ${({ theme: { layout } }) => layout.main.width};
   height: ${({ theme: { layout } }) => layout.main.height};
+  display: flex;
 `;

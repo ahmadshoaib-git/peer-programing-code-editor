@@ -1,7 +1,7 @@
 import React from "react";
 import { VscMenu, VscCode } from "react-icons/vsc";
-import IconButton from "../IconButton";
-import Avatar from "../Avatar";
+import IconButton from "src/components/IconButton";
+import Avatar from "src/components/Avatar";
 import { middleOuterBarIcons } from "./outerSidebar.config";
 import {
   OuterSidebarWrapper,

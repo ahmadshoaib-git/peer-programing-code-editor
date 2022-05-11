@@ -1,7 +1,13 @@
 import React from "react";
+import { CustomSidebar } from "./sidebar.style";
 
-const Sidebar = () => {
-  return <div>Sidebar</div>;
+export interface Props {
+  children?: React.ReactNode | JSX.Element | JSX.Element[] | string | string[];
+}
+
+const Sidebar: React.FC<Props> = ({ children }) => {
+  return <CustomSidebar>{children}</CustomSidebar>;
 };
 
 export default Sidebar;
+// content

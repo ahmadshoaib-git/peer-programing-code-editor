@@ -2,6 +2,6 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Main from "./Main";
 import Sidebar from "./Sidebar";
-import OuterSidebar from "./OuterSidebar";
+import Collapse from "./Collapse";
 
-export { Footer, Header, Main, Sidebar, OuterSidebar };
+export { Footer, Header, Main, Sidebar, Collapse };

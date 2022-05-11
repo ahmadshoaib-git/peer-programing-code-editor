@@ -7,4 +7,7 @@ export const FooterWrapper = styled.footer`
   font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
   width: ${({ theme: { layout } }) => layout.footer.width};
   height: ${({ theme: { layout } }) => layout.footer.height};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
