@@ -11,7 +11,6 @@ export const OuterSideBarWrapper = styled.div`
 `;
 
 export const InnerLayoutWrapper = styled.div`
-  border: 1px solid ${({ theme: { colors } }) => colors.borderWhite};
   width: ${({ theme: { layout } }) => layout.innerLayout.width};
   height: ${({ theme: { layout } }) => layout.innerLayout.height};
 `;

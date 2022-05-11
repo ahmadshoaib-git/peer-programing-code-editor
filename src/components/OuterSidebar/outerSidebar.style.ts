@@ -5,6 +5,7 @@ const CenteralizeStyles = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  outline: 0;
 `;
 
 export const OuterSidebarWrapper = styled.div`

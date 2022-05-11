@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const FooterWrapper = styled.footer`
-  border: 1px solid ${({ theme: { colors } }) => colors.borderWhite};
+  outline: 0;
+  border: 0;
   font-family: ${({ theme: { fonts } }) => fonts.secondary};
   font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
   width: ${({ theme: { layout } }) => layout.footer.width};
