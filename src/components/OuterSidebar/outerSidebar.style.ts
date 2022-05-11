@@ -6,6 +6,7 @@ const CenteralizeStyles = css`
   justify-content: center;
   align-items: center;
   outline: 0;
+  padding-right: 0.2rem;
 `;
 
 export const OuterSidebarWrapper = styled.div`
@@ -15,6 +16,7 @@ export const OuterSidebarWrapper = styled.div`
 
 export const OuterSidebarTop = styled.div`
   ${CenteralizeStyles}
+  padding-top: 0.3rem;
   height: ${({ theme: { layout } }) => layout.header.height};
 `;
 export const OuterSidebarMiddle = styled.div`

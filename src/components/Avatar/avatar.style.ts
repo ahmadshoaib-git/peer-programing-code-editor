@@ -8,4 +8,5 @@ export const CustomAvatar = styled(Avatar)`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;

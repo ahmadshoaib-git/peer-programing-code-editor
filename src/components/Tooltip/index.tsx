@@ -1,4 +1,4 @@
-import React, { ReactFragment } from "react";
+import React from "react";
 import { CustomTooltip } from "./tooltip.style";
 
 export interface Props {

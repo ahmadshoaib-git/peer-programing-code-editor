@@ -1,7 +1,11 @@
 import React from "react";
-import { HeaderWrapper } from "./header.style";
+import { HeaderHeading, HeaderWrapper } from "./header.style";
 const Header = () => {
-  return <HeaderWrapper>Header</HeaderWrapper>;
+  return (
+    <HeaderWrapper>
+      <HeaderHeading>CodePeer</HeaderHeading>
+    </HeaderWrapper>
+  );
 };
 
 export default Header;

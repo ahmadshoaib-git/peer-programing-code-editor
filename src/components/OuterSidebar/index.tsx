@@ -9,11 +9,8 @@ import {
   OuterSidebarMiddle,
   OuterSidebarFooter,
 } from "./outerSidebar.style";
-export interface Props {
-  children?: React.ReactNode | JSX.Element | JSX.Element[] | string | string[];
-}
 
-const OuterSidebar: React.FC<Props> = ({}) => {
+const OuterSidebar = () => {
   return (
     <OuterSidebarWrapper>
       <OuterSidebarTop>

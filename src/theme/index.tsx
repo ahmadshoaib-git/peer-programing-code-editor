@@ -8,20 +8,22 @@ const theme = {
     borderWhite: "#cfcfcf",
     tooltipColor: "#2f54eb",
     tooltipBackground: "rgb(47 84 235 / 10%)",
+    headingColor: "rgb(2, 122, 255)",
   },
   fonts: {
     primary: "sans-serif",
     secondary: "Roboto",
+    heading: `'Macondo', cursive`,
   },
   fontSizes: {
     paragraph: "0.8em",
     subHeading: "1em",
     icon: "1.6em",
-    heading: "2em",
+    heading: "1.4em",
   },
   layout: {
     innerLayout: {
-      width: "calc(100% - 3rem)",
+      width: "calc(100% - 3.5rem)",
       height: "100vh",
     },
     header: {
@@ -29,7 +31,7 @@ const theme = {
       height: "2.5rem",
     },
     outerSideBar: {
-      width: "3rem",
+      width: "3.5rem",
       height: "100vh",
     },
     main: {

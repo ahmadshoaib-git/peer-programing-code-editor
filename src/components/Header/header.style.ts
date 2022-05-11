@@ -7,4 +7,21 @@ export const HeaderWrapper = styled.header`
   font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
   width: ${({ theme: { layout } }) => layout.header.width};
   height: ${({ theme: { layout } }) => layout.header.height};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* > h1 {
+    font-family: ${({ theme: { fonts } }) => fonts.heading};
+    font-size: ${({ theme: { fontSizes } }) => fontSizes.heading};
+  } */
+`;
+
+export const HeaderHeading = styled.h1`
+  font-family: ${({ theme: { fonts } }) => fonts.heading};
+  font-size: ${({ theme: { fontSizes } }) => fontSizes.heading};
+  font-weight: bold;
+  color: ${({ theme: { colors } }) => colors.headingColor};
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
 `;
