@@ -20,7 +20,7 @@ const theme = {
     basic: "0.6rem",
     paragraph: "0.8rem",
     subHeading: "1rem",
-    icon: "1.5rem",
+    icon: "1.3rem",
     heading: "1.4rem",
   },
   layout: {

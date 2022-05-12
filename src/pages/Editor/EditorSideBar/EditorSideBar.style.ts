@@ -20,6 +20,7 @@ export const CustomEditorSideBarHeader = styled.div`
     border-color: rgba(255, 20, 147, 1);
     line-height: 1.5;
     margin-right: 10px;
+    text-transform: lowercase;
   }
   h2 {
     padding: 0;
