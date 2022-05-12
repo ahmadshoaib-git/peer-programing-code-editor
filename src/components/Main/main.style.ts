@@ -11,4 +11,8 @@ export const MainWrapper = styled.main`
   width: ${({ theme: { layout } }) => layout.main.width};
   height: ${({ theme: { layout } }) => layout.main.height};
   display: flex;
+  .inner-section {
+    width: ${({ theme: { layout } }) => layout.Editor.width};
+    height: 100%;
+  }
 `;

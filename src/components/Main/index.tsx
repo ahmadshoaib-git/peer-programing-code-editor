@@ -15,7 +15,7 @@ const Main: React.FC<Props> = ({ children, sideBarContent }) => {
   return (
     <MainWrapper>
       {sideBarContent && <Sidebar>{sideBarContent}</Sidebar>}
-      <div>{children}</div>
+      <div className="inner-section">{children}</div>
     </MainWrapper>
   );
 };

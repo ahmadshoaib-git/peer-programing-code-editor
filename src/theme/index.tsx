@@ -48,6 +48,12 @@ const theme = {
       height: "2rem",
       width: "2.2rem",
     },
+    sideBar: {
+      width: "18rem",
+    },
+    Editor: {
+      width: "calc(100% - 18rem)",
+    },
   },
 };
 
