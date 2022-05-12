@@ -4,6 +4,7 @@ export interface Props {
 }
 const theme = {
   colors: {
+    black: "#1c2d41",
     white: "#FFFFFF",
     borderWhite: "#cfcfcf",
     tooltipColor: "#2f54eb",
@@ -11,15 +12,16 @@ const theme = {
     headingColor: "rgb(2, 122, 255)",
   },
   fonts: {
-    primary: "sans-serif",
-    secondary: "Roboto",
+    primary: `'Mulish', sans-serif`,
+    secondary: `'Mulish', sans-serif`,
     heading: `'Macondo', cursive`,
   },
   fontSizes: {
-    paragraph: "0.8em",
-    subHeading: "1em",
-    icon: "1.6em",
-    heading: "1.4em",
+    basic: "0.6rem",
+    paragraph: "0.8rem",
+    subHeading: "1rem",
+    icon: "1.5rem",
+    heading: "1.4rem",
   },
   layout: {
     innerLayout: {

@@ -1,11 +1,12 @@
 import React from "react";
-import EditorSideBar from "./EditorSideBar";
 import Layout from "src/Layout";
+import EditorSideBar from "./EditorSideBar";
+import { CodeEditor } from "src/components";
 
 const Editor = () => {
   return (
     <Layout sideBarContent={<EditorSideBar />}>
-      <div>Editor</div>
+      <CodeEditor />
     </Layout>
   );
 };

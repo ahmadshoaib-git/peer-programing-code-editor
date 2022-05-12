@@ -7,6 +7,7 @@ export const MainWrapper = styled.main`
   border-bottom-left-radius: 0.5rem;
   font-family: ${({ theme: { fonts } }) => fonts.secondary};
   font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
+  color: ${({ theme: { colors } }) => colors.black};
   width: ${({ theme: { layout } }) => layout.main.width};
   height: ${({ theme: { layout } }) => layout.main.height};
   display: flex;

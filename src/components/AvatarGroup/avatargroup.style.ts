@@ -11,7 +11,7 @@ export const CustomAvatar = styled(Avatar)`
   cursor: pointer;
   .alias {
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 400;
     font-family: ${({ theme: { fonts } }) => fonts.primary};
   }
   .ant-popover-inner-content {

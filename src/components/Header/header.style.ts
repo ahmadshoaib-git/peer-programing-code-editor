@@ -37,4 +37,7 @@ export const HeaderRightSection = styled.div`
   button {
     margin-right: 0.4rem;
   }
+  button {
+    color: ${({ theme: { colors } }) => colors.black};
+  }
 `;

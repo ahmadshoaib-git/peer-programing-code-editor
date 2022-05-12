@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Macondo&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap');
     *{
         margin: 0;
         padding: 0;
@@ -11,6 +12,8 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         min-height:100vh;
+        color: #1c2d41;
+        background: #FFFFFF;
     }
     #root{
         min-height:100vh;

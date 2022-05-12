@@ -6,4 +6,5 @@ export const CustomSidebar = styled.div`
   width: 18rem;
   /* border-right: 0.1rem solid rgb(52 141 214); */
   box-shadow: inset -1px 0px #348dd633;
+  overflow: hidden;
 `;

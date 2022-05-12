@@ -3,6 +3,7 @@ import { Button, Tooltip } from "antd";
 
 export const CustomIconBtn = styled(Button)`
   background-color: ${({ theme: { colors } }) => colors.white};
+  color: ${({ theme: { colors } }) => colors.black};
   height: ${({ theme: { layout } }) => layout.iconButton.height};
   width: ${({ theme: { layout } }) => layout.iconButton.width};
   display: flex;
