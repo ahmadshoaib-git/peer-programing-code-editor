@@ -1,16 +1,23 @@
-import React from "react";
-import { Collapse } from "src/components";
+import React, { useState, useEffect } from "react";
+import { Collapse, Tag } from "src/components";
 import { BiWorld } from "react-icons/bi";
 import {
   CustomEditorSideBarWrapper,
   CustomEditorSideBarHeader,
 } from "./EditorSideBar.style";
 const EditorSideBar = () => {
+  const [time, setTime] = useState(new Date());
+  useEffect(() => {
+    setInterval(() => setTime(new Date()), 1000);
+  }, []);
   return (
     <CustomEditorSideBarWrapper>
       <CustomEditorSideBarHeader>
-        <BiWorld />
-        <h2>Project X</h2>
+        <h2>
+          <BiWorld />
+          <span>Project X</span>
+        </h2>
+        <Tag color="red">{time.toLocaleTimeString("en-US")}</Tag>
       </CustomEditorSideBarHeader>
       <Collapse />
     </CustomEditorSideBarWrapper>

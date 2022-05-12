@@ -5,7 +5,7 @@ export const FooterWrapper = styled.footer`
   border: 0;
   padding-top: 0.1rem;
   font-family: ${({ theme: { fonts } }) => fonts.secondary};
-  font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
+  font-size: ${({ theme: { fontSizes } }) => fontSizes.basic};
   width: ${({ theme: { layout } }) => layout.footer.width};
   height: ${({ theme: { layout } }) => layout.footer.height};
   color: ${({ theme: { colors } }) => colors.black};

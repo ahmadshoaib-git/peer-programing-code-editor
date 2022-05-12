@@ -12,11 +12,14 @@ export const CustomEditorSideBarHeader = styled.div`
   /* background-color: #1c14ff1a; */
   padding: 0.3rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  svg {
-    padding-left: 0.3rem;
-    font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
+  .ant-tag {
     color: rgba(255, 20, 147, 1);
+    background: rgba(255, 20, 147, 0.1);
+    border-color: rgba(255, 20, 147, 1);
+    line-height: 1.5;
+    margin-right: 10px;
   }
   h2 {
     padding: 0;
@@ -27,5 +30,15 @@ export const CustomEditorSideBarHeader = styled.div`
     font-weight: 600;
     padding-left: 0.3rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    span {
+      padding-left: 0.3rem;
+    }
+    svg {
+      padding-left: 0.3rem;
+      font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
+      color: rgba(255, 20, 147, 1);
+    }
   }
 `;
