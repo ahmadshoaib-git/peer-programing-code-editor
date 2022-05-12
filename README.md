@@ -4,12 +4,12 @@ This application will allow developers to set up their react project in an onlin
 
 Following is the tech-stack around which the application revolves.
 
-### 1. ReactJS
+#### 1. ReactJS
 
-### 2. Typescript
+#### 2. Typescript
 
-### 3. Styled Components
+#### 3. Styled Components
 
-### 4. React Icons
+#### 4. React Icons
 
-### 5. Ant Design
+#### 5. Ant Design
