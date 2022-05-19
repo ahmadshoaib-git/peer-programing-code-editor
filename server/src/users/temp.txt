@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "owner": {
+        "email": "ahmad.shoaib88@gmail.com",
+        "name": "Ahmad Shoaib"
+      },
+      "projects": [
+        {
+          "projectid": "1212-2323-4342-2424",
+          "projectDetails": {},
+             "contributor": []    
+     }
+      ]
+    }
+  ]
+}
+
+{
+    "rooms": [
+        {
+            "roomid": '',
+            "projectId": '',
+            "activeUsers": [],
+        }
+    ]
+}
