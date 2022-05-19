@@ -6,10 +6,12 @@ Following is the tech-stack around which the application revolves.
 
 #### 1. ReactJS
 
-#### 2. Typescript
+#### 2. NodeJs/ExpressJs
 
-#### 3. Styled Components
+#### 3. Typescript
 
-#### 4. React Icons
+#### 4. Styled Components
 
-#### 5. Ant Design
+#### 5. React Icons
+
+#### 6. Ant Design
