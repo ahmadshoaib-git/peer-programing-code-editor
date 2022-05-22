@@ -10,8 +10,12 @@ Following is the tech-stack around which the application revolves.
 
 #### 3. Typescript
 
-#### 4. Styled Components
+#### 4. Redux Toolkit
 
-#### 5. React Icons
+#### 5. MongoDB and Mongoose
 
-#### 6. Ant Design
+#### 6. Styled Components
+
+#### 7. React Icons
+
+#### 8. Ant Design
