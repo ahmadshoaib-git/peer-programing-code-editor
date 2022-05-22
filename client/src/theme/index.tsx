@@ -14,7 +14,7 @@ const theme = {
   fonts: {
     primary: `'Mulish', sans-serif`,
     secondary: `'Mulish', sans-serif`,
-    heading: `'Macondo', cursive`,
+    heading: `'Odibee Sans', cursive`,
   },
   fontSizes: {
     basic: "0.6rem",

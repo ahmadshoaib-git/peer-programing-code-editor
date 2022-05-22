@@ -7,12 +7,15 @@ import {
   HeaderWrapper,
   HeaderRightSection,
 } from "./header.style";
-const Header = () => {
+export interface Props {
+  noSideBar: boolean;
+}
+const Header: React.FC<Props> = ({ noSideBar }) => {
   return (
     <HeaderWrapper>
       <HeaderHeading>CodePeer</HeaderHeading>
       <HeaderRightSection>
-        <AvatarGroup />
+        {!noSideBar && <AvatarGroup />}
         <IconButton title={"Settings"}>
           <BiDotsVerticalRounded />
         </IconButton>

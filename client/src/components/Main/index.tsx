@@ -13,7 +13,7 @@ export interface Props {
 
 const Main: React.FC<Props> = ({ children, sideBarContent }) => {
   return (
-    <MainWrapper>
+    <MainWrapper noSideBar={!sideBarContent}>
       {sideBarContent && <Sidebar>{sideBarContent}</Sidebar>}
       <div className="inner-section">{children}</div>
     </MainWrapper>

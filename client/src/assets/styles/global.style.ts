@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Macondo&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap');
     *{
         margin: 0;
@@ -55,13 +56,13 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
   }
   ::-moz-selection { /* Code for Firefox */
-  color: red;
-  background: yellow;
+  color: #87A7CC;
+  background: #1c2d41;
 }
 
 ::selection {
-  color: red;
-  background: yellow;
+  color: #87A7CC;
+  background: #1c2d41;
 }
  `;
 

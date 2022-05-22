@@ -61,14 +61,14 @@ const Avatar: React.FC<Props> = ({
       );
   };
   const AvatarWithoutBadge = () => {
-    if (title === "")
-      return <CustomAvatar shape="square">{children}</CustomAvatar>;
-    else
-      return (
-        <Tooltip title={title} placement={placement}>
-          <CustomAvatar shape="square">{children}</CustomAvatar>
-        </Tooltip>
-      );
+    // if (title === "")
+    return <CustomAvatar shape="square">{children}</CustomAvatar>;
+    // else
+    //   return (
+    //     <Tooltip title={title} placement={placement}>
+    //       <CustomAvatar shape="square">{children}</CustomAvatar>
+    //     </Tooltip>
+    //   );
   };
   const getAvatar = () => {
     if (hasBadge) {

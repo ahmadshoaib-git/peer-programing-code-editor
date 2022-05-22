@@ -1,7 +1,4 @@
-// const mongoose = require('mongoose');
-// import mongoose from "mongoose";
 import { mongoose } from "../..";
-import projects from "../projects";
 
 export const UserSchema = new mongoose.Schema({
   email: {
@@ -13,54 +10,50 @@ export const UserSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  password: {
+    required: false,
+    type: String,
+  },
+  passcode: {
+    required: false,
+    type: String,
+  },
+  confirmed: {
+    required: true,
+    type: Boolean,
+  },
   projects: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Projects",
     },
   ],
+  created_at: {
+    type: Date,
+    default: function () {
+      return Date.now();
+    },
+  },
+  updated_at: {
+    type: Date,
+    default: function () {
+      return Date.now();
+    },
+  },
 });
 
-// const projectSchema = new mongoose.Schema({
-//   projectId: {
-//     required: true,
-//     sparse: true,
-//     // unique: true,
-//     type: String,
-//   },
-//   projectDetail: {
-//     required: true,
-//     sparse: true,
-//     type: Object,
-//   },
-//   contributor: [
-//     {
-//       email: {
-//         // unique: true,
-//         sparse: true,
-//         required: true,
-//         type: String,
-//       },
-//       name: {
-//         required: true,
-//         type: String,
-//       },
-//     },
-//   ],
-// });
+UserSchema.pre("save", function (done) {
+  this.updated_at = Date.now();
+  done();
+});
 
-// const UserSchema = new mongoose.Schema({
-//   userId: {
-//     required: true,
-//     unique: true,
-//     type: String,
-//   },
-//   owner: userDetailSchema,
-//   projects: {
-//     required: false,
-//     sparse: true,
-//     type: [projectSchema],
-//   },
+// UserSchema.pre("save", function (next) {
+//   now = new Date();
+//   this.updated_at = now;
+//   if (!this.created_at) {
+//     this.created_at = now;
+//   }
+//   next();
 // });
 
 export default mongoose.model("Users", UserSchema);

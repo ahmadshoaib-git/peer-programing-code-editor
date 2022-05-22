@@ -17,13 +17,14 @@ export interface Props {
 }
 
 const Layout: React.FC<Props> = ({ children, sideBarContent }) => {
+  console.log(!sideBarContent);
   return (
     <LayoutWrapper>
       <OuterSideBarWrapper>
         <OuterSidebar />
       </OuterSideBarWrapper>
       <InnerLayoutWrapper>
-        <Header />
+        <Header noSideBar={!sideBarContent} />
         <Main children={children} sideBarContent={sideBarContent} />
         <Footer />
       </InnerLayoutWrapper>
