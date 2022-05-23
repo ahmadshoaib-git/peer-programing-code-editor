@@ -18,6 +18,6 @@ export const MainWrapper = styled.main<SidebarProps>`
     width: ${({ noSideBar, theme: { layout } }) =>
       noSideBar ? "100%" : layout.Editor.width};
     height: 100%;
-    padding: 0.6rem 0;
+    padding: 1rem;
   }
 `;

@@ -16,6 +16,7 @@ const LoginForm = () => {
       console.log("Received values of form: ", values);
       console.log("API data >", response.data);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", response.data.email);
       dispatch(setLoggedIn({ loggedIn: true }));
       <Navigate to="/" />;
     } catch (err) {

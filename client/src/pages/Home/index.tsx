@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Tab } from "src/components";
+import { getProjects } from "./service";
 import {
   Layout,
   MyProjects,
@@ -9,7 +10,16 @@ import {
 import { MainWrapper } from "./EditorMain.style";
 const EditorMain = () => {
   const [tabIndex, setTabIndex] = React.useState("0");
+  const [projects, setProjects] = React.useState([]);
   const tabNames = ["My Projects", "Contributing Projects", "Invited Projects"];
+  const userEmail = localStorage.getItem("email");
+  useEffect(() => {
+    fetchProjectData(userEmail || "");
+  }, [userEmail]);
+  const fetchProjectData = async (email: String) => {
+    const response = await getProjects(email);
+    console.log(response);
+  };
   const getTabData = () => {
     switch (tabIndex) {
       case "0":

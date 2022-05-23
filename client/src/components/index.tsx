@@ -9,6 +9,7 @@ import Tag from "./Tag";
 import Tab from "./Tab";
 import { Input, PaswordInput } from "./Input";
 import Button from "./Button";
+import Dropdown from "./Dropdown";
 
 export {
   Avatar,
@@ -23,4 +24,5 @@ export {
   Button,
   Input,
   PaswordInput,
+  Dropdown,
 };

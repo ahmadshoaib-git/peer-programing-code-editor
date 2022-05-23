@@ -3,7 +3,8 @@ import { FaUsers } from "react-icons/fa";
 import { BsCalendarCheck } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
 import { BsCalendar3 } from "react-icons/bs";
-import { Avatar } from "src/components";
+import { Avatar, Dropdown } from "src/components";
+import { MenuItemsProp } from "src/components/Dropdown";
 import { BiWorld } from "react-icons/bi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import {
@@ -14,6 +15,12 @@ import {
 } from "./projectContainer.style";
 
 const ProjectContainer = () => {
+  const projectMenu: Array<MenuItemsProp> = [
+    {
+      label: "open",
+      onClick: () => console.log("Open!!"),
+    },
+  ];
   return (
     <ProjectContainerWrapper>
       <ProjectNameSection>
@@ -22,7 +29,9 @@ const ProjectContainer = () => {
           <div>Project A</div>
         </div>
         <div>
-          <BiDotsVerticalRounded />
+          <Dropdown placement="bottomRight" menuItems={projectMenu}>
+            <BiDotsVerticalRounded />
+          </Dropdown>
         </div>
       </ProjectNameSection>
       <Avatar title="Project X">P</Avatar>

@@ -9,7 +9,7 @@ const callLogin = async (email: String, password: String) => {
   };
   return await axios({
     method: "POST",
-    url: `http://${BASE_URL}/user/login`,
+    url: `${BASE_URL}/user/login`,
     // url: `/user/login`,
     data: creds,
   });
