@@ -4,24 +4,20 @@ import { RootState } from "src/redux/store";
 import { PublicRoute, PrivateRoute } from "./RoutesList";
 
 const useAuth = () => {
-  const user = { loggedIn: true };
-  return user && user.loggedIn;
+  const { loggedIn } = useSelector((state: RootState) => {
+    return state.auth;
+  });
+  return loggedIn || localStorage.getItem("token");
 };
 
 const PrivateRouteChecker = () => {
-  const { loggedIn } = useSelector((state: RootState) => {
-    return state.auth;
-  });
-  // const isAuth = useAuth();
-  return loggedIn ? <Outlet /> : <Navigate to="/login" />;
+  const isAuth = useAuth();
+  return isAuth ? <Outlet /> : <Navigate to="/login" />;
 };
 
 const PublicRouteChecker = () => {
-  const { loggedIn } = useSelector((state: RootState) => {
-    return state.auth;
-  });
-  // const isAuth = useAuth();
-  return loggedIn ? <Navigate to="/" /> : <Outlet />;
+  const isAuth = useAuth();
+  return isAuth ? <Navigate to="/" /> : <Outlet />;
 };
 
 const basicPrivateRoutes = () => {

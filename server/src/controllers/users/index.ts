@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { UserModel } from "../../models/index";
 
+const jwtSecretKey = "Asfoi94293894kj4";
 async function createUser(req: Request, res: Response) {
   const saveData = async (name: string, email: string) => {
     const data = new UserModel({
@@ -19,7 +20,6 @@ async function createUser(req: Request, res: Response) {
     console.log(req.body);
     const tempData = await saveData(name, email);
     // console.log(`tempData :${tempData}`);
-    let jwtSecretKey = "Asfoi94293894kj4";
     // sa
     let data: any = {
       email: tempData.email,
@@ -61,9 +61,8 @@ async function userConfirmation(req: Request, res: Response) {
 
 async function userLogin(req: Request, res: Response) {
   try {
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
     const users = await UserModel.find({
-      name: name,
       email: email,
       password: password,
     });
@@ -71,6 +70,12 @@ async function userLogin(req: Request, res: Response) {
     delete clonedUser["password"];
     delete clonedUser["passcode"];
     delete clonedUser["confirmed"];
+    const token = await jwt.sign(clonedUser, jwtSecretKey, {
+      expiresIn: "2h",
+    });
+    clonedUser["token"] = token;
+    console.log(`>> token :${token}`);
+    console.log(`>> clonedUser :${clonedUser}`);
     return res.status(200).json(clonedUser);
   } catch (err: any) {
     console.log(err);

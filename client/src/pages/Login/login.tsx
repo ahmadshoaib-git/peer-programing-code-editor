@@ -4,15 +4,23 @@ import { Link, Navigate } from "react-router-dom";
 import { Form } from "antd";
 import { Button, Input } from "../../components";
 import { setLoggedIn } from "src/redux/slices/auth";
+import { callLogin } from "./service";
 import { FormContainer, HeaderHeading } from "./login.style";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     // const {confirm-password, password} = values;
-    console.log("Received values of form: ", values);
-    dispatch(setLoggedIn({ loggedIn: true }));
-    <Navigate to="/" />;
+    try {
+      const response = await callLogin(values.email, values.password);
+      console.log("Received values of form: ", values);
+      console.log("API data >", response.data);
+      localStorage.setItem("token", response.data.token);
+      dispatch(setLoggedIn({ loggedIn: true }));
+      <Navigate to="/" />;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -35,7 +43,7 @@ const LoginForm = () => {
             },
           ]}
         >
-          <Input type={"email"} placeholder="Username" />
+          <Input type={"email"} placeholder="Email" />
         </Form.Item>
         <Form.Item
           name="password"
