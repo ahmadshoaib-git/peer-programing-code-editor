@@ -18,6 +18,7 @@ export interface Props {
     | "top"
     | "bottom";
   menuItems: Array<MenuItemsProp>;
+  trigger?: ("contextMenu" | "hover" | "click")[];
 }
 
 const menu = (
@@ -71,12 +72,17 @@ const getMenuItems = (menuItems: Array<MenuItemsProp>) => {
     };
   });
 };
-const Dropdown: React.FC<Props> = ({ children, placement, menuItems }) => {
+const Dropdown: React.FC<Props> = ({
+  children,
+  placement,
+  menuItems,
+  trigger = ["hover"],
+}) => {
   return (
     <CustomDropdown
       overlay={<CustomMenu items={getMenuItems(menuItems)} />}
       placement={placement}
-      trigger={["click"]}
+      trigger={trigger}
     >
       {children}
     </CustomDropdown>

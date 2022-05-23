@@ -14,7 +14,7 @@ const LoginForm = () => {
     try {
       const response = await callLogin(values.email, values.password);
       console.log("Received values of form: ", values);
-      console.log("API data >", response.data);
+      console.log("API data >", response, response.data);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("email", response.data.email);
       dispatch(setLoggedIn({ loggedIn: true }));

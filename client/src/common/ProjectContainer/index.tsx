@@ -29,7 +29,11 @@ const ProjectContainer = () => {
           <div>Project A</div>
         </div>
         <div>
-          <Dropdown placement="bottomRight" menuItems={projectMenu}>
+          <Dropdown
+            placement="bottomRight"
+            menuItems={projectMenu}
+            trigger={["click"]}
+          >
             <BiDotsVerticalRounded />
           </Dropdown>
         </div>

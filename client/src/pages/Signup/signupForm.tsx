@@ -4,17 +4,26 @@ import { Link, Navigate } from "react-router-dom";
 import { Form } from "antd";
 import { Button, Input } from "../../components";
 import { setLoggedIn } from "src/redux/slices/auth";
+import { callSignup } from "./service";
 import { FormContainer, HeaderHeading } from "./signup.style";
 
 const SignupForm = () => {
   const dispatch = useDispatch();
-  const onFinish = (values: any) => {
-    const { confirmPassword, password } = values;
-    if (confirmPassword === password) {
-      dispatch(setLoggedIn({ loggedIn: true }));
-      <Navigate to="/" />;
+  const onFinish = async (values: any) => {
+    try {
+      const { username, email, confirmPassword, password } = values;
+      if (confirmPassword === password) {
+        const response = await callSignup(username, email, password);
+        console.log("response >", response.data);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
+        dispatch(setLoggedIn({ loggedIn: true }));
+        <Navigate to="/" />;
+      }
+      console.log("Received values of form: ", values);
+    } catch (err) {
+      console.log(err);
     }
-    console.log("Received values of form: ", values);
   };
 
   return (

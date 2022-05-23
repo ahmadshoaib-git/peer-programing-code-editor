@@ -1,8 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import IconButton from "../IconButton";
 import AvatarGroup from "../AvatarGroup";
 import Dropdown from "../Dropdown";
+import { setLoggedIn } from "src/redux/slices/auth";
 import { MenuItemsProp } from "src/components/Dropdown";
 import {
   HeaderHeading,
@@ -13,10 +16,16 @@ export interface Props {
   noSideBar: boolean;
 }
 const Header: React.FC<Props> = ({ noSideBar }) => {
+  const dispatch = useDispatch();
   const headerMenu: Array<MenuItemsProp> = [
     {
       label: "logout",
-      onClick: () => console.log("Logout"),
+      onClick: async () => {
+        await localStorage.clear();
+        await dispatch(setLoggedIn({ loggedIn: false }));
+        console.log("Logout");
+        <Navigate to="/login" />;
+      },
     },
   ];
   return (
