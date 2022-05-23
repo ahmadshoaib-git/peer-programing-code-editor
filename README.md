@@ -10,12 +10,14 @@ Following is the tech-stack around which the application revolves.
 
 #### 3. Typescript
 
-#### 4. Redux Toolkit
+#### 4. JWT Token Authentication
 
-#### 5. MongoDB and Mongoose
+#### 5. Redux Toolkit
 
-#### 6. Styled Components
+#### 6. MongoDB and Mongoose
 
-#### 7. React Icons
+#### 7. Styled Components
 
-#### 8. Ant Design
+#### 8. React Icons
+
+#### 9. Ant Design
