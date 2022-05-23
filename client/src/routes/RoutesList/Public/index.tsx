@@ -4,7 +4,7 @@ const PublicRoutes = [
   {
     path: "/signup",
     title: "Codepeer | Signup",
-    component: React.lazy(() => import("src/pages/Login")),
+    component: React.lazy(() => import("src/pages/Signup")),
   },
   {
     path: "/login",

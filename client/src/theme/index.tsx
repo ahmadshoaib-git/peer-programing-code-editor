@@ -22,6 +22,7 @@ const theme = {
     subHeading: "1rem",
     icon: "1.3rem",
     heading: "1.4rem",
+    headingTitle: "1.7rem",
   },
   layout: {
     innerLayout: {

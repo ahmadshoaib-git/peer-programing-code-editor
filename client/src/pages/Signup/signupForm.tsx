@@ -4,15 +4,17 @@ import { Link, Navigate } from "react-router-dom";
 import { Form } from "antd";
 import { Button, Input } from "../../components";
 import { setLoggedIn } from "src/redux/slices/auth";
-import { FormContainer, HeaderHeading } from "./login.style";
+import { FormContainer, HeaderHeading } from "./signup.style";
 
-const LoginForm = () => {
+const SignupForm = () => {
   const dispatch = useDispatch();
   const onFinish = (values: any) => {
-    // const {confirm-password, password} = values;
+    const { confirmPassword, password } = values;
+    if (confirmPassword === password) {
+      dispatch(setLoggedIn({ loggedIn: true }));
+      <Navigate to="/" />;
+    }
     console.log("Received values of form: ", values);
-    dispatch(setLoggedIn({ loggedIn: true }));
-    <Navigate to="/" />;
   };
 
   return (
@@ -27,6 +29,18 @@ const LoginForm = () => {
         onFinish={onFinish}
       >
         <Form.Item
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Please input your Username!",
+            },
+          ]}
+        >
+          <Input placeholder="Username" />
+        </Form.Item>
+
+        <Form.Item
           name="email"
           rules={[
             {
@@ -35,8 +49,9 @@ const LoginForm = () => {
             },
           ]}
         >
-          <Input type={"email"} placeholder="Username" />
+          <Input placeholder="Email" type={"email"} />
         </Form.Item>
+
         <Form.Item
           name="password"
           rules={[
@@ -49,16 +64,28 @@ const LoginForm = () => {
           <Input type="password" placeholder="Password" />
         </Form.Item>
 
+        <Form.Item
+          name="confirmPassword"
+          rules={[
+            {
+              required: true,
+              message: "Please confirm your Password!",
+            },
+          ]}
+        >
+          <Input type="password" placeholder="Confirm Password" />
+        </Form.Item>
+
         <Form.Item className="flex-dir-column">
           <Button
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-            Log in
+            Register
           </Button>
           <span>
-            Or <Link to="/signup">register now!</Link>
+            Already have a login? <Link to="/login">Click here!</Link>
           </span>
         </Form.Item>
       </Form>
@@ -66,4 +93,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;

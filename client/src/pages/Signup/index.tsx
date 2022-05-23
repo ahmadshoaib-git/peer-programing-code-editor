@@ -1,16 +1,16 @@
 import React from "react";
-import LoginForm from "./login";
+import SignupForm from "./signupForm";
 import {
   LoginWrapper,
   LoginLeftContainer,
   LoginRightContainer,
-} from "./login.style";
+} from "./signup.style";
 
 const Login = () => {
   return (
     <LoginWrapper>
       <LoginLeftContainer>
-        <LoginForm />
+        <SignupForm />
       </LoginLeftContainer>
       <LoginRightContainer>
         <div className="bg"></div>
