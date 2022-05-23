@@ -14,9 +14,8 @@ const SignupForm = () => {
       const { username, email, confirmPassword, password } = values;
       if (confirmPassword === password) {
         const response = await callSignup(username, email, password);
-        console.log("response >", response.data);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("email", response.email);
         dispatch(setLoggedIn({ loggedIn: true }));
         <Navigate to="/" />;
       }

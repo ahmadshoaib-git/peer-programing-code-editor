@@ -17,9 +17,9 @@ export const LoginLeftContainer = styled.div`
   background: #fff;
   @media only screen and (max-width: 600px) {
     width: 100%;
-    /* display: flex;
+    display: flex;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
     div {
       display: flex;
       justify-content: center;
@@ -35,7 +35,7 @@ export const LoginRightContainer = styled.div`
   overflow-y: auto;
   position: relative;
   @media only screen and (max-width: 600px) {
-    display: none;
+    display: none !important;
   }
   .bg {
     animation: slide 3s ease-in-out infinite alternate;

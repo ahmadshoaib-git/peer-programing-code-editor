@@ -16,9 +16,15 @@ export const LoginLeftContainer = styled.div`
   z-index: 1111;
   background: #fff;
   @media only screen and (max-width: 600px) {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 `;
 
@@ -29,7 +35,7 @@ export const LoginRightContainer = styled.div`
   overflow-y: auto;
   position: relative;
   @media only screen and (max-width: 600px) {
-    display: none;
+    display: none !important;
   }
   .bg {
     animation: slide 3s ease-in-out infinite alternate;
@@ -111,12 +117,12 @@ export const FormContainer = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        button {
+          margin-bottom: 0.7rem;
+        }
         span {
           font-family: ${({ theme: { fonts } }) => fonts.primary};
           font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
-        }
-        button {
-          margin-bottom: 0.7rem;
         }
       }
     }
