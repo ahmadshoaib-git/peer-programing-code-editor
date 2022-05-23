@@ -46,6 +46,27 @@ async function getAllProjects(req: Request, res: Response) {
   }
 }
 
+async function getprojectsByUserEmail(req: Request, res: Response) {
+  try {
+    const { email } = req.body;
+    if (!email) throw "Invalid request! Email cant be empty.";
+    console.log(email);
+    const users = await UserModel.find({
+      email: email,
+    });
+    if (!users || users?.length === 0) throw "User not found!";
+    console.log(users);
+    const projects = await ProjectModel.find({
+      ownerId: users[0]._id,
+    });
+    console.log(projects);
+    return res.status(200).json(projects);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err || err.message });
+  }
+}
+
 async function getProjectsByOwnerId(req: Request, res: Response) {
   try {
     const projects = await ProjectModel.find({ ownerId: req.body.ownerId });
@@ -120,6 +141,7 @@ const ProjectController = {
   getProjectById,
   addContributors,
   getProjectsByContributorsEmail,
+  getprojectsByUserEmail,
 };
 
 export default ProjectController;
