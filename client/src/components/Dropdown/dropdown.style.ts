@@ -8,9 +8,14 @@ export const CustomMenu = styled(Menu)`
 
   .ant-dropdown-menu,
   .ant-dropdown-menu-item {
+    &:hover {
+      background: rgba(2, 122, 255, 0.06);
+    }
     li,
     span,
     a {
+      font-family: ${({ theme: { fonts } }) => fonts.primary};
+      font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
       &:hover {
         color: ${({ theme: { colors } }) => colors.headingColor};
       }
