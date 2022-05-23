@@ -21,3 +21,5 @@ Following is the tech-stack around which the application revolves.
 #### 8. React Icons
 
 #### 9. Ant Design
+
+#### 10. Axios
