@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { UserModel } from "../../models/index";
 
@@ -17,8 +18,23 @@ async function createUser(req: Request, res: Response) {
     const { name, email } = req.body;
     console.log(req.body);
     const tempData = await saveData(name, email);
-    console.log(`tempData :${tempData}`);
-    return res.status(200).json(tempData);
+    // console.log(`tempData :${tempData}`);
+    let jwtSecretKey = "Asfoi94293894kj4";
+    // sa
+    let data: any = {
+      email: tempData.email,
+      name: tempData.name,
+      userId: tempData._id,
+    };
+    const token = await jwt.sign(data, jwtSecretKey, {
+      expiresIn: "2h",
+    });
+
+    // const token = jwt.sign(data, jwtSecretKey);
+    data["token"] = token;
+    console.log(`>> token :${token}`);
+    console.log(`>> data :${data}`);
+    return res.status(200).json(data);
   } catch (err: any) {
     console.log(err);
     return res.status(400).json({ message: err.message });

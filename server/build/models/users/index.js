@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-// const mongoose = require('mongoose');
-const mongoose_1 = __importDefault(require("mongoose"));
-const userDetailSchema = new mongoose_1.default.Schema({
+exports.UserSchema = void 0;
+const __1 = require("../..");
+exports.UserSchema = new __1.mongoose.Schema({
     email: {
         required: true,
         unique: true,
@@ -15,37 +12,47 @@ const userDetailSchema = new mongoose_1.default.Schema({
         required: true,
         type: String,
     },
-});
-const projectSchema = new mongoose_1.default.Schema({
-    projectId: {
-        required: true,
-        // unique: true,
+    password: {
+        required: false,
         type: String,
     },
-    projectDetail: {
-        required: true,
-        type: Object,
+    passcode: {
+        required: false,
+        type: String,
     },
-    contributor: [
+    confirmed: {
+        required: true,
+        type: Boolean,
+    },
+    projects: [
         {
-            email: {
-                unique: true,
-                type: String,
-            },
-            name: {
-                required: true,
-                type: String,
-            },
+            type: __1.mongoose.Schema.Types.ObjectId,
+            ref: "Projects",
         },
     ],
-});
-const UserSchema = new mongoose_1.default.Schema({
-    userId: {
-        required: true,
-        unique: true,
-        type: String,
+    created_at: {
+        type: Date,
+        default: function () {
+            return Date.now();
+        },
     },
-    owner: userDetailSchema,
-    projects: [projectSchema],
+    updated_at: {
+        type: Date,
+        default: function () {
+            return Date.now();
+        },
+    },
 });
-exports.default = mongoose_1.default.model("Users", UserSchema);
+exports.UserSchema.pre("save", function (done) {
+    this.updated_at = Date.now();
+    done();
+});
+// UserSchema.pre("save", function (next) {
+//   now = new Date();
+//   this.updated_at = now;
+//   if (!this.created_at) {
+//     this.created_at = now;
+//   }
+//   next();
+// });
+exports.default = __1.mongoose.model("Users", exports.UserSchema);
