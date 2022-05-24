@@ -53,6 +53,11 @@ export const InfoBar = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.2rem;
+  .highlighter {
+    color: rgba(255, 20, 147, 1);
+    font-weight: 700;
+    text-transform: capitalize;
+  }
   span,
   div {
     font-size: 0.7rem;

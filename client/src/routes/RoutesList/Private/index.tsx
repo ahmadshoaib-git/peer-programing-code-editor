@@ -12,9 +12,14 @@ const PrivateRoutes = [
     component: React.lazy(() => import("src/pages/Home")),
   },
   {
-    path: "/Editor",
+    path: "/editor/:id",
     title: "Codepeer | Editor",
     component: React.lazy(() => import("src/pages/Editor")),
+  },
+  {
+    path: "*",
+    title: "Codepeer | Page not found",
+    component: React.lazy(() => import("src/pages/NotFound")),
   },
 ];
 

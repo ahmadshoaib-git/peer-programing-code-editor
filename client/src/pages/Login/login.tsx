@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { Button, Input, Notify } from "../../components";
 import { setLoggedIn } from "src/redux/slices/auth";
@@ -9,6 +9,7 @@ import { FormContainer, HeaderHeading } from "./login.style";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onFinish = async (values: any) => {
     // const {confirm-password, password} = values;
     try {
@@ -17,8 +18,10 @@ const LoginForm = () => {
       console.log("API data >", response, response.data);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("email", response.data.email);
+      localStorage.setItem("name", response.data.name);
       dispatch(setLoggedIn({ loggedIn: true }));
-      <Navigate to="/" />;
+      Notify(`Welcome back ${response.data.name}`, "success");
+      navigate(`/`);
     } catch (err: any) {
       let message = "Unable to Login User";
       if (err?.response) {

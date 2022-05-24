@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { FaUsers } from "react-icons/fa";
 import { BsCalendarCheck } from "react-icons/bs";
@@ -16,27 +17,57 @@ import {
 } from "./projectContainer.style";
 
 export interface Props {
+  owner: "self" | "else";
   data: {
     projectDetail: {
       name: string;
     };
     contributor: Array<any>;
+    ownerName: string;
+    ownerEmail: string;
     created_at: Date;
     updated_at: Date;
+    _id: string;
   };
 }
-const ProjectContainer: React.FC<Props> = ({ data }) => {
+const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
+  let navigate = useNavigate();
+  const {
+    projectDetail,
+    contributor,
+    created_at,
+    updated_at,
+    _id,
+    ownerName,
+    ownerEmail,
+  } = data;
   const projectMenu: Array<MenuItemsProp> = [
     {
       label: "open",
-      onClick: () => console.log("Open!!"),
+      onClick: () => {
+        console.log("Open!!");
+        navigate(`/editor/${_id}`);
+      },
     },
   ];
-  console.log("data >", data);
-  const { projectDetail, contributor, created_at, updated_at } = data;
   const { name } = projectDetail;
+  let avatarName;
+  if (name.split(" ").length > 1) {
+    const temp = name.split(" ");
+    avatarName = `${temp[0].charAt(0).toUpperCase()}${temp[1]
+      .charAt(0)
+      .toUpperCase()}`;
+  } else {
+    avatarName = `${name.charAt(0).toUpperCase()}${name
+      .charAt(1)
+      .toUpperCase()}`;
+  }
   const createdAt = moment(created_at).format("MMMM Do YYYY");
   const updatedAt = moment(updated_at).format("MMMM Do YYYY");
+  const getCreator = () => {
+    if (owner === "self") return owner;
+    else return ownerName;
+  };
   return (
     <ProjectContainerWrapper>
       <ProjectNameSection>
@@ -54,19 +85,19 @@ const ProjectContainer: React.FC<Props> = ({ data }) => {
           </Dropdown>
         </div>
       </ProjectNameSection>
-      <Avatar title={name}>{name.charAt(0)}</Avatar>
+      <Avatar title={name}>{avatarName}</Avatar>
       <InnerSection>
         <InfoBar>
           <div className="flex">
             <BiUserCircle /> <span>Creator</span>
           </div>
-          <div>Self</div>
+          <div className="highlighter">{getCreator()}</div>
         </InfoBar>
         <InfoBar>
           <div className="flex">
             <FaUsers /> <span>Contributors</span>
           </div>
-          <div>{contributor.length}</div>
+          <div className="highlighter">{contributor?.length || "-"}</div>
         </InfoBar>
         <InfoBar>
           <div className="flex">

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form } from "antd";
 import { Button, Input, Notify } from "../../components";
 import { setLoggedIn } from "src/redux/slices/auth";
@@ -9,6 +9,7 @@ import { FormContainer, HeaderHeading } from "./signup.style";
 
 const SignupForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onFinish = async (values: any) => {
     try {
       const { username, email, confirmPassword, password } = values;
@@ -16,9 +17,10 @@ const SignupForm = () => {
         const response = await callSignup(username, email, password);
         localStorage.setItem("token", response.token);
         localStorage.setItem("email", response.email);
+        localStorage.setItem("name", response.data.name);
         dispatch(setLoggedIn({ loggedIn: true }));
         Notify("User created successfully!", "success");
-        <Navigate to="/" />;
+        navigate(`/`);
       }
       console.log("Received values of form: ", values);
     } catch (err: any) {

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import IconButton from "../IconButton";
 import AvatarGroup from "../AvatarGroup";
@@ -17,6 +17,7 @@ export interface Props {
 }
 const Header: React.FC<Props> = ({ noSideBar }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const headerMenu: Array<MenuItemsProp> = [
     {
       label: "logout",
@@ -24,7 +25,7 @@ const Header: React.FC<Props> = ({ noSideBar }) => {
         await localStorage.clear();
         await dispatch(setLoggedIn({ loggedIn: false }));
         console.log("Logout");
-        <Navigate to="/login" />;
+        navigate(`/login`);
       },
     },
   ];

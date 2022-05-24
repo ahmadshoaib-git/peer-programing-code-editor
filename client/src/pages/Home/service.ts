@@ -3,21 +3,17 @@ import axios from "axios";
 import { BASE_URL } from "src/utils";
 
 const getProjects = async (email: String) => {
-  const creds = {
-    params: {
-      email: email,
-    },
-  };
-
   return await axios({
     method: "GET",
     url: `${BASE_URL}/project/user?email=${email}`,
-    // url: `/user/login`,
-    // data: creds,
-    // headers: {
-    //   "user-agent": "not axios",
-    // },
   });
 };
 
-export { getProjects };
+const getContributedProjects = async (email: String) => {
+  return await axios({
+    method: "GET",
+    url: `${BASE_URL}/project/contributedProject?email=${email}`,
+  });
+};
+
+export { getProjects, getContributedProjects };
