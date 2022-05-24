@@ -4,21 +4,21 @@ import { UserModel } from "../../models/index";
 
 const jwtSecretKey = "Asfoi94293894kj4";
 async function createUser(req: Request, res: Response) {
-  const saveData = async (name: string, email: string) => {
+  const saveData = async (name: string, email: string, password: string) => {
     const data = new UserModel({
       name: name,
       email: email,
       passcode: "123456",
-      password: "123456",
+      password: password,
       confirmed: true,
     });
     const tempData = await data.save();
     return tempData;
   };
   try {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
     console.log(req.body);
-    const tempData = await saveData(name, email);
+    const tempData = await saveData(name, email, password);
     // console.log(`tempData :${tempData}`);
     // sa
     let data: any = {

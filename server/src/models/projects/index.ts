@@ -27,18 +27,18 @@ export const ProjectSchema = new mongoose.Schema({
     ],
     default: void 0,
   },
-  // contributor: [
-  // {
-  //   email: {
-  //     required: false,
-  //     type: String,
-  //   },
-  //   name: {
-  //     required: false,
-  //     type: String,
-  //   },
-  // },
-  // ],
+  created_at: {
+    type: Date,
+    default: function () {
+      return Date.now();
+    },
+  },
+  updated_at: {
+    type: Date,
+    default: function () {
+      return Date.now();
+    },
+  },
 });
 
 export default mongoose.model("Projects", ProjectSchema);

@@ -48,7 +48,7 @@ async function getAllProjects(req: Request, res: Response) {
 
 async function getprojectsByUserEmail(req: Request, res: Response) {
   try {
-    const { email } = req.body;
+    const { email } = req.query;
     if (!email) throw "Invalid request! Email cant be empty.";
     console.log(email);
     const users = await UserModel.find({

@@ -7,10 +7,7 @@ ProjectRouter.post("/", ProjectController.createProject);
 ProjectRouter.get("/projectsByOwnerId", ProjectController.getProjectsByOwnerId);
 ProjectRouter.get("/projectById", ProjectController.getProjectById);
 ProjectRouter.post("/addContributors", ProjectController.addContributors);
-ProjectRouter.get(
-  "/getprojectsByUserEmail",
-  ProjectController.getprojectsByUserEmail
-);
+ProjectRouter.get("/user", ProjectController.getprojectsByUserEmail);
 ProjectRouter.get(
   "/contributedProject",
   ProjectController.getProjectsByContributorsEmail
