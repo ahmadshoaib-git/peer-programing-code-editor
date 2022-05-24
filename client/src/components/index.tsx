@@ -10,6 +10,7 @@ import Tab from "./Tab";
 import { Input, PaswordInput } from "./Input";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
+import Notify from "./Notification";
 
 export {
   Avatar,
@@ -25,4 +26,5 @@ export {
   Input,
   PaswordInput,
   Dropdown,
+  Notify,
 };

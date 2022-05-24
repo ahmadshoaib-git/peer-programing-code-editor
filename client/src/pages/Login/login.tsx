@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { Form } from "antd";
-import { Button, Input } from "../../components";
+import { Button, Input, Notify } from "../../components";
 import { setLoggedIn } from "src/redux/slices/auth";
 import { callLogin } from "./service";
 import { FormContainer, HeaderHeading } from "./login.style";
@@ -19,8 +19,13 @@ const LoginForm = () => {
       localStorage.setItem("email", response.data.email);
       dispatch(setLoggedIn({ loggedIn: true }));
       <Navigate to="/" />;
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      let message = "Unable to Login User";
+      if (err?.response) {
+        message = err?.response?.data?.message;
+        console.log(err?.response.data?.message); // => the response payload
+      }
+      Notify(message, "error");
     }
   };
 

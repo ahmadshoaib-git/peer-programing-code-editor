@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { Form } from "antd";
-import { Button, Input } from "../../components";
+import { Button, Input, Notify } from "../../components";
 import { setLoggedIn } from "src/redux/slices/auth";
 import { callSignup } from "./service";
 import { FormContainer, HeaderHeading } from "./signup.style";
@@ -17,11 +17,17 @@ const SignupForm = () => {
         localStorage.setItem("token", response.token);
         localStorage.setItem("email", response.email);
         dispatch(setLoggedIn({ loggedIn: true }));
+        Notify("User created successfully!", "success");
         <Navigate to="/" />;
       }
       console.log("Received values of form: ", values);
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      let message = "Unable to Signup User";
+      if (err?.response) {
+        message = err?.response?.data?.message;
+        console.log(err?.response.data?.message); // => the response payload
+      }
+      Notify(message, "error");
     }
   };
 
