@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { UserModel } from "../../models/index";
+import { getErrorMessage } from "../../utils";
 
 const jwtSecretKey = "Asfoi94293894kj4";
 async function createUser(req: Request, res: Response) {
@@ -66,6 +67,9 @@ async function userLogin(req: Request, res: Response) {
       email: email,
       password: password,
     });
+    if (!users || users?.length === 0)
+      throw "User not found! Please register new user.";
+    console.log(users, users[0]);
     const clonedUser = JSON.parse(JSON.stringify(users[0]));
     delete clonedUser["password"];
     delete clonedUser["passcode"];
@@ -78,8 +82,9 @@ async function userLogin(req: Request, res: Response) {
     console.log(`>> clonedUser :${clonedUser}`);
     return res.status(200).json(clonedUser);
   } catch (err: any) {
-    console.log(err);
-    return res.status(400).json({ message: err.message });
+    const message = getErrorMessage(err);
+    console.log(message);
+    return res.status(400).json({ message: message });
   }
 }
 
