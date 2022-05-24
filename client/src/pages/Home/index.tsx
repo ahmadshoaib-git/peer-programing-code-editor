@@ -18,18 +18,19 @@ const EditorMain = () => {
   }, [userEmail]);
   const fetchProjectData = async (email: String) => {
     const response = await getProjects(email);
-    console.log(response);
+    console.log(response.data);
+    setProjects(response.data);
   };
   const getTabData = () => {
     switch (tabIndex) {
       case "0":
-        return <MyProjects />;
+        return <MyProjects data={projects} />;
       case "1":
         return <ContributingProjects />;
       case "2":
         return <InvitedProjects />;
       default:
-        return <MyProjects />;
+        return <MyProjects data={projects} />;
     }
   };
   return (

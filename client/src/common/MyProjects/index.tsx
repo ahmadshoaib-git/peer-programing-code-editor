@@ -2,10 +2,15 @@ import React from "react";
 import ProjectContainer from "../ProjectContainer";
 import { MyProjectsWrapper } from "./myProjects.style";
 
-const MyProjects = () => {
+export interface Props {
+  data: Array<any>;
+}
+const MyProjects: React.FC<Props> = ({ data }) => {
   return (
     <MyProjectsWrapper>
-      <ProjectContainer />
+      {data.map((project, index) => (
+        <ProjectContainer key={index.toString()} data={project} />
+      ))}
     </MyProjectsWrapper>
   );
 };

@@ -11,9 +11,9 @@ const getProjects = async (email: String) => {
 
   return await axios({
     method: "GET",
-    url: `${BASE_URL}/project/getprojectsByUserEmail`,
+    url: `${BASE_URL}/project/user?email=${email}`,
     // url: `/user/login`,
-    data: creds,
+    // data: creds,
     // headers: {
     //   "user-agent": "not axios",
     // },

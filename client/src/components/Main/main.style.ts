@@ -14,10 +14,12 @@ export const MainWrapper = styled.main<SidebarProps>`
   width: ${({ theme: { layout } }) => layout.main.width};
   height: ${({ theme: { layout } }) => layout.main.height};
   display: flex;
+  padding-bottom: 1rem;
   .inner-section {
     width: ${({ noSideBar, theme: { layout } }) =>
       noSideBar ? "100%" : layout.Editor.width};
     height: 100%;
     padding: 1rem;
+    overflow-y: auto;
   }
 `;

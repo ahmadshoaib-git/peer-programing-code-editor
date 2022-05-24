@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ProjectContainerWrapper = styled.div`
-  width: 14rem;
+  width: 16rem;
   height: auto;
   box-shadow: rgb(52 141 214 / 10%) 2px 3px 10px 4px;
   border-radius: 0.4rem;
@@ -12,6 +12,7 @@ export const ProjectContainerWrapper = styled.div`
     width: 100%;
     font-size: 2.5rem;
     font-weight: 400;
+    background: #2f4f4f;
   }
 `;
 export const ProjectNameSection = styled.div`
