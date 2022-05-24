@@ -10,6 +10,16 @@ export const ProjectSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
+  ownerEmail: {
+    sparse: true,
+    required: true,
+    type: String,
+  },
+  ownerName: {
+    sparse: true,
+    required: true,
+    type: String,
+  },
   contributor: {
     type: [
       {

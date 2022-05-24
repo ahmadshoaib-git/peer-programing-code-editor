@@ -10,11 +10,15 @@ async function createProject(req: Request, res: Response) {
           projectDetail: reqData.projectDetail,
           contributor: reqData.contributor,
           ownerId: userData[0]._id,
+          ownerEmail: userData[0].email,
+          ownerName: userData[0].name,
         });
       else
         data = new ProjectModel({
           projectDetail: reqData.projectDetail,
           ownerId: userData._id,
+          ownerEmail: userData[0].email,
+          ownerName: userData[0].name,
         });
       const tempData = await data.save();
       return tempData;
@@ -114,17 +118,31 @@ async function addContributors(req: Request, res: Response) {
 
 async function getProjectsByContributorsEmail(req: Request, res: Response) {
   try {
-    const { userEmail } = req.body;
+    const { email } = req.query;
+    if (!email) throw "Invalid request! Email cant be empty.";
+    console.log(email);
     const projects = await ProjectModel.find({
-      "contributor.email": userEmail,
+      "contributor.email": email,
     });
-    const data = projects.map((project) => {
+    const data = projects?.map((project) => {
       return {
         _id: project._id,
         ownerId: project.ownerId,
         projectDetail: project.projectDetail,
+        contributor: project.contributor,
+        ownerEmail: project.ownerEmail,
+        ownerName: project.ownerName,
       };
     });
+    // const data = projects.map(async (project) => {
+    //   const usersData: any = await UserModel.find({
+    //     _id: project.ownerId,
+    //   });
+    //   project["ownerName"] = usersData.name;
+    //   project["ownerEmail"] = usersData.email;
+    //   return project;
+    // });
+    console.log(data);
     return res.status(200).json(data);
   } catch (err: any) {
     console.log(err);
