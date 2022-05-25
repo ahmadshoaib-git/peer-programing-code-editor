@@ -57,7 +57,18 @@ async function getprojectsByUserEmail(req: Request, res: Response) {
     console.log(email);
     const users = await UserModel.find({
       email: email,
-    });
+    }).sort({ updated_at: -1 });
+    // let users: any;
+    // await UserModel.find(
+    //   {},
+    //   [],
+    //   { sort: [["arrival", -1]] },
+    //   function (err, fetchedUser) {
+    //     console.log("fetchedUser >", fetchedUser);
+    //     console.log("err >", err);
+    //     users = fetchedUser;
+    //   }
+    // );
     if (!users || users?.length === 0) throw "User not found!";
     console.log(users);
     const projects = await ProjectModel.find({
