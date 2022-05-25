@@ -1,16 +1,19 @@
-import React, { useEffect } from "react";
-import { Tab } from "src/components";
+import React, { useEffect, useState } from "react";
+import { Tab, IconButton, Modal } from "src/components";
+import { FiFolderPlus } from "react-icons/fi";
 import { getProjects, getContributedProjects } from "./service";
 import {
   Layout,
   MyProjects,
   ContributingProjects,
   InvitedProjects,
+  AddProjectModal,
 } from "src/common";
-import { MainWrapper } from "./EditorMain.style";
+import { MainWrapper, SpanWrapper } from "./EditorMain.style";
 const EditorMain = () => {
-  const [tabIndex, setTabIndex] = React.useState("0");
-  const [projects, setProjects] = React.useState([]);
+  const [tabIndex, setTabIndex] = useState("0");
+  const [openAddProjectModal, setOpenAddProjectModal] = useState(false);
+  const [projects, setProjects] = useState([]);
   const tabNames = ["My Projects", "Contributing Projects", "Invited Projects"];
   const userEmail = localStorage.getItem("email") || "";
   useEffect(() => {
@@ -51,6 +54,15 @@ const EditorMain = () => {
         return <MyProjects data={projects} owner="self" />;
     }
   };
+  const createNewProject = () => {
+    return (
+      <SpanWrapper onClick={() => setOpenAddProjectModal(true)}>
+        <IconButton title={"Create Project"}>
+          <FiFolderPlus />
+        </IconButton>
+      </SpanWrapper>
+    );
+  };
   return (
     <Layout>
       <MainWrapper>
@@ -58,10 +70,17 @@ const EditorMain = () => {
           tabs={tabNames}
           selectedTabIndex={tabIndex}
           onChange={(i) => setTabIndex(i)}
+          tabEndOption={createNewProject()}
         >
           {getTabData()}
         </Tab>
       </MainWrapper>
+      <AddProjectModal
+        title=""
+        isModalVisible={openAddProjectModal}
+        closeModal={() => setOpenAddProjectModal(false)}
+        refreshData={() => getTabProjectsData()}
+      />
     </Layout>
   );
 };

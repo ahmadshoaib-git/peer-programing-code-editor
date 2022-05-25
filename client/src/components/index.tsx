@@ -11,6 +11,8 @@ import { Input, PaswordInput } from "./Input";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
 import Notify from "./Notification";
+import IconButton from "./IconButton";
+import Modal from "./Modal";
 
 export {
   Avatar,
@@ -27,4 +29,6 @@ export {
   PaswordInput,
   Dropdown,
   Notify,
+  IconButton,
+  Modal,
 };

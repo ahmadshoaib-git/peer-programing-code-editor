@@ -9,6 +9,12 @@ const operations = <>Extra Action</>;
 export interface Props {
   onChange?: (arg0: string) => void;
   children?: React.ReactNode | JSX.Element | JSX.Element[] | string | string[];
+  tabEndOption?:
+    | React.ReactNode
+    | JSX.Element
+    | JSX.Element[]
+    | string
+    | string[];
   tabs: string[];
   selectedTabIndex: string;
 }
@@ -16,13 +22,14 @@ export interface Props {
 const Tab: React.FC<Props> = ({
   tabs,
   children,
+  tabEndOption,
   onChange,
   selectedTabIndex,
 }) => {
   return (
     <>
       <CustomTabs
-        tabBarExtraContent={operations}
+        tabBarExtraContent={tabEndOption}
         onChange={onChange}
         activeKey={selectedTabIndex}
       >
