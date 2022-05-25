@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import { FaUsers } from "react-icons/fa";
 import { HiUserAdd } from "react-icons/hi";
 import { Form } from "antd";
 import { addProject } from "../service";
@@ -105,7 +106,10 @@ const AddProjectModal: React.FC<Props> = (props) => {
             closeModal={() => setOpenAddContributorModal(false)}
           />
           <ContributorHeadingWrapper>
-            <h3>Project Contributors</h3>
+            <h3>
+              <FaUsers />
+              Project Contributors
+            </h3>
             <div onClick={() => setOpenAddContributorModal(true)}>
               <IconButton title={"Add Contributor"}>
                 <HiUserAdd />

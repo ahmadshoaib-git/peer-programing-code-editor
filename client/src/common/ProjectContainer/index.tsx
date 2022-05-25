@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { FaUsers } from "react-icons/fa";
@@ -9,6 +9,7 @@ import { Avatar, Dropdown } from "src/components";
 import { MenuItemsProp } from "src/components/Dropdown";
 import { BiWorld } from "react-icons/bi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import ProjectDetailsModal from "../ProjectDetailsModal";
 import {
   ProjectContainerWrapper,
   ProjectNameSection,
@@ -32,6 +33,7 @@ export interface Props {
 }
 const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
   let navigate = useNavigate();
+  const [openProjectDetailModal, setOpenProjectDetailModal] = useState(false);
   const {
     projectDetail,
     contributor,
@@ -43,10 +45,17 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
   } = data;
   const projectMenu: Array<MenuItemsProp> = [
     {
-      label: "open",
+      label: "Open Project",
       onClick: () => {
         console.log("Open!!");
         navigate(`/editor/${_id}`);
+      },
+    },
+    {
+      label: "Open Details",
+      onClick: () => {
+        console.log("Open!!");
+        setOpenProjectDetailModal(true);
       },
     },
   ];
@@ -112,6 +121,12 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
           <div>{updatedAt.toString()}</div>
         </InfoBar>
       </InnerSection>
+      <ProjectDetailsModal
+        title=""
+        isModalVisible={openProjectDetailModal}
+        closeModal={() => setOpenProjectDetailModal(false)}
+        data={data}
+      />
     </ProjectContainerWrapper>
   );
 };

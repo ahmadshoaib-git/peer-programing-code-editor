@@ -242,5 +242,10 @@ export const ContributorHeadingWrapper = styled.div`
     font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
     font-weight: bold;
     margin: 0;
+    display: flex;
+    align-items: center;
+    svg {
+      margin-right: 0.5rem;
+    }
   }
 `;
