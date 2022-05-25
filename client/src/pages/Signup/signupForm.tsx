@@ -17,13 +17,16 @@ const SignupForm = () => {
         const response = await callSignup(username, email, password);
         localStorage.setItem("token", response.token);
         localStorage.setItem("email", response.email);
-        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("name", response.name);
         dispatch(setLoggedIn({ loggedIn: true }));
         Notify("User created successfully!", "success");
         navigate(`/`);
+      } else {
+        Notify("Password and confirm password dont match!", "error");
       }
       console.log("Received values of form: ", values);
     } catch (err: any) {
+      console.log(err);
       let message = "Unable to Signup User";
       if (err?.response) {
         message = err?.response?.data?.message;

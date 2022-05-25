@@ -12,6 +12,7 @@ import {
 
 const OuterSidebar = () => {
   const email = localStorage.getItem("email");
+  const name = localStorage.getItem("name");
   return (
     <OuterSidebarWrapper>
       <OuterSidebarTop>
@@ -28,7 +29,7 @@ const OuterSidebar = () => {
       </OuterSidebarMiddle>
       <OuterSidebarFooter>
         <div>
-          <Avatar hasBadge={true} title="Ahmad Shoaib" placement="right">
+          <Avatar hasBadge={true} title={name} placement="right">
             {email?.toLocaleUpperCase().charAt(0) || "U"}
           </Avatar>
         </div>
