@@ -12,7 +12,7 @@ function CodeEditor() {
       console.log("here is the monaco instance:", monaco);
     }
   }, [monaco]);
-  const defaultCode = `
+  const codeData = `
   import React, {useState} from "react";
 
 const ProjectX = () => {
@@ -25,7 +25,7 @@ export default ProjectX;
   `;
 
   const editorOptions = {
-    value: defaultCode,
+    value: codeData,
     language: "javascript",
     theme: "vs-light",
     automaticLayout: true,
@@ -42,7 +42,7 @@ export default ProjectX;
       <Editor
         height="100%"
         width="100%"
-        defaultValue={defaultCode}
+        defaultValue={codeData}
         defaultLanguage="javascript"
         options={editorOptions}
       />

@@ -10,6 +10,8 @@ import { MenuItemsProp } from "src/components/Dropdown";
 import { BiWorld } from "react-icons/bi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import ProjectDetailsModal from "../ProjectDetailsModal";
+import ContributorDetailModal from "../ContributorsDetailModal";
+import EditContributor from "../EditContributors";
 import {
   ProjectContainerWrapper,
   ProjectNameSection,
@@ -34,6 +36,9 @@ export interface Props {
 const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
   let navigate = useNavigate();
   const [openProjectDetailModal, setOpenProjectDetailModal] = useState(false);
+  const [openContributorModal, setOpenContributorModal] = useState(false);
+  const [openEditContributorModal, setOpenEditContributorModal] =
+    useState(false);
   const {
     projectDetail,
     contributor,
@@ -56,6 +61,20 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
       onClick: () => {
         console.log("Open!!");
         setOpenProjectDetailModal(true);
+      },
+    },
+    {
+      label: "Open Contributors",
+      onClick: () => {
+        console.log("Open!!");
+        setOpenContributorModal(true);
+      },
+    },
+    {
+      label: "Edit Contributors",
+      onClick: () => {
+        console.log("Open!!");
+        setOpenEditContributorModal(true);
       },
     },
   ];
@@ -126,6 +145,24 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
         isModalVisible={openProjectDetailModal}
         closeModal={() => setOpenProjectDetailModal(false)}
         data={data}
+      />
+      <ContributorDetailModal
+        title=""
+        isModalVisible={openContributorModal}
+        closeModal={() => setOpenContributorModal(false)}
+        contributors={data?.contributor}
+      />
+      <EditContributor
+        title=""
+        isModalVisible={openEditContributorModal}
+        closeModal={() => setOpenEditContributorModal(false)}
+        contributors={data?.contributor?.map((obj: any) => {
+          return {
+            name: obj.name,
+            email: obj.email,
+          };
+        })}
+        saveContributors={(data: any) => console.log("---->>>", data)}
       />
     </ProjectContainerWrapper>
   );

@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tab, IconButton, Modal } from "src/components";
 import { FiFolderPlus } from "react-icons/fi";
 import { getProjects, getContributedProjects } from "./service";
-import {
-  Layout,
-  MyProjects,
-  ContributingProjects,
-  InvitedProjects,
-  AddProjectModal,
-} from "src/common";
+import { Layout, MyProjects, AddProjectModal } from "src/common";
 import { MainWrapper, SpanWrapper } from "./EditorMain.style";
 const EditorMain = () => {
   const [tabIndex, setTabIndex] = useState("0");

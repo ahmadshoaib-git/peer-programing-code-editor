@@ -13,54 +13,47 @@ import {
   CustomModalList,
   CustomEmpty,
   InfoList,
-} from "./projectDetailModal.style";
+} from "./contributorDetailModal.style";
 
 export interface Props {
   title: string;
   isModalVisible: boolean;
   closeModal: () => void;
-  data: any;
+  contributors: any;
 }
 export interface ContributorData {
   name: String;
   email: String;
 }
-const ProjectDetailsModal: React.FC<Props> = (props) => {
-  const [projectName, setProjectName] = useState("");
-  const [ownerName, setOwnerName] = useState("");
-  const [ownerEmail, setOwnerEmail] = useState("");
+const ContributorDetailModal: React.FC<Props> = (props) => {
   const [contributors, addContributor] = useState<Array<ContributorData>>([]);
 
   console.log("props ============>>>>>", props);
   useEffect(() => {
     try {
-      const { data } = props;
-      const tempContributor = data?.contributor?.map((obj: any) => {
+      const { contributors } = props;
+      const tempContributor = contributors?.map((obj: any) => {
         return {
           name: obj.name,
           email: obj.email,
         };
       });
       addContributor(tempContributor);
-      setProjectName(data.projectDetail.name);
-      setOwnerName(data.ownerName);
-      setOwnerEmail(data.ownerEmail);
     } catch (err) {
       console.log(`err >${err}`);
     }
-  }, [props?.data]);
+  }, [props?.contributors]);
 
   return (
     <Modal {...props}>
       <FormContainer>
         <HeaderHeading>
-          <BiWorld />
-          Project Details
+          <FaUsers /> Project Contributors
         </HeaderHeading>
         {/* <Input value={projectName} disabled={true} />
         <Input value={ownerName} disabled={true} />
         <Input value={ownerEmail} disabled={true} /> */}
-        <InfoList>
+        {/* <InfoList>
           <li>
             <span className="flex">
               <BiWorld /> Project Name:
@@ -85,7 +78,7 @@ const ProjectDetailsModal: React.FC<Props> = (props) => {
             <FaUsers />
             Project Contributors
           </h3>
-        </ContributorHeadingWrapper>
+        </ContributorHeadingWrapper> */}
         <ListWrapper>
           {contributors?.length > 0 ? (
             <CustomModalList>
@@ -113,4 +106,4 @@ const ProjectDetailsModal: React.FC<Props> = (props) => {
   );
 };
 
-export default ProjectDetailsModal;
+export default ContributorDetailModal;

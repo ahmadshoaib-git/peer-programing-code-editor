@@ -20,6 +20,10 @@ export const MainWrapper = styled.main<SidebarProps>`
       noSideBar ? "100%" : layout.Editor.width};
     height: 100%;
     padding: 1rem;
+    padding-right: 0;
     overflow-y: auto;
+    > div {
+      height: 100%;
+    }
   }
 `;
