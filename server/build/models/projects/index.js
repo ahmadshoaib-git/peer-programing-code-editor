@@ -13,6 +13,16 @@ exports.ProjectSchema = new __1.mongoose.Schema({
         required: true,
         type: String,
     },
+    ownerEmail: {
+        sparse: true,
+        required: true,
+        type: String,
+    },
+    ownerName: {
+        sparse: true,
+        required: true,
+        type: String,
+    },
     contributor: {
         type: [
             {
@@ -30,17 +40,17 @@ exports.ProjectSchema = new __1.mongoose.Schema({
         ],
         default: void 0,
     },
-    // contributor: [
-    // {
-    //   email: {
-    //     required: false,
-    //     type: String,
-    //   },
-    //   name: {
-    //     required: false,
-    //     type: String,
-    //   },
-    // },
-    // ],
+    created_at: {
+        type: Date,
+        default: function () {
+            return Date.now();
+        },
+    },
+    updated_at: {
+        type: Date,
+        default: function () {
+            return Date.now();
+        },
+    },
 });
 exports.default = __1.mongoose.model("Projects", exports.ProjectSchema);
