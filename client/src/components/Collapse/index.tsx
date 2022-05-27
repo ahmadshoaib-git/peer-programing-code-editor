@@ -3,60 +3,29 @@ import Tree from "../Tree";
 import { IoMdArrowDropdown, IoMdArrowDropright } from "react-icons/io";
 import { VscSymbolFile } from "react-icons/vsc";
 import { structure } from "./folderStructure.config";
+import { reducer } from "src/components/Tree/state";
 import { CustomCollapse, CustomPanel } from "./collapse.style";
 
 const Collapse = () => {
   /*********Folder Structure  ************/
   let [data, setData] = useState<any>(structure);
+  // const [state, dispatch] = React.useReducer(reducer, data);
 
   const handleClick = (node: any) => {
     console.log(node);
   };
-  const handleUpdate = (state: any) => {
-    localStorage.setItem(
-      "tree",
-      JSON.stringify(state, function (key, value) {
-        if (key === "parentNode" || key === "id") {
-          return null;
-        }
-        return value;
-      })
-    );
-  };
-
-  useEffect(() => {
-    try {
-      let savedStructure = JSON.parse(localStorage.getItem("tree") || "[]");
-      if (savedStructure.length > 0) {
-        setData(savedStructure);
-      }
-    } catch (err) {
-      console.log("------------------>>>>>>>>>>>>>>>>>>>>>>>", err);
-    }
-  }, []);
-  /************************************* */
+  const handleUpdate = React.useCallback(
+    (state: any) => {
+      console.log("->> ", state);
+      setData(state);
+    },
+    [data]
+  );
 
   function callback(key: any) {
     console.log(key);
   }
-  const genExtra = () => (
-    // <SettingOutlined
-    // onClick={event => {
-    //   // If you don't want click extra trigger collapse, you can prevent this:
-    //   event.stopPropagation();
-    // }}
-    // />
-    /***********ICON********* */
-    // <VscSymbolFile
-    //   onClick={(event) => {
-    //     // If you don't want click extra trigger collapse, you can prevent this:
-    //     alert("Clicked");
-    //     event.stopPropagation();
-    //   }}
-    // />
-    /***************** */
-    <></>
-  );
+  const genExtra = () => <></>;
   const text = "This is a dummy text";
   console.log("--- ", text);
   return (
@@ -71,6 +40,8 @@ const Collapse = () => {
       <CustomPanel header="Files" key="1" extra={genExtra()}>
         <div>
           <Tree
+            // state={state}
+            // dispatch={dispatch}
             children={undefined}
             data={data}
             onUpdate={handleUpdate}

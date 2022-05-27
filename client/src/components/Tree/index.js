@@ -9,19 +9,32 @@ import { StyledTree } from "src/components/Tree/Tree.style";
 import { Folder } from "src/components/Tree/Folder/TreeFolder";
 import { File } from "src/components/Tree/File/TreeFile";
 
-const Tree = ({ children, data, onNodeClick, onUpdate }) => {
-  const [state, dispatch] = useReducer(reducer, data);
-  console.log(state);
+const Tree = (props) => {
+  const [state, dispatch] = useReducer(reducer, props?.data);
+  // const { state, dispatch } = props;
+  console.log("here ===>> at Tree");
 
   useLayoutEffect(() => {
-    dispatch({ type: "SET_DATA", payload: data });
-  }, [data]);
+    dispatch({ type: "SET_DATA", payload: props?.data });
+  }, [props?.data]);
 
   useDidMountEffect(() => {
-    onUpdate && onUpdate(state);
+    try {
+      props.onUpdate(state);
+    } catch (err) {
+      console.log(err);
+    }
   }, [state]);
 
-  const isImparative = data && !children;
+  const onNodeClickHandler = React.useCallback((node) => {
+    try {
+      props.onNodeClick(node);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  const isImparative = props.data && !props.children;
   return (
     <ThemeProvider theme={{ indent: 20 }}>
       <TreeContext.Provider
@@ -29,16 +42,14 @@ const Tree = ({ children, data, onNodeClick, onUpdate }) => {
           isImparative,
           state,
           dispatch,
-          onNodeClick: (node) => {
-            onNodeClick && onNodeClick(node);
-          },
+          onNodeClick: (node) => onNodeClickHandler(node),
         }}
       >
         <StyledTree>
           {isImparative ? (
             <TreeRecusive data={state} parentNode={state} />
           ) : (
-            children
+            props?.children
           )}
         </StyledTree>
       </TreeContext.Provider>

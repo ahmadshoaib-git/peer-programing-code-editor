@@ -32,4 +32,4 @@ const Layout: React.FC<Props> = ({ children, sideBarContent }) => {
   );
 };
 
-export default Layout;
+export default React.memo(Layout);
