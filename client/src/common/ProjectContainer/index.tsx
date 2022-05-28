@@ -70,14 +70,17 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
         setOpenContributorModal(true);
       },
     },
-    {
+  ];
+
+  if (owner !== "else") {
+    projectMenu.push({
       label: "Edit Contributors",
       onClick: () => {
         console.log("Open!!");
         setOpenEditContributorModal(true);
       },
-    },
-  ];
+    });
+  }
   const { name } = projectDetail;
   let avatarName;
   if (name.split(" ").length > 1) {
