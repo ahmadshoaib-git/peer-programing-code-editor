@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { HiUserAdd } from "react-icons/hi";
-import { Button, Input, Notify, Modal, IconButton } from "src/components";
+import { Modal } from "src/components";
 import { BiWorld } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
@@ -31,7 +30,6 @@ const ProjectDetailsModal: React.FC<Props> = (props) => {
   const [ownerEmail, setOwnerEmail] = useState("");
   const [contributors, addContributor] = useState<Array<ContributorData>>([]);
 
-  console.log("props ============>>>>>", props);
   useEffect(() => {
     try {
       const { data } = props;
@@ -113,4 +111,4 @@ const ProjectDetailsModal: React.FC<Props> = (props) => {
   );
 };
 
-export default ProjectDetailsModal;
+export default React.memo(ProjectDetailsModal);

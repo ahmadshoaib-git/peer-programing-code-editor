@@ -7,7 +7,6 @@ import { CodeEditor } from "src/components";
 const Editor = () => {
   const param = useParams();
   React.useEffect(() => {
-    console.log("param >", param);
     if (!param.id) <Navigate to="/" />;
   }, []);
   return (

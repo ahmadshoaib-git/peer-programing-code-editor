@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { FaUsers } from "react-icons/fa";
@@ -10,8 +10,8 @@ import { MenuItemsProp } from "src/components/Dropdown";
 import { BiWorld } from "react-icons/bi";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import ProjectDetailsModal from "../ProjectDetailsModal";
-import ContributorDetailModal from "../ContributorsDetailModal";
-import EditContributor from "../EditContributors";
+
+import { ContributorDetailModal, EditContributor } from "../Modals";
 import {
   ProjectContainerWrapper,
   ProjectNameSection,
@@ -96,6 +96,7 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
     if (owner === "self") return owner;
     else return ownerName;
   };
+  console.log("Rendered !!");
   return (
     <ProjectContainerWrapper>
       <ProjectNameSection>
@@ -168,4 +169,4 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
   );
 };
 
-export default ProjectContainer;
+export default React.memo(ProjectContainer);

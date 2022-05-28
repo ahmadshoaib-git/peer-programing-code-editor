@@ -1,6 +1,6 @@
 import Layout from "./Layout";
-import MyProjects from "./MyProjects";
+import ProjectsList from "./ProjectsList";
 import ProjectContainer from "./ProjectContainer";
-import AddProjectModal from "./AddProjectModal";
+import { AddProjectModal } from "./Modals";
 
-export { Layout, MyProjects, ProjectContainer, AddProjectModal };
+export { Layout, ProjectsList, ProjectContainer, AddProjectModal };

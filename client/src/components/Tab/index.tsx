@@ -1,7 +1,4 @@
 import React from "react";
-// import { Tabs, Button } from 'antd';
-
-// const { TabPane } = Tabs;
 import { CustomTabs, CustomTabPane } from "./tab.style";
 
 const operations = <>Extra Action</>;
@@ -17,6 +14,7 @@ export interface Props {
     | string[];
   tabs: string[];
   selectedTabIndex: string;
+  isEmpty?: boolean;
 }
 
 const Tab: React.FC<Props> = ({
@@ -25,6 +23,7 @@ const Tab: React.FC<Props> = ({
   tabEndOption,
   onChange,
   selectedTabIndex,
+  isEmpty = false,
 }) => {
   return (
     <>
@@ -34,7 +33,11 @@ const Tab: React.FC<Props> = ({
         activeKey={selectedTabIndex}
       >
         {tabs.map((tab, index) => (
-          <CustomTabPane tab={tab} key={index.toString()}>
+          <CustomTabPane
+            tab={tab}
+            key={index.toString()}
+            className="apply-styles"
+          >
             {children}
           </CustomTabPane>
         ))}

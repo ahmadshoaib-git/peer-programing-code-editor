@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Tab, IconButton, Modal } from "src/components";
+import { Tab, IconButton } from "src/components";
 import { FiFolderPlus } from "react-icons/fi";
 import { getProjects, getContributedProjects } from "./service";
-import { Layout, MyProjects, AddProjectModal } from "src/common";
+import { Layout, ProjectsList, AddProjectModal } from "src/common";
 import { MainWrapper, SpanWrapper } from "./EditorMain.style";
 const EditorMain = () => {
   const [tabIndex, setTabIndex] = useState("0");
@@ -39,13 +39,13 @@ const EditorMain = () => {
   const getTabData = () => {
     switch (tabIndex) {
       case "0":
-        return <MyProjects data={projects} owner="self" />;
+        return <ProjectsList data={projects} owner="self" />;
       case "1":
-        return <MyProjects data={projects} owner="else" />;
+        return <ProjectsList data={projects} owner="else" />;
       case "2":
-        return <MyProjects data={projects} owner="else" />;
+        return <ProjectsList data={projects} owner="else" />;
       default:
-        return <MyProjects data={projects} owner="self" />;
+        return <ProjectsList data={projects} owner="self" />;
     }
   };
   const createNewProject = () => {
@@ -65,6 +65,7 @@ const EditorMain = () => {
           selectedTabIndex={tabIndex}
           onChange={(i) => setTabIndex(i)}
           tabEndOption={createNewProject()}
+          isEmpty={projects.length === 0}
         >
           {getTabData()}
         </Tab>

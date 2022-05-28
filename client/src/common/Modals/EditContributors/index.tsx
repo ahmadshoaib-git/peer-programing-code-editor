@@ -11,7 +11,6 @@ export interface Props {
 }
 const EditContributor: React.FC<Props> = (props) => {
   return <EditContributorModal {...props} />;
-  //   return <AddContributorModal {...props} />;
 };
 
 export default EditContributor;

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import { HiUserAdd } from "react-icons/hi";
@@ -67,7 +65,6 @@ const AddProjectModal: React.FC<Props> = (props) => {
       (contributor) => contributor.email !== email
     );
     addContributor(tempContributors);
-    console.log("tempContributors >", tempContributors);
   };
 
   return (
@@ -166,4 +163,4 @@ const AddProjectModal: React.FC<Props> = (props) => {
   );
 };
 
-export default AddProjectModal;
+export default React.memo(AddProjectModal);

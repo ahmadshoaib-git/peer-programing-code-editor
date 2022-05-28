@@ -52,12 +52,7 @@ const EditContributorModal: React.FC<Props> = (props) => {
       console.log(`err >${err}`);
     }
   }, []);
-  // useEffect(() => {
-  //   const disableBtn =
-  //     JSON.stringify(contributors) === JSON.stringify(props.contributors);
-  //   setDisable(disableBtn);
-  //   console.log(`disableBtn > ${disableBtn}`);
-  // }, [contributors]);
+
   const onFinish = async (values: any) => {
     props.saveContributors(contributors);
   };
@@ -72,13 +67,11 @@ const EditContributorModal: React.FC<Props> = (props) => {
       (contributor) => contributor.email !== email
     );
     addContributor(tempContributors);
-    console.log("tempContributors >", tempContributors);
   };
 
   const disableBtn =
     JSON.stringify(contributors) === JSON.stringify(props.contributors);
-  console.log("contributors >", contributors);
-  console.log("props.contributors >", props.contributors);
+
   return (
     <Modal {...props}>
       <FormContainer>
@@ -158,4 +151,4 @@ const EditContributorModal: React.FC<Props> = (props) => {
   );
 };
 
-export default EditContributorModal;
+export default React.memo(EditContributorModal);
