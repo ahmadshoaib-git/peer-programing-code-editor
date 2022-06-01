@@ -7,6 +7,7 @@ export interface Props {
 }
 const CodeEditor: React.FC<Props> = ({ data }) => {
   const monaco = useMonaco();
+  const [code, setCode] = React.useState(data[0]?.code);
   useEffect(() => {
     // do conditional chaining
     // monaco?.languages.typescript.javascriptDefaults.setEagerModelSync(true);
@@ -15,11 +16,15 @@ const CodeEditor: React.FC<Props> = ({ data }) => {
       console.log("here is the monaco instance:", monaco);
     }
   }, [monaco]);
-  const codeData = data[0]?.code;
-  console.log(data);
+
+  // const codeData = data[0]?.code;
+  useEffect(() => {
+    setCode(data[0]?.code);
+  }, [data]);
+  console.log("Inside code editor >>>>>> ", data);
 
   const editorOptions = {
-    value: codeData,
+    // value: code,
     language: "javascript",
     theme: "vs-light",
     automaticLayout: true,
@@ -36,7 +41,8 @@ const CodeEditor: React.FC<Props> = ({ data }) => {
       <Editor
         height="100%"
         width="100%"
-        defaultValue={codeData}
+        // defaultValue={code}
+        value={code}
         defaultLanguage="javascript"
         options={editorOptions}
       />

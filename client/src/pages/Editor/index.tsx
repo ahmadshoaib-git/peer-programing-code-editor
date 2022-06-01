@@ -4,7 +4,7 @@ import { useParams, Navigate } from "react-router-dom";
 import { Layout } from "src/common";
 import EditorSideBar from "./EditorSideBar";
 import { CodeEditor } from "src/components";
-import { getProjectById } from "./service";
+import { getProjectById, getProjectFileDataById } from "./service";
 
 const Editor = () => {
   const param = useParams();
@@ -23,13 +23,36 @@ const Editor = () => {
       const data = await getProjectById(id);
       setLoading(false);
       setProjectData(data?.data);
-      setCodeData(JSON.parse(data?.data?.projectDetail?.filesCode));
+      const newFiles = JSON.parse(data?.data?.projectDetail?.filesCode);
+      setCodeData([
+        {
+          id: newFiles[0]?.id,
+          code: newFiles[0]?.code,
+        },
+      ]);
       return data.data;
     } catch (err) {
       console.log(">> ", err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchCodeByNodeId = async (nodeId: any) => {
+    const result = await getProjectFileDataById(projectData._id, nodeId);
+    console.log("*******************************");
+    console.log(result.data.code);
+    const newResult: any = JSON.parse(result.data);
+    console.log(`newResult > ${newResult}`);
+    console.log(`newResult.id > ${newResult["id"]}`);
+    console.log(`newResult.code > ${newResult["code"]}`);
+    console.log("*******************************");
+    setCodeData([
+      {
+        id: newResult?.id,
+        code: newResult?.code,
+      },
+    ]);
   };
 
   console.log(`projectData >${projectData}`);
@@ -41,7 +64,14 @@ const Editor = () => {
       ) : (
         <>
           {projectData ? (
-            <Layout sideBarContent={<EditorSideBar data={projectData} />}>
+            <Layout
+              sideBarContent={
+                <EditorSideBar
+                  data={projectData}
+                  fetchCodeByNodeId={fetchCodeByNodeId}
+                />
+              }
+            >
               <CodeEditor data={codeData} />
             </Layout>
           ) : (

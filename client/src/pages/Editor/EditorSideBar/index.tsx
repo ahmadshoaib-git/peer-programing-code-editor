@@ -8,8 +8,9 @@ import {
 
 export interface Props {
   data?: any;
+  fetchCodeByNodeId: (nodeId: any) => void;
 }
-const EditorSideBar: React.FC<Props> = ({ data }) => {
+const EditorSideBar: React.FC<Props> = ({ data, fetchCodeByNodeId }) => {
   const treeData = JSON.parse(data?.projectDetail?.fileTree);
   return (
     <CustomEditorSideBarWrapper>
@@ -20,7 +21,11 @@ const EditorSideBar: React.FC<Props> = ({ data }) => {
         </h2>
         <Timer />
       </CustomEditorSideBarHeader>
-      <Collapse projectData={data} treeData={treeData} />
+      <Collapse
+        projectData={data}
+        treeData={treeData}
+        fetchCodeByNodeId={fetchCodeByNodeId}
+      />
     </CustomEditorSideBarWrapper>
   );
 };

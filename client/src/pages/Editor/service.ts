@@ -8,4 +8,11 @@ const getProjectById = async (id: String) => {
   });
 };
 
-export { getProjectById };
+const getProjectFileDataById = async (projectId: String, fileId: String) => {
+  return await axios({
+    method: "GET",
+    url: `${BASE_URL}/project/getProjectFileData?projectId=${projectId}&fileId=${fileId}`,
+  });
+};
+
+export { getProjectById, getProjectFileDataById };

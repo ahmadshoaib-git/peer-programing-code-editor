@@ -9,16 +9,23 @@ import { CustomCollapse, CustomPanel } from "./collapse.style";
 export interface Props {
   projectData?: any;
   treeData?: any;
+  fetchCodeByNodeId: (nodeId: any) => void;
 }
 
-const Collapse: React.FC<Props> = ({ projectData, treeData }) => {
+const Collapse: React.FC<Props> = ({
+  projectData,
+  treeData,
+  fetchCodeByNodeId,
+}) => {
   // const Collapse = () => {
   /*********Folder Structure  ************/
   let [data, setData] = useState<any>(treeData);
   // const [state, dispatch] = React.useReducer(reducer, data);
 
   const handleClick = (node: any) => {
-    console.log(node);
+    if (node.node.type === "folder") return;
+    // console.log(node.node, " > ", node.id);
+    fetchCodeByNodeId(node.node.id);
   };
   const handleUpdate = React.useCallback(
     (state: any) => {
