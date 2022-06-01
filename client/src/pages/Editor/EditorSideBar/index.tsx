@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Collapse, Tag } from "src/components";
+import { Collapse, Tag, Timer } from "src/components";
 import { BiWorld } from "react-icons/bi";
 import {
   CustomEditorSideBarWrapper,
   CustomEditorSideBarHeader,
 } from "./EditorSideBar.style";
-const EditorSideBar = () => {
-  const [time, setTime] = useState(new Date());
-  useEffect(() => {
-    setInterval(() => setTime(new Date()), 1000);
-  }, []);
+
+export interface Props {
+  data?: any;
+}
+const EditorSideBar: React.FC<Props> = ({ data }) => {
+  const treeData = JSON.parse(data?.projectDetail?.fileTree);
   return (
     <CustomEditorSideBarWrapper>
       <CustomEditorSideBarHeader>
@@ -17,11 +18,11 @@ const EditorSideBar = () => {
           <BiWorld />
           <span>Project X</span>
         </h2>
-        <Tag color="red">{time.toLocaleTimeString("en-US")}</Tag>
+        <Timer />
       </CustomEditorSideBarHeader>
-      <Collapse />
+      <Collapse projectData={data} treeData={treeData} />
     </CustomEditorSideBarWrapper>
   );
 };
 
-export default EditorSideBar;
+export default React.memo(EditorSideBar);

@@ -13,6 +13,7 @@ import Dropdown from "./Dropdown";
 import Notify from "./Notification";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
+import Timer from "./Timer";
 
 export {
   Avatar,
@@ -31,4 +32,5 @@ export {
   Notify,
   IconButton,
   Modal,
+  Timer,
 };

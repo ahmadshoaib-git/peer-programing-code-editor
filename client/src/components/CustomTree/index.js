@@ -5,9 +5,9 @@ import { ThemeProvider } from "styled-components";
 import { useDidMountEffect } from "./utils";
 import { TreeContext, reducer } from "./state";
 
-import { StyledTree } from "src/components/Tree/Tree.style";
-import { Folder } from "src/components/Tree/Folder/TreeFolder";
-import { File } from "src/components/Tree/File/TreeFile";
+import { StyledTree } from "src/components/CustomTree/Tree.style";
+import { Folder } from "src/components/CustomTree/Folder/TreeFolder";
+import { File } from "src/components/CustomTree/File/TreeFile";
 
 const Tree = (props) => {
   const [state, dispatch] = useReducer(reducer, props?.data);
@@ -52,11 +52,11 @@ const Tree = (props) => {
               type: item.type,
               id: item.id,
             };
-          } else if (item.type === "folder" && item?.files?.length > 0) {
+          } else if (item.type === "folder" && item?.children?.length > 0) {
             return {
               name: item.name,
               type: item.type,
-              files: getTree(item.files),
+              children: getTree(item.children),
               id: item.id,
             };
           } else if (item.type === "folder") {
@@ -102,7 +102,7 @@ const TreeRecusive = ({ data, parentNode }) => {
         if (!parentNode) {
           item.parentNode = data;
         }
-        if (!item.id) item.id = v4();
+        // if (!item.id) item.id = v4();
 
         if (item.type === "file") {
           return (
@@ -112,7 +112,7 @@ const TreeRecusive = ({ data, parentNode }) => {
         if (item.type === "folder") {
           return (
             <Folder key={item.id} id={item.id} name={item.name} node={item}>
-              <TreeRecusive parentNode={item} data={item.files} />
+              <TreeRecusive parentNode={item} data={item.children} />
             </Folder>
           );
         }

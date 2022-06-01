@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 
 import Editor, { useMonaco } from "@monaco-editor/react";
 
-function CodeEditor() {
+export interface Props {
+  data?: any;
+}
+const CodeEditor: React.FC<Props> = ({ data }) => {
   const monaco = useMonaco();
   useEffect(() => {
     // do conditional chaining
@@ -12,17 +15,8 @@ function CodeEditor() {
       console.log("here is the monaco instance:", monaco);
     }
   }, [monaco]);
-  const codeData = `
-  import React, {useState} from "react";
-
-const ProjectX = () => {
-  return (
-    <div>ProjectX</div>
-  )
-}
-
-export default ProjectX;
-  `;
+  const codeData = data[0]?.code;
+  console.log(data);
 
   const editorOptions = {
     value: codeData,
@@ -48,6 +42,6 @@ export default ProjectX;
       />
     </>
   );
-}
+};
 
 export default CodeEditor;

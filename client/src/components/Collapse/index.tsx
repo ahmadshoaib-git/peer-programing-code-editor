@@ -1,14 +1,20 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import Tree from "../Tree";
+import Tree from "../CustomTree";
 import { IoMdArrowDropdown, IoMdArrowDropright } from "react-icons/io";
 import { VscSymbolFile } from "react-icons/vsc";
 import { structure } from "./folderStructure.config";
 import { reducer } from "src/components/Tree/state";
 import { CustomCollapse, CustomPanel } from "./collapse.style";
 
-const Collapse = () => {
+export interface Props {
+  projectData?: any;
+  treeData?: any;
+}
+
+const Collapse: React.FC<Props> = ({ projectData, treeData }) => {
+  // const Collapse = () => {
   /*********Folder Structure  ************/
-  let [data, setData] = useState<any>(structure);
+  let [data, setData] = useState<any>(treeData);
   // const [state, dispatch] = React.useReducer(reducer, data);
 
   const handleClick = (node: any) => {

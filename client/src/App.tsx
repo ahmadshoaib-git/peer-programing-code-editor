@@ -1,4 +1,5 @@
 import React from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
 import Theme from "src/theme";
 import { Provider } from "react-redux";
@@ -9,14 +10,17 @@ import "react-toastify/ReactToastify.min.css";
 
 function App() {
   console.log("===> App");
+  const queryClient = new QueryClient();
   return (
-    <Provider store={store}>
-      <Theme>
-        <GlobalStyle />
-        <Routes />
-        <ToastContainer position="bottom-right" newestOnTop />
-      </Theme>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <Theme>
+          <GlobalStyle />
+          <Routes />
+          <ToastContainer position="bottom-right" newestOnTop />
+        </Theme>
+      </Provider>
+    </QueryClientProvider>
   );
 }
 
