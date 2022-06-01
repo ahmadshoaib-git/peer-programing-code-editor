@@ -14,5 +14,6 @@ ProjectRouter.get(
 );
 ProjectRouter.get("/individual", ProjectController.getProjectData);
 ProjectRouter.get("/getNewNodeId", ProjectController.getProjectNodesUUID);
-// getProjectsByContributorsEmail getProjectData
+ProjectRouter.get("/getProjectFileData", ProjectController.getProjectFileData);
+// getProjectsByContributorsEmail getProjectData getProjectFileData
 export default ProjectRouter;

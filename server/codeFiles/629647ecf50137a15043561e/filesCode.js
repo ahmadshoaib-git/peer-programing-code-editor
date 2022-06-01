@@ -1,1 +1,0 @@
-[{"id":"96ea8732-2e05-46f3-812e-1e5dc0480b32","code":"\n  import React, {useState} from \"react\";\n\nconst CompName = () => {\n  return (\n    <div>Hello World!</div>\n  )\n}\n\nexport default CompName;\n  "}]

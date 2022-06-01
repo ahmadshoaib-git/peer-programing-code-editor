@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { ProjectModel, UserModel } from "../../models";
-import { createStructure, getInitialCodeData } from "./reactJsCode";
+import {
+  createStructure,
+  getInitialCodeData,
+  getInitialCodeDataAppIndex,
+} from "./reactJsCode";
 import { v4 } from "uuid";
 import path from "path";
 const fs = require("fs");
@@ -40,6 +44,7 @@ async function createProject(req: Request, res: Response) {
     const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
     const uuid1 = v4();
     const uuid2 = v4();
+    const uuid3 = v4();
     // await fs.mkdirSync(dirPath);
     await fs.mkdir(path.resolve(dirPath), { recursive: true }, (e: any) => {
       if (e) {
@@ -48,7 +53,7 @@ async function createProject(req: Request, res: Response) {
       } else {
         fs.writeFile(
           dirFileTree,
-          JSON.stringify(createStructure(uuid1, uuid2)),
+          JSON.stringify(createStructure(uuid1, uuid2, uuid3)),
           function (err: any) {
             if (err) {
               console.log(err);
@@ -57,7 +62,7 @@ async function createProject(req: Request, res: Response) {
             console.log(`${dirFileTree} was created and data was saved`);
             fs.writeFile(
               dirFilesCode,
-              JSON.stringify(getInitialCodeData(uuid2)),
+              JSON.stringify(getInitialCodeDataAppIndex(uuid2, uuid3)),
               function (err: any) {
                 if (err) {
                   console.log(err);
@@ -257,7 +262,32 @@ async function getProjectNodesUUID(req: Request, res: Response) {
   }
 }
 
-// async function abc(req: Request, res: Response) {}
+async function getProjectFileData(req: Request, res: Response) {
+  try {
+    const { projectId, fileId } = req.query;
+    const projects = await ProjectModel.find({
+      _id: projectId,
+    });
+    if (!projects || projects?.length === 0) throw "Project not found!";
+    // console.log("projects >", projects);
+    const selectedProject = projects[0];
+    const dirPath = `${CODE_DIR_NAME}/${selectedProject._id.toString()}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
+      encoding: "utf8",
+    });
+    const filesCode = JSON.parse(tempfilesCode);
+    let codeData = filesCode.find((file: any) => file.id === fileId);
+    if (!codeData) {
+      codeData = getInitialCodeData(fileId);
+    }
+    codeData = JSON.stringify(codeData);
+    return res.status(200).json(codeData);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
 
 const ProjectController = {
   createProject,
@@ -269,6 +299,7 @@ const ProjectController = {
   getProjectsByContributorsEmail,
   getprojectsByUserEmail,
   getProjectNodesUUID,
+  getProjectFileData,
 };
 
 export default ProjectController;
