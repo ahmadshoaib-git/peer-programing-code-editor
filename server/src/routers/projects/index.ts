@@ -12,5 +12,7 @@ ProjectRouter.get(
   "/contributedProject",
   ProjectController.getProjectsByContributorsEmail
 );
-// getProjectsByContributorsEmail
+ProjectRouter.get("/individual", ProjectController.getProjectData);
+ProjectRouter.get("/getNewNodeId", ProjectController.getProjectNodesUUID);
+// getProjectsByContributorsEmail getProjectData
 export default ProjectRouter;

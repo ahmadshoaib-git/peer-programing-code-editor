@@ -1,5 +1,14 @@
 import { Request, Response } from "express";
 import { ProjectModel, UserModel } from "../../models";
+import { createStructure, getInitialCodeData } from "./reactJsCode";
+import { v4 } from "uuid";
+import path from "path";
+const fs = require("fs");
+const fsPromise = require("fs/promises");
+
+const CODE_DIR_NAME = "codeFiles";
+const FILE_TREE_NAME = "fileTree.js";
+const FILES_CODE_NAME = "filesCode.js";
 
 async function createProject(req: Request, res: Response) {
   const createAndSaveProjectInUser = async (reqData: any) => {
@@ -26,6 +35,41 @@ async function createProject(req: Request, res: Response) {
     const userData = await UserModel.find({ email: req?.body.ownerEmail });
     const projectData = await getProjectData(userData);
     userData[0].projects.push(projectData._id);
+    const dirPath = `${CODE_DIR_NAME}/${projectData._id.toString()}`;
+    const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const uuid1 = v4();
+    const uuid2 = v4();
+    // await fs.mkdirSync(dirPath);
+    await fs.mkdir(path.resolve(dirPath), { recursive: true }, (e: any) => {
+      if (e) {
+        console.error(e);
+        throw e;
+      } else {
+        fs.writeFile(
+          dirFileTree,
+          JSON.stringify(createStructure(uuid1, uuid2)),
+          function (err: any) {
+            if (err) {
+              console.log(err);
+              throw err;
+            }
+            console.log(`${dirFileTree} was created and data was saved`);
+            fs.writeFile(
+              dirFilesCode,
+              JSON.stringify(getInitialCodeData(uuid2)),
+              function (err: any) {
+                if (err) {
+                  console.log(err);
+                  throw err;
+                }
+                console.log(`${dirFilesCode} was created and data was saved`);
+              }
+            );
+          }
+        );
+      }
+    });
     return userData[0].save();
   };
   try {
@@ -44,6 +88,35 @@ async function getAllProjects(req: Request, res: Response) {
   try {
     const projects = await ProjectModel.find();
     return res.status(200).json(projects);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
+
+async function getProjectData(req: Request, res: Response) {
+  try {
+    const { id } = req.query;
+    const projects = await ProjectModel.find({
+      _id: id,
+    });
+    if (!projects || projects?.length === 0) throw "Project not found!";
+    // console.log("projects >", projects);
+    const selectedProject = projects[0];
+    const dirPath = `${CODE_DIR_NAME}/${selectedProject._id.toString()}`;
+    const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const fileTree = await fsPromise.readFile(dirFileTree, {
+      encoding: "utf8",
+    });
+    const filesCode = await fsPromise.readFile(dirFilesCode, {
+      encoding: "utf8",
+    });
+    selectedProject.projectDetail.fileTree = fileTree;
+    selectedProject.projectDetail.filesCode = filesCode;
+
+    console.log(fileTree, filesCode);
+    return res.status(200).json(selectedProject);
   } catch (err: any) {
     console.log(err);
     return res.status(400).json({ message: err.message });
@@ -145,16 +218,39 @@ async function getProjectsByContributorsEmail(req: Request, res: Response) {
         ownerName: project.ownerName,
       };
     });
-    // const data = projects.map(async (project) => {
-    //   const usersData: any = await UserModel.find({
-    //     _id: project.ownerId,
-    //   });
-    //   project["ownerName"] = usersData.name;
-    //   project["ownerEmail"] = usersData.email;
-    //   return project;
-    // });
     console.log(data);
     return res.status(200).json(data);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
+
+async function getProjectNodesUUID(req: Request, res: Response) {
+  try {
+    const { email } = req.query;
+    if (!email) throw "Invalid request! Email cant be empty.";
+    console.log(email);
+    const projects = await ProjectModel.find({
+      // "contributor.email": email,
+      $or: [
+        {
+          "contributor.email": email,
+        },
+        {
+          ownerEmail: email,
+        },
+      ],
+    });
+    if (projects?.length > 0) {
+      const data = {
+        nodeId: v4(),
+      };
+      console.log(data);
+      return res.status(200).json(data);
+    } else {
+      return res.status(400).json({ message: "No user record found!" });
+    }
   } catch (err: any) {
     console.log(err);
     return res.status(400).json({ message: err.message });
@@ -165,12 +261,14 @@ async function getProjectsByContributorsEmail(req: Request, res: Response) {
 
 const ProjectController = {
   createProject,
+  getProjectData,
   getAllProjects,
   getProjectsByOwnerId,
   getProjectById,
   addContributors,
   getProjectsByContributorsEmail,
   getprojectsByUserEmail,
+  getProjectNodesUUID,
 };
 
 export default ProjectController;
