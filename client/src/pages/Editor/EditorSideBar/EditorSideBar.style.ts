@@ -7,13 +7,23 @@ export const CustomEditorSideBarWrapper = styled.div`
 `;
 
 export const CustomEditorSideBarHeader = styled.div`
-  height: 2.5rem;
+  height: 4.5rem;
   width: 100%;
   /* background-color: #1c14ff1a; */
   padding: 0.3rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  .flex {
+    min-width: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1.5rem;
+    padding-right: 0.5rem;
+  }
   .ant-tag {
     color: rgba(255, 20, 147, 1);
     background: rgba(255, 20, 147, 0.1);
@@ -39,6 +49,26 @@ export const CustomEditorSideBarHeader = styled.div`
     svg {
       padding-left: 0.3rem;
       font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
+      color: rgba(255, 20, 147, 1);
+    }
+  }
+`;
+
+export const SpanWrapper = styled.span`
+  button {
+    &:hover {
+      background: rgba(255, 20, 147, 0.1);
+      color: rgba(255, 20, 147, 1);
+    }
+    &:active {
+      background: rgba(255, 20, 147, 0.1);
+      color: rgba(255, 20, 147, 1);
+    }
+    &:visited {
+      background: rgba(255, 20, 147, 0.1);
+      color: rgba(255, 20, 147, 1);
+    }
+    &:focus {
       color: rgba(255, 20, 147, 1);
     }
   }

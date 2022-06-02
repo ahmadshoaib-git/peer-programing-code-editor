@@ -14,6 +14,7 @@ import Notify from "./Notification";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
 import Timer from "./Timer";
+import PageLoader from "./PageLoader";
 
 export {
   Avatar,
@@ -33,4 +34,5 @@ export {
   IconButton,
   Modal,
   Timer,
+  PageLoader,
 };

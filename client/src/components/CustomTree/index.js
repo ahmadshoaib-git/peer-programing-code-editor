@@ -11,10 +11,29 @@ import { File } from "src/components/CustomTree/File/TreeFile";
 
 const Tree = (props) => {
   const [state, dispatch] = useReducer(reducer, props?.data);
+  const [newFileId, setNewFileId] = React.useState(null);
+  const [newFileType, setNewFileType] = React.useState("folder");
+  const [updatedFileName, setUpdatedFileName] = React.useState("");
+  const [newActionType, setNewActionType] = React.useState(null);
 
   useEffect(() => {
+    const {
+      setNewTree,
+      setNewCodeNewFile,
+      deleteProjectData,
+      updateProjectCodeFileName,
+    } = props;
     const tree = getTree(state, state);
-    console.log(tree);
+    setNewTree(tree);
+    if (newActionType === "creation") {
+      if (newFileType !== "folder") setNewCodeNewFile(tree, newFileId, true);
+    }
+    if (newActionType === "deletion") {
+      deleteProjectData(tree, newFileId);
+    }
+    if (newActionType === "edit") {
+      updateProjectCodeFileName(tree, newFileId, updatedFileName);
+    }
   }, [state]);
 
   useLayoutEffect(() => {
@@ -29,8 +48,15 @@ const Tree = (props) => {
     }
   }, [state]);
 
-  const onNodeClickHandler = React.useCallback((node) => {
+  const setNewFiledIdAndType = (id, type, action) => {
+    setNewFileId(id);
+    setNewFileType(type);
+    setNewActionType(action);
+  }; //updateProjectCodeFileName
+
+  const onNodeClickHandler = React.useCallback((node, name) => {
     try {
+      console.log("name >", node, name);
       props.onNodeClick(node);
     } catch (err) {
       console.log(err);
@@ -85,7 +111,13 @@ const Tree = (props) => {
       >
         <StyledTree>
           {isImparative ? (
-            <TreeRecusive data={state} parentNode={state} />
+            <TreeRecusive
+              data={state}
+              parentNode={state}
+              setNewCodeNewFile={props.setNewCodeNewFile}
+              setUpdatedFileName={setUpdatedFileName}
+              setNewFiledIdAndType={setNewFiledIdAndType}
+            />
           ) : (
             props?.children
           )}
@@ -95,7 +127,12 @@ const Tree = (props) => {
   );
 };
 
-const TreeRecusive = ({ data, parentNode }) => {
+const TreeRecusive = ({
+  data,
+  parentNode,
+  setNewFiledIdAndType,
+  setUpdatedFileName,
+}) => {
   return data?.length > 0
     ? data.map((item) => {
         item.parentNode = parentNode;
@@ -106,13 +143,32 @@ const TreeRecusive = ({ data, parentNode }) => {
 
         if (item.type === "file") {
           return (
-            <File key={item.id} id={item.id} name={item.name} node={item} />
+            <File
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              node={item}
+              setNewFiledIdAndType={setNewFiledIdAndType}
+              setUpdatedFileName={setUpdatedFileName}
+            />
           );
         }
         if (item.type === "folder") {
           return (
-            <Folder key={item.id} id={item.id} name={item.name} node={item}>
-              <TreeRecusive parentNode={item} data={item.children} />
+            <Folder
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              node={item}
+              setNewFiledIdAndType={setNewFiledIdAndType}
+              setUpdatedFileName={setUpdatedFileName}
+            >
+              <TreeRecusive
+                parentNode={item}
+                data={item.children}
+                setNewFiledIdAndType={setNewFiledIdAndType}
+                setUpdatedFileName={setUpdatedFileName}
+              />
             </Folder>
           );
         }

@@ -3,6 +3,6 @@
  */
 
 import authSlice from "./auth";
-
-const allReducers = { auth: authSlice };
+import ProjectEditorSlice from "src/pages/Editor/slice";
+const allReducers = { auth: authSlice, projectEditor: ProjectEditorSlice };
 export default allReducers;

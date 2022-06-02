@@ -44,4 +44,4 @@ const Header: React.FC<Props> = ({ noSideBar }) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

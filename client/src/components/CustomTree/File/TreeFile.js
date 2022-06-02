@@ -12,7 +12,7 @@ import { PlaceholderInput } from "src/components/CustomTree/TreePlaceholderInput
 import { FILE } from "src/components/CustomTree/state/constants";
 import FILE_ICONS from "src/components/CustomTree/FileIcons";
 
-const File = ({ name, id, node }) => {
+const File = ({ name, id, node, setNewFiledIdAndType, setUpdatedFileName }) => {
   const { dispatch, isImparative, onNodeClick } = useTreeContext();
   const [isEditing, setEditing] = useState(false);
   const ext = useRef("");
@@ -23,15 +23,18 @@ const File = ({ name, id, node }) => {
   const toggleEditing = () => setEditing(!isEditing);
   const commitEditing = (name) => {
     dispatch({ type: FILE.EDIT, payload: { id, name } });
+    setUpdatedFileName(name);
+    setNewFiledIdAndType(id, "folder", "edit");
     setEditing(false);
   };
   const commitDelete = () => {
+    setNewFiledIdAndType(id, "folder", "deletion");
     dispatch({ type: FILE.DELETE, payload: { id } });
   };
   const handleNodeClick = React.useCallback(
     (e) => {
       e.stopPropagation();
-      onNodeClick({ node });
+      onNodeClick({ node, name });
     },
     [node]
   );

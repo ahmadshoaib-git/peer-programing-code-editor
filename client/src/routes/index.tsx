@@ -1,5 +1,6 @@
 import React from "react";
 import { Suspense, useMemo } from "react";
+import { PageLoader } from "src/components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { getPrivateRoutes, getPublicRoutes } from "./routes.logic";
 const RoutesProvider = () => {
@@ -7,7 +8,7 @@ const RoutesProvider = () => {
   const privateRoutes = getPrivateRoutes();
   return (
     <BrowserRouter>
-      <Suspense fallback={<>Fallback</>}>
+      <Suspense fallback={<PageLoader />}>
         <Routes>
           {publicRoutes}
           {privateRoutes}

@@ -9,23 +9,26 @@ import { CustomCollapse, CustomPanel } from "./collapse.style";
 export interface Props {
   projectData?: any;
   treeData?: any;
-  fetchCodeByNodeId: (nodeId: any) => void;
+  fetchCodeByNodeId: (nodeId: any, name: String) => void;
+  setNewTree: (newTree: any) => void;
+  deleteProjectData?: (tree: any, fileId: any) => void;
+  updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
+  setNewCodeNewFile: any;
 }
 
 const Collapse: React.FC<Props> = ({
   projectData,
   treeData,
   fetchCodeByNodeId,
+  setNewTree,
+  setNewCodeNewFile,
+  deleteProjectData,
+  updateProjectCodeFileName,
 }) => {
-  // const Collapse = () => {
-  /*********Folder Structure  ************/
   let [data, setData] = useState<any>(treeData);
-  // const [state, dispatch] = React.useReducer(reducer, data);
-
   const handleClick = (node: any) => {
     if (node.node.type === "folder") return;
-    // console.log(node.node, " > ", node.id);
-    fetchCodeByNodeId(node.node.id);
+    fetchCodeByNodeId(node.node.id, node.node.name);
   };
   const handleUpdate = React.useCallback(
     (state: any) => {
@@ -53,12 +56,14 @@ const Collapse: React.FC<Props> = ({
       <CustomPanel header="Files" key="1" extra={genExtra()}>
         <div>
           <Tree
-            // state={state}
-            // dispatch={dispatch}
             children={undefined}
             data={data}
             onUpdate={handleUpdate}
             onNodeClick={handleClick}
+            setNewTree={setNewTree}
+            setNewCodeNewFile={setNewCodeNewFile}
+            deleteProjectData={deleteProjectData}
+            updateProjectCodeFileName={updateProjectCodeFileName}
           />
         </div>
       </CustomPanel>

@@ -29,7 +29,14 @@ const FolderName = ({ isOpen, name, handleClick }) => (
   </StyledName>
 );
 
-const Folder = ({ id, name, children, node }) => {
+const Folder = ({
+  id,
+  name,
+  children,
+  node,
+  setNewFiledIdAndType,
+  setUpdatedFileName,
+}) => {
   const { dispatch, isImparative, onNodeClick } = useTreeContext();
   const [isEditing, setEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -48,18 +55,23 @@ const Folder = ({ id, name, children, node }) => {
   const commitFolderCreation = async (name) => {
     const nodeId = await getId();
     console.log(nodeId);
+    setNewFiledIdAndType(nodeId, "folder", "creation");
     dispatch({ type: FOLDER.CREATE, payload: { id, name, nodeId } });
   };
   const commitFileCreation = async (name) => {
     const nodeId = await getId();
     console.log(nodeId);
+    setNewFiledIdAndType(nodeId, "file", "creation");
     dispatch({ type: FILE.CREATE, payload: { id, name, nodeId } });
   };
   const commitDeleteFolder = () => {
+    setNewFiledIdAndType(id, "folder", "deletion");
     dispatch({ type: FOLDER.DELETE, payload: { id } });
   };
   const commitFolderEdit = (name) => {
     dispatch({ type: FOLDER.EDIT, payload: { id, name } });
+    setUpdatedFileName(name);
+    setNewFiledIdAndType(id, "folder", "edit");
     setEditing(false);
   };
 
@@ -71,7 +83,7 @@ const Folder = ({ id, name, children, node }) => {
   const handleNodeClick = React.useCallback(
     (event) => {
       event.stopPropagation();
-      onNodeClick({ node });
+      onNodeClick({ node, name });
     },
     [node]
   );

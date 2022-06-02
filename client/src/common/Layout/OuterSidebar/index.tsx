@@ -29,7 +29,7 @@ const OuterSidebar = () => {
       </OuterSidebarMiddle>
       <OuterSidebarFooter>
         <div>
-          <Avatar hasBadge={true} title={name} placement="right">
+          <Avatar hasBadge={true} title={name || "User"} placement="right">
             {email?.toLocaleUpperCase().charAt(0) || "U"}
           </Avatar>
         </div>

@@ -18,10 +18,17 @@ export const MainWrapper = styled.main<SidebarProps>`
   .inner-section {
     width: ${({ noSideBar, theme: { layout } }) =>
       noSideBar ? "100%" : layout.Editor.width};
+    position: relative;
     height: 100%;
     padding: 1rem;
     padding-right: 0;
     overflow-y: auto;
+    > section {
+      margin-top: 2%;
+      height: 98%;
+      /* display: flex;
+      align-items: flex-end; */
+    }
     > div {
       height: 100%;
     }
