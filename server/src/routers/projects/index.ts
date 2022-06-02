@@ -15,5 +15,10 @@ ProjectRouter.get(
 ProjectRouter.get("/individual", ProjectController.getProjectData);
 ProjectRouter.get("/getNewNodeId", ProjectController.getProjectNodesUUID);
 ProjectRouter.get("/getProjectFileData", ProjectController.getProjectFileData);
-// getProjectsByContributorsEmail getProjectData getProjectFileData
+ProjectRouter.post("/saveProjectData", ProjectController.saveProjectData);
+ProjectRouter.post("/saveFileData", ProjectController.saveFileData);
+ProjectRouter.post("/editFileFolderName", ProjectController.saveFileFolderName);
+
+ProjectRouter.post("/deleteProjectData", ProjectController.deleteProjectData);
+// getProjectsByContributorsEmail getProjectData getProjectFileData deleteProjectData
 export default ProjectRouter;

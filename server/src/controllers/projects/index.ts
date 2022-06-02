@@ -289,6 +289,159 @@ async function getProjectFileData(req: Request, res: Response) {
   }
 }
 
+async function saveProjectData(req: Request, res: Response) {
+  try {
+    const { projectId, fileTree, fileId, fileCode } = req.body;
+    console.log(projectId, fileTree, fileId, fileCode);
+    const dirPath = `${CODE_DIR_NAME}/${projectId}`;
+    const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
+      encoding: "utf8",
+    });
+    let currentfilesCode = JSON.parse(tempfilesCode);
+    currentfilesCode = [...currentfilesCode, { id: fileId, code: fileCode }];
+    fs.writeFile(dirFileTree, JSON.stringify(fileTree), function (err: any) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      console.log(`${dirFileTree} was saved with new data`);
+      fs.writeFile(
+        dirFilesCode,
+        JSON.stringify(currentfilesCode),
+        function (err: any) {
+          if (err) {
+            console.log(err);
+            throw err;
+          }
+          console.log(`${dirFilesCode} was saved with new data`);
+        }
+      );
+    });
+    const message = `File Id ${fileId} of Project Id ${projectId} created and tree modified successfully.`;
+    return res.status(200).json(message);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
+
+async function deleteProjectData(req: Request, res: Response) {
+  try {
+    const { projectId, fileTree, fileId } = req.body;
+    console.log(projectId, fileTree, fileId);
+    const dirPath = `${CODE_DIR_NAME}/${projectId}`;
+    const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
+      encoding: "utf8",
+    });
+    let currentfilesCode = JSON.parse(tempfilesCode);
+    currentfilesCode = currentfilesCode.filter(
+      (projectFile: any) => projectFile.id !== fileId
+    );
+    fs.writeFile(dirFileTree, JSON.stringify(fileTree), function (err: any) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      console.log(`${dirFileTree} was modified`);
+      fs.writeFile(
+        dirFilesCode,
+        JSON.stringify(currentfilesCode),
+        function (err: any) {
+          if (err) {
+            console.log(err);
+            throw err;
+          }
+          console.log(`${dirFilesCode} was modified`);
+        }
+      );
+    });
+    const message = `File Id ${fileId} of Project Id ${projectId} has been deleted successfully.`;
+    return res.status(200).json(message);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
+
+async function saveFileData(req: Request, res: Response) {
+  try {
+    const { projectId, fileId, fileCode } = req.body;
+    console.log(projectId, fileId, fileCode);
+    const dirPath = `${CODE_DIR_NAME}/${projectId}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
+      encoding: "utf8",
+    });
+    let currentfilesCode = JSON.parse(tempfilesCode);
+    currentfilesCode = currentfilesCode.map((projectFileData: any) => {
+      if (projectFileData.id === fileId) {
+        return {
+          id: projectFileData.id,
+          code: fileCode,
+        };
+      }
+      return projectFileData;
+    });
+    fs.writeFile(
+      dirFilesCode,
+      JSON.stringify(currentfilesCode),
+      function (err: any) {
+        if (err) {
+          console.log(err);
+          throw err;
+        }
+        console.log(`${dirFilesCode} was updated`);
+      }
+    );
+    const message = `File Id ${fileId} of Project Id ${projectId} created and tree modified successfully.`;
+    return res.status(200).json(message);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
+
+async function saveFileFolderName(req: Request, res: Response) {
+  try {
+    const { projectId, fileTree, fileId, fileName } = req.body;
+    console.log(projectId, fileTree, fileId, fileName);
+    const dirPath = `${CODE_DIR_NAME}/${projectId}`;
+    const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
+      encoding: "utf8",
+    });
+
+    fs.writeFile(dirFileTree, JSON.stringify(fileTree), function (err: any) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      console.log(`${dirFileTree} was saved with new data`);
+      // fs.writeFile(
+      //   dirFilesCode,
+      //   JSON.stringify(currentfilesCode),
+      //   function (err: any) {
+      //     if (err) {
+      //       console.log(err);
+      //       throw err;
+      //     }
+      //     console.log(`${dirFilesCode} was saved with new data`);
+      //   }
+      // );
+    });
+    const message = `Document Id ${fileId} of Project Id ${projectId} name has been modified successfully to ${fileName}`;
+    return res.status(200).json(message);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
+
 const ProjectController = {
   createProject,
   getProjectData,
@@ -300,6 +453,10 @@ const ProjectController = {
   getprojectsByUserEmail,
   getProjectNodesUUID,
   getProjectFileData,
+  saveProjectData,
+  deleteProjectData,
+  saveFileData,
+  saveFileFolderName,
 };
 
 export default ProjectController;
