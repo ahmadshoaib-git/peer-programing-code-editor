@@ -17,6 +17,7 @@ export interface Props {
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   setNewTree: (newTree: any) => void;
   saveFileDataFun: () => void;
+  openFileName: String;
 }
 const EditorSideBar: React.FC<Props> = ({
   data,
@@ -27,6 +28,7 @@ const EditorSideBar: React.FC<Props> = ({
   updateProjectCodeFileName,
   deleteProjectData,
   saveFileDataFun,
+  openFileName,
 }) => {
   const treeData = data ? JSON.parse(data?.projectDetail?.fileTree) : [];
   return (
@@ -60,6 +62,7 @@ const EditorSideBar: React.FC<Props> = ({
         setNewCodeNewFile={setNewCodeNewFile}
         updateProjectCodeFileName={updateProjectCodeFileName}
         deleteProjectData={deleteProjectData}
+        openFileName={openFileName}
       />
     </CustomEditorSideBarWrapper>
   );

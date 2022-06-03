@@ -11,6 +11,7 @@ export const StyledTree = styled.div`
 
 export const ActionsWrapper = styled.div`
   width: 100%;
+  position: relative;
 
   display: flex;
   align-items: center;

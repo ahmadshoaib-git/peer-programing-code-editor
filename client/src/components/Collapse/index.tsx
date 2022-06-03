@@ -14,6 +14,7 @@ export interface Props {
   deleteProjectData?: (tree: any, fileId: any) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   setNewCodeNewFile: any;
+  openFileName: String;
 }
 
 const Collapse: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const Collapse: React.FC<Props> = ({
   setNewCodeNewFile,
   deleteProjectData,
   updateProjectCodeFileName,
+  openFileName,
 }) => {
   let [data, setData] = useState<any>(treeData);
   const handleClick = (node: any) => {
@@ -64,6 +66,7 @@ const Collapse: React.FC<Props> = ({
             setNewCodeNewFile={setNewCodeNewFile}
             deleteProjectData={deleteProjectData}
             updateProjectCodeFileName={updateProjectCodeFileName}
+            openFileName={openFileName}
           />
         </div>
       </CustomPanel>

@@ -117,6 +117,7 @@ const Tree = (props) => {
               setNewCodeNewFile={props.setNewCodeNewFile}
               setUpdatedFileName={setUpdatedFileName}
               setNewFiledIdAndType={setNewFiledIdAndType}
+              openFileName={props.openFileName}
             />
           ) : (
             props?.children
@@ -132,6 +133,7 @@ const TreeRecusive = ({
   parentNode,
   setNewFiledIdAndType,
   setUpdatedFileName,
+  openFileName,
 }) => {
   return data?.length > 0
     ? data.map((item) => {
@@ -150,6 +152,7 @@ const TreeRecusive = ({
               node={item}
               setNewFiledIdAndType={setNewFiledIdAndType}
               setUpdatedFileName={setUpdatedFileName}
+              openFileName={openFileName}
             />
           );
         }
@@ -162,12 +165,14 @@ const TreeRecusive = ({
               node={item}
               setNewFiledIdAndType={setNewFiledIdAndType}
               setUpdatedFileName={setUpdatedFileName}
+              openFileName={openFileName}
             >
               <TreeRecusive
                 parentNode={item}
                 data={item.children}
                 setNewFiledIdAndType={setNewFiledIdAndType}
                 setUpdatedFileName={setUpdatedFileName}
+                openFileName={openFileName}
               />
             </Folder>
           );

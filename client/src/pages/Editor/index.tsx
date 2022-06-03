@@ -49,10 +49,6 @@ const Editor = () => {
   }, []);
 
   React.useEffect(() => {
-    if (newCodeNewFile) console.log("aaaa");
-  }, [newCodeNewFile]);
-
-  React.useEffect(() => {
     try {
       if (codeData[0]?.code !== newCodeData[0]?.code) {
         setEnableSave(true);
@@ -254,6 +250,7 @@ const LayoutEditor: React.FC<Props> = ({
           updateProjectCodeFileName={updateProjectCodeFileName}
           deleteProjectData={deleteProjectDataFun}
           saveFileDataFun={saveFileDataFun}
+          openFileName={openFileName}
         />
       }
     >
