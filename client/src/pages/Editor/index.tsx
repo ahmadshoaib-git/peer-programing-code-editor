@@ -1,10 +1,32 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "src/redux/store";
 import { useQuery } from "react-query";
 import { useParams, Navigate } from "react-router-dom";
+import { CgOptions } from "react-icons/cg";
+import { FiUpload } from "react-icons/fi";
+import {
+  IoIosArrowDropleftCircle,
+  IoIosArrowDroprightCircle,
+} from "react-icons/io";
+import { setShowEditorSideBar } from "src/redux/slices/general";
 import { Layout } from "src/common";
 import EditorSideBar from "./EditorSideBar";
-import { CodeEditor, PageLoader, Notify } from "src/components";
+import { MenuItemsProp } from "src/components/Dropdown";
+import {
+  CodeEditor,
+  PageLoader,
+  Notify,
+  IconButton,
+  Dropdown,
+  CustomTooltip,
+} from "src/components";
+import {
+  ProjectDetailsModal,
+  ContributorDetailModal,
+  EditContributor,
+} from "src/common";
 import { setProjectInitialState } from "src/pages/Editor/slice";
 import {
   getProjectById,
@@ -14,7 +36,11 @@ import {
   deleteProjectData,
   saveFileData,
 } from "./service";
-import { EditorFileName } from "./editor.style";
+import {
+  EditorHeaderSection,
+  SpanWrapper,
+  SpanWrapperSave,
+} from "./editor.style";
 
 export interface Props {
   projectData?: any;
@@ -25,10 +51,16 @@ export interface Props {
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   saveFileDataFun: () => void;
   setNewCodeData?: any;
-  setNewTreeData?: any;
   enableSaveBtn: boolean;
   setNewCodeNewFile?: any;
   openFileName: String;
+
+  openProjectDetailModal: any;
+  setOpenProjectDetailModal: any;
+  openContributorModal: any;
+  setOpenContributorModal: any;
+  openEditContributorModal: any;
+  setOpenEditContributorModal: any;
 }
 
 const Editor = () => {
@@ -38,11 +70,16 @@ const Editor = () => {
   const [projectData, setProjectData] = React.useState<any>(undefined);
   const [codeData, setCodeData] = React.useState<any>(undefined);
   const [newCodeData, setNewCodeData] = React.useState<any>(undefined);
-  const [newTreeData, setNewTreeData] = React.useState<any>(undefined);
   const [enableSave, setEnableSave] = React.useState<boolean>(false);
   const [openFileName, setOpenFileName] = React.useState<String>("index.js");
   const [newCodeNewFile, setNewCodeNewFile] = React.useState<boolean>(false);
 
+  const [openProjectDetailModal, setOpenProjectDetailModal] =
+    React.useState<boolean>(false);
+  const [openContributorModal, setOpenContributorModal] =
+    React.useState<boolean>(false);
+  const [openEditContributorModal, setOpenEditContributorModal] =
+    React.useState<boolean>(false);
   React.useEffect(() => {
     if (!param.id) <Navigate to="/" />;
     fetchData(param.id);
@@ -79,7 +116,6 @@ const Editor = () => {
         ? JSON.parse(data?.data?.projectDetail?.fileTree)
         : [];
 
-      setNewTreeData(treeData);
       Notify(`Welcome to ${data?.data?.projectDetail?.name}`, "success");
       dispatch(
         setProjectInitialState({
@@ -208,7 +244,6 @@ const Editor = () => {
           fetchCodeByNodeId={fetchCodeByNodeId}
           codeData={codeData}
           setNewCodeData={setNewCodeData}
-          setNewTreeData={setNewTreeData}
           setNewCodeNewFile={setNewCodeNewFile}
           updateCodeDataForNewFile={updateCodeDataForNewFile}
           updateProjectCodeFileName={updateProjectCodeFileName}
@@ -216,6 +251,12 @@ const Editor = () => {
           saveFileDataFun={saveFileDataFun}
           enableSaveBtn={enableSave}
           openFileName={openFileName}
+          openProjectDetailModal={openProjectDetailModal}
+          setOpenProjectDetailModal={setOpenProjectDetailModal}
+          openContributorModal={openContributorModal}
+          setOpenContributorModal={setOpenContributorModal}
+          openEditContributorModal={openEditContributorModal}
+          setOpenEditContributorModal={setOpenEditContributorModal}
         />
       )}
     </>
@@ -228,38 +269,155 @@ const LayoutEditor: React.FC<Props> = ({
   fetchCodeByNodeId,
   setNewCodeData,
   enableSaveBtn,
-  setNewTreeData,
   setNewCodeNewFile,
   updateCodeDataForNewFile,
   updateProjectCodeFileName,
   deleteProjectDataFun,
   saveFileDataFun,
   openFileName,
+
+  openProjectDetailModal,
+  setOpenProjectDetailModal,
+  openContributorModal,
+  setOpenContributorModal,
+  openEditContributorModal,
+  setOpenEditContributorModal,
 }) => {
+  const dispatch = useDispatch();
+  const email = localStorage.getItem("email");
+  const projectMenu: Array<MenuItemsProp> = [
+    {
+      label: "Open Details",
+      onClick: () => {
+        console.log("Open!!");
+        setOpenProjectDetailModal(true);
+      },
+    },
+    {
+      label: "Open Contributors",
+      onClick: () => {
+        console.log("Open!!");
+        setOpenContributorModal(true);
+      },
+    },
+  ];
+
+  if (email === projectData?.ownerEmail) {
+    projectMenu.push({
+      label: "Edit Contributors",
+      onClick: () => {
+        console.log("Open!!");
+        setOpenEditContributorModal(true);
+      },
+    });
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    // event.preventDefault();
+    let charCode = String.fromCharCode(event.which).toLowerCase();
+    if ((event.ctrlKey || event.metaKey) && charCode === "s") {
+      event.preventDefault();
+      console.log("SAVE !!!");
+      saveFileDataFun();
+    }
+    // else if((event.ctrlKey || event.metaKey) && charCode === 'c') {
+    //   alert("CTRL+C Pressed");
+    // }else if((event.ctrlKey || event.metaKey) && charCode === 'v') {
+    //   alert("CTRL+V Pressed");
+    // }
+  };
+
+  const { showEditorSideBar } = useSelector((state: RootState) => {
+    return state.general;
+  });
+
+  const toggleSideBar = () => {
+    dispatch(setShowEditorSideBar({ showEditorSideBar: !showEditorSideBar }));
+  };
+
   return (
-    <Layout
-      sideBarContent={
-        <EditorSideBar
-          data={projectData}
-          fetchCodeByNodeId={fetchCodeByNodeId}
-          enableSaveBtn={enableSaveBtn}
-          setNewTree={(newTree: any) => setNewTreeData(newTree)}
-          setNewCodeNewFile={(tree: any, fileId: any, status: boolean) =>
-            updateCodeDataForNewFile(tree, fileId, status)
-          }
-          updateProjectCodeFileName={updateProjectCodeFileName}
-          deleteProjectData={deleteProjectDataFun}
-          saveFileDataFun={saveFileDataFun}
-          openFileName={openFileName}
+    <span onKeyDown={handleKeyDown}>
+      <Layout
+        sideBarContent={
+          <EditorSideBar
+            data={projectData}
+            fetchCodeByNodeId={fetchCodeByNodeId}
+            enableSaveBtn={enableSaveBtn}
+            setNewCodeNewFile={(tree: any, fileId: any, status: boolean) =>
+              updateCodeDataForNewFile(tree, fileId, status)
+            }
+            updateProjectCodeFileName={updateProjectCodeFileName}
+            deleteProjectData={deleteProjectDataFun}
+            saveFileDataFun={saveFileDataFun}
+            openFileName={openFileName}
+          />
+        }
+      >
+        <EditorHeaderSection>
+          {showEditorSideBar ? (
+            <IoIosArrowDropleftCircle onClick={() => toggleSideBar()} />
+          ) : (
+            <IoIosArrowDroprightCircle onClick={() => toggleSideBar()} />
+          )}
+          {openFileName || ""}
+        </EditorHeaderSection>
+
+        <Dropdown
+          placement="bottomRight"
+          menuItems={projectMenu}
+          trigger={["click"]}
+        >
+          <SpanWrapper>
+            <IconButton title={"Options"}>
+              <CgOptions />
+            </IconButton>
+          </SpanWrapper>
+        </Dropdown>
+
+        {enableSaveBtn && (
+          <SpanWrapperSave
+            onClick={() => {
+              console.log("SAVE !!!");
+              saveFileDataFun();
+            }}
+          >
+            <IconButton title={"Save File (CTRL + S)"}>
+              <FiUpload />
+            </IconButton>
+          </SpanWrapperSave>
+        )}
+
+        <CodeEditor
+          data={codeData}
+          setNewCode={(tempCode: any) => setNewCodeData(tempCode)}
         />
-      }
-    >
-      <EditorFileName>{openFileName || ""}</EditorFileName>
-      <CodeEditor
-        data={codeData}
-        setNewCode={(tempCode: any) => setNewCodeData(tempCode)}
+      </Layout>
+
+      <ProjectDetailsModal
+        title=""
+        isModalVisible={openProjectDetailModal}
+        closeModal={() => setOpenProjectDetailModal(false)}
+        data={projectData}
       />
-    </Layout>
+      <ContributorDetailModal
+        title=""
+        isModalVisible={openContributorModal}
+        closeModal={() => setOpenContributorModal(false)}
+        contributors={projectData?.contributor}
+      />
+      <EditContributor
+        title=""
+        isModalVisible={openEditContributorModal}
+        closeModal={() => setOpenEditContributorModal(false)}
+        contributors={projectData?.contributor?.map((obj: any) => {
+          return {
+            name: obj.name,
+            email: obj.email,
+          };
+        })}
+        saveContributors={(data: any) => console.log("---->>>", data)}
+      />
+    </span>
   );
 };
 

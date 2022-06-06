@@ -14,7 +14,7 @@ export const FormContainer = styled.div`
 export const CustomEmpty = styled(Empty)`
   font-size: 0.8rem;
   font-weight: 600;
-  color: rgba(255, 20, 147, 1);
+  color: ${({ theme: { colors } }) => colors.pink};
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@ export const InfoList = styled.ul`
     justify-content: space-between;
     align-items: center;
     .highlight {
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
       font-weight: 700;
     }
     .flex {
@@ -107,7 +107,7 @@ export const CustomModalList = styled.ul`
           width: 3rem;
         }
         .highlight {
-          color: rgba(255, 20, 147, 1);
+          color: ${({ theme: { colors } }) => colors.pink};
           font-weight: 700;
         }
       }

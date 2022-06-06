@@ -12,7 +12,7 @@ export const LoginWrapper = styled.div`
 export const CustomEmpty = styled(Empty)`
   font-size: 0.8rem;
   font-weight: 600;
-  color: rgba(255, 20, 147, 1);
+  color: ${({ theme: { colors } }) => colors.pink};
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -197,7 +197,7 @@ export const CustomModalList = styled.ul`
           width: 3rem;
         }
         .highlight {
-          color: rgba(255, 20, 147, 1);
+          color: ${({ theme: { colors } }) => colors.pink};
           font-weight: 700;
         }
       }
@@ -214,18 +214,18 @@ export const SpanWrapper = styled.span`
   button {
     &:hover {
       background: rgba(255, 20, 147, 0.1);
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
     &:active {
       background: rgba(255, 20, 147, 0.1);
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
     &:visited {
       background: rgba(255, 20, 147, 0.1);
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
     &:focus {
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
   }
 `;

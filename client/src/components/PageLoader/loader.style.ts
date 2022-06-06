@@ -7,7 +7,7 @@ export const CustomSpin = styled(Spin)`
     height: 2.4rem;
   }
   .ant-spin-dot-item {
-    background-color: rgba(255, 20, 147, 1);
+    color: ${({ theme: { colors } }) => colors.pink};
     width: 1.1rem;
     height: 1.1rem;
   }

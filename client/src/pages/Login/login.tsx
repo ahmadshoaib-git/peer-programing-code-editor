@@ -19,7 +19,7 @@ const LoginForm = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("email", response.data.email);
       localStorage.setItem("name", response.data.name);
-      dispatch(setLoggedIn({ loggedIn: true }));
+
       Notify(`Welcome back ${response.data.name}`, "success");
       navigate(`/`);
     } catch (err: any) {

@@ -10,7 +10,6 @@ export interface Props {
   projectData?: any;
   treeData?: any;
   fetchCodeByNodeId: (nodeId: any, name: String) => void;
-  setNewTree: (newTree: any) => void;
   deleteProjectData?: (tree: any, fileId: any) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   setNewCodeNewFile: any;
@@ -21,7 +20,6 @@ const Collapse: React.FC<Props> = ({
   projectData,
   treeData,
   fetchCodeByNodeId,
-  setNewTree,
   setNewCodeNewFile,
   deleteProjectData,
   updateProjectCodeFileName,
@@ -62,7 +60,6 @@ const Collapse: React.FC<Props> = ({
             data={data}
             onUpdate={handleUpdate}
             onNodeClick={handleClick}
-            setNewTree={setNewTree}
             setNewCodeNewFile={setNewCodeNewFile}
             deleteProjectData={deleteProjectData}
             updateProjectCodeFileName={updateProjectCodeFileName}

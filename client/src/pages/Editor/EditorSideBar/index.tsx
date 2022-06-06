@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Collapse, Tag, Timer, IconButton } from "src/components";
 import { BiWorld } from "react-icons/bi";
 import { FiUpload } from "react-icons/fi";
+import { RootState } from "src/redux/store";
 import {
   CustomEditorSideBarWrapper,
   CustomEditorSideBarHeader,
@@ -15,7 +17,6 @@ export interface Props {
   setNewCodeNewFile: any;
   deleteProjectData?: (tree: any, fileId: any) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
-  setNewTree: (newTree: any) => void;
   saveFileDataFun: () => void;
   openFileName: String;
 }
@@ -24,7 +25,6 @@ const EditorSideBar: React.FC<Props> = ({
   enableSaveBtn,
   fetchCodeByNodeId,
   setNewCodeNewFile,
-  setNewTree,
   updateProjectCodeFileName,
   deleteProjectData,
   saveFileDataFun,
@@ -38,27 +38,12 @@ const EditorSideBar: React.FC<Props> = ({
           <BiWorld />
           <span>Project X</span>
         </h2>
-        <div className="flex">
-          <Timer />
-          {enableSaveBtn && (
-            <SpanWrapper
-              onClick={() => {
-                console.log("SAVE !!!");
-                saveFileDataFun();
-              }}
-            >
-              <IconButton title={"Save File"}>
-                <FiUpload />
-              </IconButton>
-            </SpanWrapper>
-          )}
-        </div>
+        <Timer />
       </CustomEditorSideBarHeader>
       <Collapse
         projectData={data}
         treeData={treeData}
         fetchCodeByNodeId={fetchCodeByNodeId}
-        setNewTree={setNewTree}
         setNewCodeNewFile={setNewCodeNewFile}
         updateProjectCodeFileName={updateProjectCodeFileName}
         deleteProjectData={deleteProjectData}

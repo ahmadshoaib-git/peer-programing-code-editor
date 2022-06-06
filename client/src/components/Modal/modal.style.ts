@@ -9,7 +9,7 @@ export const CancelButtonWrapper = styled.span`
     font-size: ${({ theme: { fontSizes } }) => fontSizes.heading};
     &:hover {
       path {
-        color: rgba(255, 20, 147, 1);
+        color: ${({ theme: { colors } }) => colors.pink};
         fill: rgba(255, 20, 147, 1);
         stroke: rgba(255, 20, 147, 1);
       }

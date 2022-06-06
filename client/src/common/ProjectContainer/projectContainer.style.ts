@@ -28,13 +28,13 @@ export const ProjectNameSection = styled.div`
     display: flex;
     align-items: center;
     .project-svg {
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
     svg {
       font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
       cursor: pointer;
       &:hover {
-        color: rgba(255, 20, 147, 1);
+        color: ${({ theme: { colors } }) => colors.pink};
       }
     }
     div,
@@ -54,7 +54,7 @@ export const InfoBar = styled.div`
   align-items: center;
   margin-bottom: 0.2rem;
   .highlighter {
-    color: rgba(255, 20, 147, 1);
+    color: ${({ theme: { colors } }) => colors.pink};
     font-weight: 700;
     text-transform: capitalize;
   }

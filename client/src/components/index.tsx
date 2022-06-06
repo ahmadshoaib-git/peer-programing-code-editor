@@ -5,6 +5,7 @@ import Main from "./Main";
 import Sidebar from "./Sidebar";
 import Collapse from "./Collapse";
 import CodeEditor from "./CodeEditor";
+import CustomTooltip from "./Tooltip";
 import Tag from "./Tag";
 import Tab from "./Tab";
 import { Input, PaswordInput } from "./Input";
@@ -35,4 +36,5 @@ export {
   Modal,
   Timer,
   PageLoader,
+  CustomTooltip,
 };

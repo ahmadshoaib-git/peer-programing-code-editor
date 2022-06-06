@@ -24,7 +24,7 @@ export const EmptyProjectWrapper = styled.div`
 export const CustomEmpty = styled(Empty)`
   font-size: 0.8rem;
   font-weight: 600;
-  color: rgba(255, 20, 147, 1);
+  color: ${({ theme: { colors } }) => colors.pink};
   height: 100%;
   display: flex;
   flex-direction: column;

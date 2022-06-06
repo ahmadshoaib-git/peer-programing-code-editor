@@ -24,7 +24,7 @@ const Tree = (props) => {
       updateProjectCodeFileName,
     } = props;
     const tree = getTree(state, state);
-    setNewTree(tree);
+    // setNewTree(tree);
     if (newActionType === "creation") {
       if (newFileType !== "folder") setNewCodeNewFile(tree, newFileId, true);
     }

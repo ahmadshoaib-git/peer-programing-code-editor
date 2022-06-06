@@ -6,6 +6,8 @@ const theme = {
   colors: {
     black: "#1c2d41",
     white: "#FFFFFF",
+    pink: "rgba(255, 20, 147, 1)",
+    backgroundPink: "rgba(255, 20, 147, 0.1)",
     borderWhite: "#cfcfcf",
     tooltipColor: "#2f54eb",
     tooltipBackground: "rgb(47 84 235 / 10%)",

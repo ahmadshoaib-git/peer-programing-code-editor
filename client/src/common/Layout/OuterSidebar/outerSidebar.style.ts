@@ -48,6 +48,6 @@ export const OuterSidebarFooter = styled.div`
   }
   div .ant-avatar {
     background-color: rgba(255, 20, 147, 0.1);
-    color: rgba(255, 20, 147, 1);
+    color: ${({ theme: { colors } }) => colors.pink};
   }
 `;

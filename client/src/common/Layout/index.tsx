@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/redux/store";
 import { Footer, Header, Main } from "src/components";
 import OuterSidebar from "./OuterSidebar";
 import {
@@ -18,6 +20,11 @@ export interface Props {
 
 const Layout: React.FC<Props> = ({ children, sideBarContent }) => {
   console.log(!sideBarContent);
+  const { showEditorSideBar } = useSelector((state: RootState) => {
+    return state.general;
+  });
+
+  const sideBarContentComp = showEditorSideBar && sideBarContent;
   return (
     <LayoutWrapper>
       <OuterSideBarWrapper>
@@ -25,7 +32,7 @@ const Layout: React.FC<Props> = ({ children, sideBarContent }) => {
       </OuterSideBarWrapper>
       <InnerLayoutWrapper>
         <Header noSideBar={!sideBarContent} />
-        <Main children={children} sideBarContent={sideBarContent} />
+        <Main children={children} sideBarContent={sideBarContentComp} />
         <Footer />
       </InnerLayoutWrapper>
     </LayoutWrapper>

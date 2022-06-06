@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "src/redux/store";
-import Editor, { useMonaco } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 import { setNewCodeData } from "src/pages/Editor/slice";
 
 export interface Props {
@@ -10,23 +10,26 @@ export interface Props {
   setNewCode: (tempCode: any) => void;
 }
 const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
-  const monaco = useMonaco();
+  const editorRef = React.useRef(null);
   const dispatch = useDispatch();
   const codeData = data && data.length > 0 ? data[0]?.code : "";
   const [code, setCode] = React.useState(codeData);
-  const projectData = useSelector((state: RootState) => {
-    return state.projectEditor;
-  });
   // console.log("projectData >", projectData);
-  useEffect(() => {
-    if (monaco) {
-      console.log("here is the monaco instance:", monaco);
-    }
-  }, [monaco]);
+  // useEffect(() => {
+  //   if (monaco) {
+  //     console.log("here is the monaco instance:", monaco);
+  //   }
+  // }, [monaco]);
 
   useEffect(() => {
     setCode(codeData);
   }, [data]);
+
+  function handleEditorDidMount(editor: any, monaco: any) {
+    editorRef.current = editor;
+  }
+
+  console.log("editorRef >", editorRef);
 
   // useEffect(() => {
   //   try {
@@ -68,6 +71,7 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
         defaultLanguage="javascript"
         options={editorOptions}
         onChange={handleEditorChange}
+        onMount={handleEditorDidMount}
       />
     </>
   );

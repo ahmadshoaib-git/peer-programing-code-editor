@@ -7,14 +7,13 @@ export const CustomEditorSideBarWrapper = styled.div`
 `;
 
 export const CustomEditorSideBarHeader = styled.div`
-  height: 4.5rem;
+  height: 2.5rem;
   width: 100%;
   /* background-color: #1c14ff1a; */
   padding: 0.3rem;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   .flex {
     min-width: 100%;
     width: 100%;
@@ -25,9 +24,9 @@ export const CustomEditorSideBarHeader = styled.div`
     padding-right: 0.5rem;
   }
   .ant-tag {
-    color: rgba(255, 20, 147, 1);
+    color: ${({ theme: { colors } }) => colors.pink};
     background: rgba(255, 20, 147, 0.1);
-    border-color: rgba(255, 20, 147, 1);
+    border-color: ${({ theme: { colors } }) => colors.pink};
     line-height: 1.5;
     margin-right: 10px;
     text-transform: lowercase;
@@ -49,7 +48,7 @@ export const CustomEditorSideBarHeader = styled.div`
     svg {
       padding-left: 0.3rem;
       font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
   }
 `;
@@ -58,18 +57,18 @@ export const SpanWrapper = styled.span`
   button {
     &:hover {
       background: rgba(255, 20, 147, 0.1);
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
     &:active {
       background: rgba(255, 20, 147, 0.1);
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
     &:visited {
       background: rgba(255, 20, 147, 0.1);
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
     &:focus {
-      color: rgba(255, 20, 147, 1);
+      color: ${({ theme: { colors } }) => colors.pink};
     }
   }
 `;
