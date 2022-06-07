@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { UserModel } from "../../models/index";
 import { getErrorMessage } from "../../utils";
+import { generateJWT } from "../../middlewares/auth";
 
 const jwtSecretKey = "Asfoi94293894kj4";
 async function createUser(req: Request, res: Response) {
@@ -27,11 +27,7 @@ async function createUser(req: Request, res: Response) {
       name: tempData.name,
       userId: tempData._id,
     };
-    const token = await jwt.sign(data, jwtSecretKey, {
-      expiresIn: "2h",
-    });
-
-    // const token = jwt.sign(data, jwtSecretKey);
+    const token = await generateJWT(data, "8h");
     data["token"] = token;
     console.log(`>> token :${token}`);
     console.log(`>> data :${data}`);
@@ -74,9 +70,8 @@ async function userLogin(req: Request, res: Response) {
     delete clonedUser["password"];
     delete clonedUser["passcode"];
     delete clonedUser["confirmed"];
-    const token = await jwt.sign(clonedUser, jwtSecretKey, {
-      expiresIn: "2h",
-    });
+    delete clonedUser["projects"];
+    const token = await generateJWT(clonedUser, "8h");
     clonedUser["token"] = token;
     console.log(`>> token :${token}`);
     console.log(`>> clonedUser :${clonedUser}`);

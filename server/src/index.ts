@@ -6,33 +6,21 @@ import bodyParser from "body-parser";
 import { Server } from "socket.io";
 import { UserRouter, ProjectRouter } from "./routers";
 import { PORT } from "./utils";
+import "./db";
 const router = express.Router();
 require("dotenv").config();
-// const mongoString = process.env.DATABASE_URL || "";
-const mongoString = "mongodb://localhost:27017/CodePeerDB";
-console.log("Mongo String >", mongoString);
-
-mongoose.connect(mongoString);
-const database = mongoose.connection;
-database.on("error", (error: any) => {
-  console.log(error);
-});
 
 router.get("/", (req, res) => {
   return res.send("Server is up & running...");
-});
-
-database.once("connected", () => {
-  console.log("Database Connected");
 });
 
 const app: Application = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-io.on("connection", (socket) => {
-  console.log("a user connected");
-});
+// io.on("connection", (socket) => {
+//   console.log("a user connected");
+// });
 
 app.use(express.json());
 
@@ -42,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/user", UserRouter);
 app.use("/project", ProjectRouter);
-export { database };
+
 export { mongoose };
 app.listen(PORT, () => {
   console.log(`Connected successfully on port ${PORT}`);
