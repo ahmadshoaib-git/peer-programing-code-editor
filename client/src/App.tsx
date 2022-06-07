@@ -6,10 +6,15 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import GlobalStyle from "src/assets/styles/global.style";
 import Routes from "src/routes";
+import { jwtInterceptor, responseInterceptor } from "src/utils/interceptors";
 import "react-toastify/ReactToastify.min.css";
 
 function App() {
   console.log("===> App");
+  React.useEffect(() => {
+    jwtInterceptor();
+    responseInterceptor();
+  }, []);
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
