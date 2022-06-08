@@ -5,6 +5,7 @@ export type ProjectEditorReducerState = {
   newCodeData?: any;
   treeData?: any;
   newTreeData?: any;
+  codeChanged?: Boolean;
 };
 
 export type InitialStatePayload = {
@@ -36,4 +37,8 @@ export type TreeDataPayload = {
 
 export type NewTreeDataPayload = {
   newTreeData: any;
+};
+
+export type CodeChangedPayload = {
+  codeChanged: any;
 };

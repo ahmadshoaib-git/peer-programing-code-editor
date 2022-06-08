@@ -1,4 +1,5 @@
 import React from "react";
+import io from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "src/redux/store";
@@ -11,6 +12,7 @@ import {
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import { setShowEditorSideBar } from "src/redux/slices/general";
+import { setCodeChanged } from "./slice";
 import { Layout } from "src/common";
 import EditorSideBar from "./EditorSideBar";
 import { MenuItemsProp } from "src/components/Dropdown";
@@ -67,6 +69,7 @@ const Editor = () => {
   const param = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
+  const [socket, setSocket] = React.useState<any>(null);
   const [projectData, setProjectData] = React.useState<any>(undefined);
   const [codeData, setCodeData] = React.useState<any>(undefined);
   const [newCodeData, setNewCodeData] = React.useState<any>(undefined);
@@ -86,10 +89,24 @@ const Editor = () => {
   }, []);
 
   React.useEffect(() => {
+    const newSocket: any = io(`http://localhost:8082`);
+    setSocket(newSocket);
+    newSocket.on("connect", () => {});
+    newSocket.on("connection", () => {});
+    newSocket.emit("file_locked", { id: "342342", name: "index.js" });
+    newSocket.on("file_locked", function (msg: any) {
+      console.log(msg);
+    });
+    return () => newSocket.close();
+  }, [setSocket]);
+
+  React.useEffect(() => {
     try {
       if (codeData[0]?.code !== newCodeData[0]?.code) {
         setEnableSave(true);
+        dispatch(setCodeChanged({ codeChanged: true }));
       } else {
+        dispatch(setCodeChanged({ codeChanged: false }));
         setEnableSave(false);
       }
     } catch (err) {

@@ -48,6 +48,7 @@ const EditorSideBar: React.FC<Props> = ({
         updateProjectCodeFileName={updateProjectCodeFileName}
         deleteProjectData={deleteProjectData}
         openFileName={openFileName}
+        enableSaveBtn={enableSaveBtn}
       />
     </CustomEditorSideBarWrapper>
   );

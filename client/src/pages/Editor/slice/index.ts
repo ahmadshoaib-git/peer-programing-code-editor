@@ -8,6 +8,7 @@ import {
   NewCodeDataPayload,
   TreeDataPayload,
   NewTreeDataPayload,
+  CodeChangedPayload,
 } from "./types";
 
 const initialState: ProjectEditorReducerState = {
@@ -17,6 +18,7 @@ const initialState: ProjectEditorReducerState = {
   newCodeData: null,
   treeData: null,
   newTreeData: null,
+  codeChanged: false,
 };
 
 const ProjectEditorSlice = createSlice({
@@ -69,10 +71,20 @@ const ProjectEditorSlice = createSlice({
       state.codeData = action.payload.codeData;
       state.treeData = action.payload.treeData;
     },
+    setCodeChanged: (
+      state: ProjectEditorReducerState,
+      action: PayloadAction<CodeChangedPayload>
+    ) => {
+      state.codeChanged = action.payload.codeChanged;
+    },
   },
 });
 
-export const { setProjectData, setProjectInitialState, setNewCodeData } =
-  ProjectEditorSlice.actions;
+export const {
+  setProjectData,
+  setProjectInitialState,
+  setNewCodeData,
+  setCodeChanged,
+} = ProjectEditorSlice.actions;
 
 export default ProjectEditorSlice.reducer;

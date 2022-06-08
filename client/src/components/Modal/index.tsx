@@ -7,6 +7,7 @@ export interface Props {
   children?: React.ReactNode | JSX.Element | JSX.Element[] | string | string[];
   isModalVisible: boolean;
   closeModal: () => void;
+  handleOkModal?: () => void;
 }
 
 const Modal: React.FC<Props> = ({
@@ -14,9 +15,11 @@ const Modal: React.FC<Props> = ({
   children,
   isModalVisible = false,
   closeModal,
+  handleOkModal = null,
 }) => {
   const handleOk = () => {
-    closeModal();
+    if (handleOkModal) handleOkModal();
+    else closeModal();
   };
 
   const handleCancel = () => {

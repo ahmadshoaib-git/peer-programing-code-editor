@@ -1,9 +1,13 @@
 import React, { useRef, useState } from "react";
 import { AiOutlineFile, AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-
+import { useSelector } from "react-redux";
+// import { RootState } from "src/redux/store";
+import { Button } from "src/components";
+import { ConfirmationModal } from "src/common/Modals";
 import {
   StyledFile,
   SelectedFileDot,
+  ModalButtonContainer,
 } from "src/components/CustomTree/File/TreeFile.style";
 import { useTreeContext } from "src/components/CustomTree/state/TreeContext";
 import {
@@ -25,6 +29,11 @@ const File = ({
 }) => {
   const { dispatch, isImparative, onNodeClick } = useTreeContext();
   const [isEditing, setEditing] = useState(false);
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const { codeChanged } = useSelector((state) => {
+    return state.projectEditor;
+  });
+  console.log(`projectData > ${codeChanged}`);
   const ext = useRef("");
   console.log("openFileName >", openFileName);
   console.log("name >", name);
@@ -43,47 +52,79 @@ const File = ({
     setNewFiledIdAndType(id, "folder", "deletion");
     dispatch({ type: FILE.DELETE, payload: { id } });
   };
-  const handleNodeClick = React.useCallback(
-    (e) => {
-      e.stopPropagation();
-      onNodeClick({ node, name });
-    },
-    [node]
-  );
+  const handleNodeClick = (e) => {
+    e.stopPropagation();
+    console.log("****** >>>> codeChanged >", codeChanged);
+    if (codeChanged) {
+      setOpenConfirmationModal(true);
+    } else onNodeClick({ node, name });
+  };
   const handleCancel = () => {
     setEditing(false);
   };
 
   return (
-    <StyledFile onClick={handleNodeClick} className="tree__file">
-      {isEditing ? (
-        <PlaceholderInput
-          type="file"
-          style={{ paddingLeft: 0 }}
-          defaultValue={name}
-          onSubmit={commitEditing}
-          onCancel={handleCancel}
-        />
-      ) : (
-        <ActionsWrapper>
-          {openFileName === name && <SelectedFileDot />}
-          <StyledName>
-            {FILE_ICONS[ext.current] ? (
-              FILE_ICONS[ext.current]
-            ) : (
-              <AiOutlineFile />
+    <>
+      <StyledFile onClick={handleNodeClick} className="tree__file">
+        {isEditing ? (
+          <PlaceholderInput
+            type="file"
+            style={{ paddingLeft: 0 }}
+            defaultValue={name}
+            onSubmit={commitEditing}
+            onCancel={handleCancel}
+          />
+        ) : (
+          <ActionsWrapper>
+            {openFileName === name && <SelectedFileDot />}
+            <StyledName>
+              {FILE_ICONS[ext.current] ? (
+                FILE_ICONS[ext.current]
+              ) : (
+                <AiOutlineFile />
+              )}
+              &nbsp;&nbsp;{name}
+            </StyledName>
+            {isImparative && (
+              <div className="actions">
+                <AiOutlineEdit onClick={toggleEditing} />
+                <AiOutlineDelete onClick={commitDelete} />
+              </div>
             )}
-            &nbsp;&nbsp;{name}
-          </StyledName>
-          {isImparative && (
-            <div className="actions">
-              <AiOutlineEdit onClick={toggleEditing} />
-              <AiOutlineDelete onClick={commitDelete} />
-            </div>
-          )}
-        </ActionsWrapper>
-      )}
-    </StyledFile>
+          </ActionsWrapper>
+        )}
+      </StyledFile>
+      <ConfirmationModal
+        isModalVisible={openConfirmationModal}
+        closeModal={() => setOpenConfirmationModal(false)}
+        handleOkModal={() => {
+          onNodeClick({ node, name });
+          setOpenConfirmationModal(false);
+        }}
+        title=""
+        innerTitle="Important!"
+      >
+        <p>
+          The code changes in current file havent been saved yet. Moving on to
+          next file without saving the current would result in loss of written
+          code.
+        </p>
+        <p>Are you sure you want to move to next file?</p>
+        <ModalButtonContainer>
+          <Button
+            onClick={() => {
+              onNodeClick({ node, name });
+              setOpenConfirmationModal(false);
+            }}
+          >
+            Yes
+          </Button>
+          <Button onClick={() => setOpenConfirmationModal(false)}>
+            Cancel
+          </Button>
+        </ModalButtonContainer>
+      </ConfirmationModal>
+    </>
   );
 };
 
