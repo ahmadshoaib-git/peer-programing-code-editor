@@ -12,9 +12,7 @@ export const verifyAuth = (req: Request, res: Response, next: NextFunction) => {
   }
   try {
     const newToken = token.split("Bearer ")[1];
-    console.log("token >", newToken);
     const decoded = jwt.verify(newToken, SECRET_KEY);
-    // req.user = decoded;
     console.log("decoded", decoded);
   } catch (err: any) {
     console.log(getErrorMessage(err));

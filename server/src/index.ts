@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import { Server } from "socket.io";
 import { UserRouter, ProjectRouter } from "./routers";
 import { PORT } from "./utils";
+import { establishSockets } from "./sockets";
 import "./db";
 const router = express.Router();
 require("dotenv").config();
@@ -15,12 +16,6 @@ router.get("/", (req, res) => {
 });
 
 const app: Application = express();
-const server = http.createServer(app);
-const io = new Server(server);
-
-// io.on("connection", (socket) => {
-//   console.log("a user connected");
-// });
 
 app.use(express.json());
 
@@ -35,6 +30,20 @@ export { mongoose };
 app.listen(PORT, () => {
   console.log(`Connected successfully on port ${PORT}`);
 });
+
+const server = http.createServer(app);
+establishSockets(server);
+
+// establishSockets(server);
+// const io = new Server(server);
+
+// io.on("connection", (socket) => {
+//   console.log("a user connected >", socket);
+//   socket.emit("connection", null);
+//   socket.on("disconnect", () => {
+//     console.log("user disconnected");
+//   });
+// });
 
 // io.on("connect", (socket) => {
 //   socket.on("join", ({ name, room }, callback) => {

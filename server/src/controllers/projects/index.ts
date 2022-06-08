@@ -78,9 +78,9 @@ async function createProject(req: Request, res: Response) {
     return userData[0].save();
   };
   try {
-    console.log(req.body.ownerEmail);
-    console.log(req.body.contributor);
-    console.log(req.body.projectDetail);
+    // console.log(req.body.ownerEmail);
+    // console.log(req.body.contributor);
+    // console.log(req.body.projectDetail);
     const tempUser = await createAndSaveProjectInUser(req.body);
     return res.status(200).json(tempUser);
   } catch (err: any) {
@@ -120,7 +120,7 @@ async function getProjectData(req: Request, res: Response) {
     selectedProject.projectDetail.fileTree = fileTree;
     selectedProject.projectDetail.filesCode = filesCode;
 
-    console.log(fileTree, filesCode);
+    // console.log(fileTree, filesCode);
     return res.status(200).json(selectedProject);
   } catch (err: any) {
     console.log(err);
@@ -132,7 +132,7 @@ async function getprojectsByUserEmail(req: Request, res: Response) {
   try {
     const { email } = req.query;
     if (!email) throw "Invalid request! Email cant be empty.";
-    console.log(email);
+    // console.log(email);
     const users = await UserModel.find({
       email: email,
     }).sort({ updated_at: -1 });
@@ -148,11 +148,11 @@ async function getprojectsByUserEmail(req: Request, res: Response) {
     //   }
     // );
     if (!users || users?.length === 0) throw "User not found!";
-    console.log(users);
+    // console.log(users);
     const projects = await ProjectModel.find({
       ownerId: users[0]._id,
     });
-    console.log(projects);
+    // console.log(projects);
     return res.status(200).json(projects);
   } catch (err: any) {
     console.log(err);
@@ -188,14 +188,14 @@ async function addContributors(req: Request, res: Response) {
     //   contributors:[]
     // }
     const { projectId, ownerId, contributors } = req.body;
-    console.log(projectId);
-    console.log(ownerId);
-    console.log(contributors);
+    // console.log(projectId);
+    // console.log(ownerId);
+    // console.log(contributors);
     const projects = await ProjectModel.find({
       _id: projectId,
       ownerId: ownerId,
     });
-    console.log(projects);
+    // console.log(projects);
     projects[0].contributor = [...projects[0].contributor, ...contributors];
     const data = await projects[0].save();
     return res.status(200).json(data);
@@ -209,7 +209,7 @@ async function getProjectsByContributorsEmail(req: Request, res: Response) {
   try {
     const { email } = req.query;
     if (!email) throw "Invalid request! Email cant be empty.";
-    console.log(email);
+    // console.log(email);
     const projects = await ProjectModel.find({
       "contributor.email": email,
     });
@@ -223,7 +223,7 @@ async function getProjectsByContributorsEmail(req: Request, res: Response) {
         ownerName: project.ownerName,
       };
     });
-    console.log(data);
+    // console.log(data);
     return res.status(200).json(data);
   } catch (err: any) {
     console.log(err);
@@ -235,7 +235,7 @@ async function getProjectNodesUUID(req: Request, res: Response) {
   try {
     const { email } = req.query;
     if (!email) throw "Invalid request! Email cant be empty.";
-    console.log(email);
+    // console.log(email);
     const projects = await ProjectModel.find({
       // "contributor.email": email,
       $or: [
@@ -251,7 +251,7 @@ async function getProjectNodesUUID(req: Request, res: Response) {
       const data = {
         nodeId: v4(),
       };
-      console.log(data);
+      // console.log(data);
       return res.status(200).json(data);
     } else {
       return res.status(400).json({ message: "No user record found!" });
@@ -292,7 +292,7 @@ async function getProjectFileData(req: Request, res: Response) {
 async function saveProjectData(req: Request, res: Response) {
   try {
     const { projectId, fileTree, fileId, fileCode } = req.body;
-    console.log(projectId, fileTree, fileId, fileCode);
+    // console.log(projectId, fileTree, fileId, fileCode);
     const dirPath = `${CODE_DIR_NAME}/${projectId}`;
     const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
     const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
@@ -330,7 +330,7 @@ async function saveProjectData(req: Request, res: Response) {
 async function deleteProjectData(req: Request, res: Response) {
   try {
     const { projectId, fileTree, fileId } = req.body;
-    console.log(projectId, fileTree, fileId);
+    // console.log(projectId, fileTree, fileId);
     const dirPath = `${CODE_DIR_NAME}/${projectId}`;
     const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
     const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
@@ -370,7 +370,7 @@ async function deleteProjectData(req: Request, res: Response) {
 async function saveFileData(req: Request, res: Response) {
   try {
     const { projectId, fileId, fileCode } = req.body;
-    console.log(projectId, fileId, fileCode);
+    // console.log(projectId, fileId, fileCode);
     const dirPath = `${CODE_DIR_NAME}/${projectId}`;
     const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
     const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
@@ -408,7 +408,7 @@ async function saveFileData(req: Request, res: Response) {
 async function saveFileFolderName(req: Request, res: Response) {
   try {
     const { projectId, fileTree, fileId, fileName } = req.body;
-    console.log(projectId, fileTree, fileId, fileName);
+    // console.log(projectId, fileTree, fileId, fileName);
     const dirPath = `${CODE_DIR_NAME}/${projectId}`;
     const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
     const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
