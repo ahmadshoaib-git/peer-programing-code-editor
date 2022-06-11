@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { SOCKET_PORT } from "../utils";
 const establishSockets = (server: any) => {
   const ProjectLockedFiles: any = {};
+  const ProjectContributors: any = {};
   console.log("Inside Establish Sockets function");
   const io = new Server(server, {
     cors: {
@@ -16,14 +17,49 @@ const establishSockets = (server: any) => {
     });
     socket.on("file_locked", (msg: any) => {
       console.log(msg);
-      if (ProjectLockedFiles[msg.id]) {
-        let lockedFiles: any = ProjectLockedFiles[msg.id];
-        lockedFiles = [...lockedFiles, msg.name];
+      // console.log(ProjectLockedFiles[msg.id]);
+      if (msg.type === "lock") {
+        if (ProjectLockedFiles[msg.id]) {
+          let lockedFiles: any = ProjectLockedFiles[msg.id];
+          lockedFiles = ProjectLockedFiles[msg.id]?.filter((project: any) => {
+            if (project.editorEmail !== msg.editorEmail) return project;
+          });
+          console.log("filtered >", lockedFiles);
+          lockedFiles = [
+            ...lockedFiles,
+            {
+              fileName: msg.name,
+              fileId: msg.fileId,
+              editorEmail: msg.editorEmail,
+              editorName: msg.editorEmail,
+            },
+          ];
+          ProjectLockedFiles[msg.id] = lockedFiles;
+        } else {
+          ProjectLockedFiles[msg.id] = [
+            {
+              fileName: msg.name,
+              fileId: msg.fileId,
+              editorEmail: msg.editorEmail,
+              editorName: msg.editorEmail,
+            },
+          ];
+        }
       } else {
-        ProjectLockedFiles[msg.id] = [msg.name];
+        if (ProjectLockedFiles[msg.id]) {
+          let lockedFiles: any = ProjectLockedFiles[msg.id];
+          lockedFiles = ProjectLockedFiles[msg.id]?.filter((project: any) => {
+            if (project.editorEmail !== msg.editorEmail) return project;
+          });
+          console.log("lockedFiles >", lockedFiles);
+          ProjectLockedFiles[msg.id] = lockedFiles;
+        } else ProjectLockedFiles[msg.id] = [];
       }
-      console.log(ProjectLockedFiles);
-      io.emit("file_locked", ProjectLockedFiles);
+      // console.log("file_locked", ProjectLockedFiles);
+      io.emit("file_locked", ProjectLockedFiles[msg.id]);
+    });
+    socket.on("disconnect", function () {
+      console.log("Got disconnect!");
     });
   });
   server.listen(SOCKET_PORT, () => {
