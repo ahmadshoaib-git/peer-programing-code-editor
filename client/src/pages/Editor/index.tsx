@@ -1,5 +1,7 @@
 import React from "react";
 import io from "socket.io-client";
+import { Tooltip } from "antd";
+import { BsFileEarmarkLock } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "src/redux/store";
@@ -11,7 +13,10 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
-import { setShowEditorSideBar } from "src/redux/slices/general";
+import {
+  setShowEditorSideBar,
+  setLockedFilesPayload,
+} from "src/redux/slices/general";
 import { setCodeChanged } from "./slice";
 import { Layout } from "src/common";
 import EditorSideBar from "./EditorSideBar";
@@ -42,6 +47,7 @@ import {
   EditorHeaderSection,
   SpanWrapper,
   SpanWrapperSave,
+  FileLocked,
 } from "./editor.style";
 
 export interface Props {
@@ -69,7 +75,7 @@ const Editor = () => {
   const param = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
-  const [socket, setSocket] = React.useState<any>(null);
+  const [socket, setSocket] = React.useState<any>(io(`http://localhost:8082`));
   const [projectData, setProjectData] = React.useState<any>(undefined);
   const [codeData, setCodeData] = React.useState<any>(undefined);
   const [newCodeData, setNewCodeData] = React.useState<any>(undefined);
@@ -93,20 +99,37 @@ const Editor = () => {
     setSocket(newSocket);
     newSocket.on("connect", () => {});
     newSocket.on("connection", () => {});
-    newSocket.emit("file_locked", { id: "342342", name: "index.js" });
+    // newSocket.emit("file_locked", { id: "342342", name: "index.js" });
     newSocket.on("file_locked", function (msg: any) {
-      console.log(msg);
+      console.log("file_locked >", msg);
+      dispatch(setLockedFilesPayload({ lockedFiles: msg }));
     });
     return () => newSocket.close();
   }, [setSocket]);
 
   React.useEffect(() => {
     try {
+      const email = localStorage.getItem("email");
+      const editorName = localStorage.getItem("name");
       if (codeData[0]?.code !== newCodeData[0]?.code) {
         setEnableSave(true);
         dispatch(setCodeChanged({ codeChanged: true }));
+        socket.emit("file_locked", {
+          name: openFileName,
+          fileId: newCodeData[0].id,
+          editorEmail: email,
+          editorName: editorName,
+          type: "lock",
+        });
       } else {
         dispatch(setCodeChanged({ codeChanged: false }));
+        socket.emit("file_locked", {
+          name: openFileName,
+          fileId: newCodeData[0].id,
+          editorEmail: email,
+          editorName: editorName,
+          type: "unlock",
+        });
         setEnableSave(false);
       }
     } catch (err) {
@@ -142,6 +165,14 @@ const Editor = () => {
           treeData: treeData,
         })
       );
+      const email = localStorage.getItem("email");
+      const editorName = localStorage.getItem("name");
+      // socket.emit("file_locked", {
+      //   fileId: tempData[0].id,
+      //   name: "index.js",
+      //   editorEmail: email,
+      //   editorName: editorName,
+      // });
       return data.data;
     } catch (err) {
       console.log(">> ", err);
@@ -176,22 +207,50 @@ const Editor = () => {
   };
 
   const fetchCodeByNodeId = async (nodeId: any, name: String) => {
-    console.log("name >", name);
-    const result = await getProjectFileDataById(projectData._id, nodeId);
-    const newResult: any = JSON.parse(result.data);
-    setCodeData([
-      {
-        id: newResult?.id,
-        code: newResult?.code,
-      },
-    ]);
-    setNewCodeData([
-      {
-        id: newResult?.id,
-        code: newResult?.code,
-      },
-    ]);
-    setOpenFileName(name);
+    try {
+      console.log("name >", name);
+      const fileId = codeData[0]?.id;
+      const result = await getProjectFileDataById(projectData._id, nodeId);
+      // socket.emit("file_unlocked", {
+      //   id: projectData._id,
+      //   fileId: fileId,
+      //   name: openFileName,
+      // });
+      const unlockFileData = {
+        fileId: fileId,
+        name: openFileName,
+      };
+      const newResult: any = JSON.parse(result.data);
+      setCodeData([
+        {
+          id: newResult?.id,
+          code: newResult?.code,
+        },
+      ]);
+      setNewCodeData([
+        {
+          id: newResult?.id,
+          code: newResult?.code,
+        },
+      ]);
+      setOpenFileName(name);
+      const email = localStorage.getItem("email");
+      const editorName = localStorage.getItem("name");
+      console.log({
+        id: projectData._id,
+        name: name,
+        fileId: nodeId,
+        editorEmail: email,
+      });
+      // socket.emit("file_locked", {
+      //   name: name,
+      //   fileId: nodeId,
+      //   editorEmail: email,
+      //   editorName: editorName,
+      // });
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
   const updateProjectCodeFileName = async (
@@ -344,13 +403,17 @@ const LayoutEditor: React.FC<Props> = ({
     // }
   };
 
-  const { showEditorSideBar } = useSelector((state: RootState) => {
+  const { showEditorSideBar, lockedFiles } = useSelector((state: RootState) => {
     return state.general;
   });
 
   const toggleSideBar = () => {
     dispatch(setShowEditorSideBar({ showEditorSideBar: !showEditorSideBar }));
   };
+
+  const lockFile = lockedFiles.find(
+    (lFile) => lFile.fileId === codeData[0]?.id
+  );
 
   return (
     <span onKeyDown={handleKeyDown}>
@@ -376,7 +439,19 @@ const LayoutEditor: React.FC<Props> = ({
           ) : (
             <IoIosArrowDroprightCircle onClick={() => toggleSideBar()} />
           )}
-          {openFileName || ""}
+          <div className="file-name-section">
+            {lockFile && (
+              <Tooltip
+                title={`Locked by ${lockFile.editorName}`}
+                placement="bottomRight"
+              >
+                <FileLocked>
+                  <BsFileEarmarkLock />
+                </FileLocked>{" "}
+              </Tooltip>
+            )}
+            {openFileName || ""}
+          </div>
         </EditorHeaderSection>
 
         <Dropdown

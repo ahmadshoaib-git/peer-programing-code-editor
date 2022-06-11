@@ -13,16 +13,18 @@ const jwtInterceptor = () => {
   });
 };
 
-const responseInterceptor = () => {
+const responseInterceptor = (callback: () => void) => {
   axios.interceptors.response.use(
     (response) => response,
     (error) => {
+      console.log("errorrrrrr >", error);
       if (error.response.status === 401) {
         console.log(error);
         localStorage.clear();
         const dispatch = useDispatch();
         dispatch(setLoggedIn({ loggedIn: false }));
         window.location.href = "/login";
+        callback();
         Notify(`${error.response.data}`, "error");
       }
     }

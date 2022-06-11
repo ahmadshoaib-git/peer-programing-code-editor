@@ -13,7 +13,7 @@ function App() {
   console.log("===> App");
   React.useEffect(() => {
     jwtInterceptor();
-    responseInterceptor();
+    responseInterceptor(() => {});
   }, []);
   const queryClient = new QueryClient();
   return (

@@ -21,6 +21,21 @@ export const SelectedFileDot = styled.div`
     `${colors.headingColor}!important`};
 `;
 
+export const FileLocked = styled.div`
+  display: inline-block;
+  padding-left: 0.3rem;
+  font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
+  color: ${({ theme: { colors } }) => `${colors.pink}!important`};
+  position: relative;
+  width: 12px;
+  height: 10px;
+  svg {
+    position: absolute;
+    top: -0.2rem;
+    left: 0.5rem;
+  }
+`;
+
 export const ModalButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;

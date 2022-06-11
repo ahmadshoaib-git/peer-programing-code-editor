@@ -21,10 +21,26 @@ export const EditorHeaderSection = styled.div`
   font-family: ${({ theme: { fonts } }) => fonts.primary};
   font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
 
+  .file-name-section {
+    display: flex;
+    align-items: center;
+  }
+
   svg {
     cursor: pointer;
     font-size: 1.1rem;
   }
+`;
+
+export const FileLocked = styled.div`
+  display: flex;
+  padding-left: 0.3rem;
+  font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
+  background: ${({ theme: { colors } }) => `${colors.headingColor}!important`};
+  color: ${({ theme: { colors } }) => `${colors.white}!important`};
+  position: relative;
+  width: 28px;
+  height: 100%;
 `;
 
 export const SpanWrapper = styled.span`
