@@ -31,7 +31,7 @@ const establishSockets = (server: any) => {
               fileName: msg.name,
               fileId: msg.fileId,
               editorEmail: msg.editorEmail,
-              editorName: msg.editorEmail,
+              editorName: msg.editorName,
             },
           ];
           ProjectLockedFiles[msg.id] = lockedFiles;
@@ -41,7 +41,7 @@ const establishSockets = (server: any) => {
               fileName: msg.name,
               fileId: msg.fileId,
               editorEmail: msg.editorEmail,
-              editorName: msg.editorEmail,
+              editorName: msg.editorName,
             },
           ];
         }
