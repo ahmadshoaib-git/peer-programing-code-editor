@@ -109,7 +109,7 @@ const Editor = () => {
 
   React.useEffect(() => {
     try {
-      const email = localStorage.getItem("email");
+      const editorEmail = localStorage.getItem("email");
       const editorName = localStorage.getItem("name");
       if (codeData[0]?.code !== newCodeData[0]?.code) {
         setEnableSave(true);
@@ -117,7 +117,7 @@ const Editor = () => {
         socket.emit("file_locked", {
           name: openFileName,
           fileId: newCodeData[0].id,
-          editorEmail: email,
+          editorEmail: editorEmail,
           editorName: editorName,
           type: "lock",
         });
@@ -126,7 +126,7 @@ const Editor = () => {
         socket.emit("file_locked", {
           name: openFileName,
           fileId: newCodeData[0].id,
-          editorEmail: email,
+          editorEmail: editorEmail,
           editorName: editorName,
           type: "unlock",
         });
