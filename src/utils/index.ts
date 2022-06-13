@@ -1,5 +1,5 @@
-const PORT = 8081;
-const SOCKET_PORT = 8082;
+const PORT = process.env.PORT || 8081;
+const SOCKET_PORT = process.env.PORT || 8082;
 const DATASOURCEFILE = "data.json";
 function getErrorMessage(error: unknown) {
   if (error instanceof Error) return error.message;

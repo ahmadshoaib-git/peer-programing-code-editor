@@ -72,6 +72,7 @@ export interface Props {
 }
 
 const Editor = () => {
+  console.log(process.env);
   const param = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
