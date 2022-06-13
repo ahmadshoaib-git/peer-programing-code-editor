@@ -43,6 +43,7 @@ import {
   deleteProjectData,
   saveFileData,
 } from "./service";
+import { SOCKET_URL } from "src/utils";
 import {
   EditorHeaderSection,
   SpanWrapper,
@@ -72,11 +73,10 @@ export interface Props {
 }
 
 const Editor = () => {
-  console.log(process.env);
   const param = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
-  const [socket, setSocket] = React.useState<any>(io(`http://localhost:8082`));
+  const [socket, setSocket] = React.useState<any>(io(SOCKET_URL));
   const [projectData, setProjectData] = React.useState<any>(undefined);
   const [codeData, setCodeData] = React.useState<any>(undefined);
   const [newCodeData, setNewCodeData] = React.useState<any>(undefined);
