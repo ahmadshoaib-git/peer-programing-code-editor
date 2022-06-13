@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "SET NODE_ENV=production && cd client && npm run build",
-    "install-client": "SET NODE_ENV=production && cd client && npm install",
-    "heroku-postbuild": "SET NODE_ENV=production && npm run build && npm run install-client",
+    "build": "NODE_ENV=production && cd client && npm run build",
+    "install-client": "NODE_ENV=production && cd client && npm install",
+    "heroku-postbuild": "NODE_ENV=production && npm run build && npm run install-client",
     "server": "SET NODE_ENV=development && nodemon src/index.ts",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
