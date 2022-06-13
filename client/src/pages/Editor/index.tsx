@@ -116,7 +116,7 @@ const Editor = () => {
   React.useEffect(() => {
     try {
       if (projectData?._id) {
-        const newSocket: any = io(`http://localhost:8082`);
+        const newSocket: any = io(SOCKET_URL);
         setSocket(newSocket);
         newSocket.on("connect", () => {
           socket.emit("room", projectData._id);
@@ -176,6 +176,8 @@ const Editor = () => {
       console.log(err);
     }
   }, [codeData, newCodeData]);
+
+  console.log(process.env);
 
   const fetchData = async (id: any) => {
     try {
