@@ -3,6 +3,7 @@ import { SOCKET_PORT } from "../utils";
 const establishSockets = (server: any) => {
   const ProjectLockedFiles: any = {};
   const ProjectContributors: any = {};
+  const ProjectSockets: any = {};
   console.log("Inside Establish Sockets function");
   const io = new Server(server, {
     cors: {
@@ -14,6 +15,35 @@ const establishSockets = (server: any) => {
     console.log("a user connected >", socket.id);
     socket.on("channel-join", (id: any) => {
       console.log("channel join", id);
+    });
+    socket.on("join", (msg: any) => {
+      try {
+        const { contributorName, contributorEmail, projectId } = msg;
+        if (ProjectContributors[projectId])
+          ProjectContributors[projectId] = [
+            ...ProjectContributors[projectId],
+            {
+              contributorName: contributorName,
+              contributorEmail: contributorEmail,
+              socketId: socket.id,
+            },
+          ];
+        else
+          ProjectContributors[projectId] = [
+            {
+              contributorName: contributorName,
+              contributorEmail: contributorEmail,
+              socketId: socket.id,
+            },
+          ];
+        io.emit("join", ProjectContributors[projectId]);
+        if (ProjectLockedFiles[projectId])
+          io.emit("file_locked", ProjectLockedFiles[projectId]);
+
+        // ProjectSockets[projectId]
+      } catch (err) {
+        console.log(err);
+      }
     });
     socket.on("file_locked", (msg: any) => {
       console.log(msg);
@@ -59,7 +89,8 @@ const establishSockets = (server: any) => {
       io.emit("file_locked", ProjectLockedFiles[msg.id]);
     });
     socket.on("disconnect", function () {
-      console.log("Got disconnect!");
+      console.log("===== >>> Got disconnect!", socket.id);
+      io.emit("user-disconnect", socket.id);
     });
   });
   server.listen(SOCKET_PORT, () => {

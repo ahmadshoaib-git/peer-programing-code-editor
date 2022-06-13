@@ -17,6 +17,7 @@ const FILES_CODE_NAME = "filesCode.js";
 async function createProject(req: Request, res: Response) {
   const createAndSaveProjectInUser = async (reqData: any) => {
     const getProjectData = async (userData: any) => {
+      console.log("userData >", userData);
       let data = new ProjectModel({});
       if (reqData?.contributor?.length > 0)
         data = new ProjectModel({
@@ -29,7 +30,7 @@ async function createProject(req: Request, res: Response) {
       else
         data = new ProjectModel({
           projectDetail: reqData.projectDetail,
-          ownerId: userData._id,
+          ownerId: userData[0]._id,
           ownerEmail: userData[0].email,
           ownerName: userData[0].name,
         });
@@ -37,6 +38,7 @@ async function createProject(req: Request, res: Response) {
       return tempData;
     };
     const userData = await UserModel.find({ email: req?.body.ownerEmail });
+    console.log("userData >", userData);
     const projectData = await getProjectData(userData);
     userData[0].projects.push(projectData._id);
     const dirPath = `${CODE_DIR_NAME}/${projectData._id.toString()}`;

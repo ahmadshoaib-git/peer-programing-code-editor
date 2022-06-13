@@ -94,18 +94,57 @@ const Editor = () => {
     fetchData(param.id);
   }, []);
 
+  // React.useEffect(() => {
+  //   const newSocket: any = io(`http://localhost:8082`);
+  //   setSocket(newSocket);
+  //   newSocket.on("connect", () => {
+  //     socket.emit('room', room);
+  //   });
+  //   newSocket.on("connection", () => {});
+  //   newSocket.on("user-disconnect", (msg: any) => {
+  //     console.log("User Disconnected > ", msg);
+  //   });
+  //   // newSocket.emit("file_locked", { id: "342342", name: "index.js" });
+  //   newSocket.on("file_locked", function (msg: any) {
+  //     console.log("file_locked >", msg);
+  //     dispatch(setLockedFilesPayload({ lockedFiles: msg }));
+  //   });
+  //   return () => newSocket.close();
+  // }, [setSocket]);
+
   React.useEffect(() => {
-    const newSocket: any = io(`http://localhost:8082`);
-    setSocket(newSocket);
-    newSocket.on("connect", () => {});
-    newSocket.on("connection", () => {});
-    // newSocket.emit("file_locked", { id: "342342", name: "index.js" });
-    newSocket.on("file_locked", function (msg: any) {
-      console.log("file_locked >", msg);
-      dispatch(setLockedFilesPayload({ lockedFiles: msg }));
-    });
-    return () => newSocket.close();
-  }, [setSocket]);
+    try {
+      if (projectData?._id) {
+        const newSocket: any = io(`http://localhost:8082`);
+        setSocket(newSocket);
+        newSocket.on("connect", () => {
+          socket.emit("room", projectData._id);
+        });
+        newSocket.on("connection", () => {});
+        newSocket.on("user-disconnect", (msg: any) => {
+          console.log("User Disconnected > ", msg);
+        });
+        // newSocket.emit("file_locked", { id: "342342", name: "index.js" });
+        newSocket.on("file_locked", function (msg: any) {
+          console.log("file_locked >", msg);
+          dispatch(setLockedFilesPayload({ lockedFiles: msg }));
+        });
+        const editorEmail = localStorage.getItem("email");
+        const editorName = localStorage.getItem("name");
+        socket.emit("join", {
+          contributorName: editorName,
+          contributorEmail: editorEmail,
+          projectId: projectData._id,
+        });
+        socket.on("join", function (msg: any) {
+          console.log("join >", msg);
+        });
+        return () => newSocket.close();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [setSocket, projectData]);
 
   React.useEffect(() => {
     try {
@@ -165,8 +204,8 @@ const Editor = () => {
           treeData: treeData,
         })
       );
-      const email = localStorage.getItem("email");
-      const editorName = localStorage.getItem("name");
+      // const email = localStorage.getItem("email");
+      // const editorName = localStorage.getItem("name");
       // socket.emit("file_locked", {
       //   fileId: tempData[0].id,
       //   name: "index.js",
