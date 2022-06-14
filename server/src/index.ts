@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import http from "http";
+import path from "path";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import { Server } from "socket.io";
@@ -27,6 +28,14 @@ app.use("/api/user", UserRouter);
 app.use("/api/project", ProjectRouter);
 
 export { mongoose };
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "client", "build")));
+  app.get("*", function (request, response) {
+    response.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
 app.listen(PORT, () => {
   console.log(`Connected successfully on port ${PORT}`);
 });
