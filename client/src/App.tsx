@@ -10,7 +10,7 @@ import { jwtInterceptor, responseInterceptor } from "src/utils/interceptors";
 import "react-toastify/ReactToastify.min.css";
 
 function App() {
-  console.log("===> App");
+  console.log("===> App", process.env.NODE_ENV);
   React.useEffect(() => {
     jwtInterceptor();
     responseInterceptor(() => {});
