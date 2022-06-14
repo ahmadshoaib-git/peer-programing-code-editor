@@ -15,10 +15,10 @@
     "install-serve": "npm install serve -g",
     "serve": "serve -s build",
     "build": "npm run install-client && npm run build-client",
-    "start": "env-cmd -f .env.production.local npm run build && npm run tsc && npm run server-build",
+    "start": "env-cmd -f ./.env.production.local npm run build && npm run tsc && npm run server-build",
     "server": "nodemon src/index.ts",
     "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
-    "start:dev": "env-cmd -f .env.development.local npm run develop"
+    "start:dev": "env-cmd -f ./.env.development.local npm run develop"
   },
   "keywords": [],
   "author": "",
