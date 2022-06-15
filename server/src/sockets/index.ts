@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { SOCKET_PORT } from "../utils";
+import { ACTION_TYPE, SOCKET_SERVER_URL, SOCKET_PORT } from "./config";
 const establishSockets = (server: any) => {
   const ProjectLockedFiles: any = {};
   const ProjectContributors: any = {};
@@ -7,16 +7,16 @@ const establishSockets = (server: any) => {
   console.log("Inside Establish Sockets function");
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: SOCKET_SERVER_URL,
       methods: ["GET", "POST"],
     },
   });
-  io.on("connection", (socket: any) => {
+  io.on(ACTION_TYPE.CONNECTION, (socket: any) => {
     console.log("a user connected >", socket.id);
-    socket.on("channel-join", (id: any) => {
+    socket.on(ACTION_TYPE.CHANNEL_JOIN, (id: any) => {
       console.log("channel join", id);
     });
-    socket.on("join", (msg: any) => {
+    socket.on(ACTION_TYPE.JOIN, (msg: any) => {
       try {
         const { contributorName, contributorEmail, projectId } = msg;
         if (ProjectContributors[projectId])
@@ -36,16 +36,16 @@ const establishSockets = (server: any) => {
               socketId: socket.id,
             },
           ];
-        io.emit("join", ProjectContributors[projectId]);
+        io.emit(ACTION_TYPE.JOIN, ProjectContributors[projectId]);
         if (ProjectLockedFiles[projectId])
-          io.emit("file_locked", ProjectLockedFiles[projectId]);
+          io.emit(ACTION_TYPE.FILE_LOCKED, ProjectLockedFiles[projectId]);
 
         // ProjectSockets[projectId]
       } catch (err) {
         console.log(err);
       }
     });
-    socket.on("file_locked", (msg: any) => {
+    socket.on(ACTION_TYPE.FILE_LOCKED, (msg: any) => {
       console.log(msg);
       // console.log(ProjectLockedFiles[msg.id]);
       if (msg.type === "lock") {
@@ -86,9 +86,9 @@ const establishSockets = (server: any) => {
         } else ProjectLockedFiles[msg.id] = [];
       }
       // console.log("file_locked", ProjectLockedFiles);
-      io.emit("file_locked", ProjectLockedFiles[msg.id]);
+      io.emit(ACTION_TYPE.FILE_LOCKED, ProjectLockedFiles[msg.id]);
     });
-    socket.on("disconnect", function () {
+    socket.on(ACTION_TYPE.DISCONNECT, function () {
       console.log("===== >>> Got disconnect!", socket.id);
       io.emit("user-disconnect", socket.id);
     });
