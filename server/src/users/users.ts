@@ -24,7 +24,6 @@ const getDataFromFile = (fileName: string): any => {
   return fs.readFile(fileName, (err, data: any) => {
     if (err) throw err;
     let parsedData = JSON.parse(data);
-    console.log(parsedData);
     return parsedData.users;
   });
 };

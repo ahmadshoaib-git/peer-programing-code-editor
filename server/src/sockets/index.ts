@@ -4,7 +4,6 @@ const establishSockets = (server: any) => {
   const ProjectLockedFiles: any = {};
   const ProjectContributors: any = {};
   const ProjectSockets: any = {};
-  console.log("Inside Establish Sockets function");
   const io = new Server(server, {
     cors: {
       origin: SOCKET_SERVER_URL,
@@ -90,7 +89,7 @@ const establishSockets = (server: any) => {
     });
     socket.on(ACTION_TYPE.DISCONNECT, function () {
       console.log("===== >>> Got disconnect!", socket.id);
-      io.emit("user-disconnect", socket.id);
+      io.emit(ACTION_TYPE.USER_DISCONNECT, socket.id);
     });
   });
   server.listen(SOCKET_PORT, () => {

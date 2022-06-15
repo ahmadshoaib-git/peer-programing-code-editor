@@ -18,10 +18,7 @@ async function createUser(req: Request, res: Response) {
   };
   try {
     const { name, email, password } = req.body;
-    console.log(req.body);
     const tempData = await saveData(name, email, password);
-    // console.log(`tempData :${tempData}`);
-    // sa
     let data: any = {
       email: tempData.email,
       name: tempData.name,
@@ -29,8 +26,6 @@ async function createUser(req: Request, res: Response) {
     };
     const token = await generateJWT(data, "8h");
     data["token"] = token;
-    console.log(`>> token :${token}`);
-    console.log(`>> data :${data}`);
     return res.status(200).json(data);
   } catch (err: any) {
     console.log(err);
@@ -65,7 +60,7 @@ async function userLogin(req: Request, res: Response) {
     });
     if (!users || users?.length === 0)
       throw "User not found! Please register new user.";
-    console.log(users, users[0]);
+    console.log(users[0]);
     const clonedUser = JSON.parse(JSON.stringify(users[0]));
     delete clonedUser["password"];
     delete clonedUser["passcode"];
@@ -74,7 +69,6 @@ async function userLogin(req: Request, res: Response) {
     const token = await generateJWT(clonedUser, "8h");
     clonedUser["token"] = token;
     console.log(`>> token :${token}`);
-    console.log(`>> clonedUser :${clonedUser}`);
     return res.status(200).json(clonedUser);
   } catch (err: any) {
     const message = getErrorMessage(err);
