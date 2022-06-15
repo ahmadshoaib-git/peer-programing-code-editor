@@ -12,7 +12,6 @@ const EditorMain = () => {
   const userEmail = localStorage.getItem("email") || "";
   useEffect(() => {
     getTabProjectsData();
-    console.log(tabIndex);
   }, [userEmail, tabIndex]);
   const getTabProjectsData = () => {
     switch (tabIndex.toString()) {
@@ -28,12 +27,10 @@ const EditorMain = () => {
   };
   const fetchProjectData = async (email: String) => {
     const response = await getProjects(email);
-    console.log(">>> ", response.data);
     setProjects(response.data);
   };
   const fetchContributedProjects = async (email: String) => {
     const response = await getContributedProjects(email);
-    console.log(">>> ", response.data);
     setProjects(response.data);
   };
   const getTabData = () => {

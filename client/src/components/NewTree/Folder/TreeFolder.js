@@ -42,15 +42,12 @@ const Folder = ({
   useEffect(() => {
     setChilds([children]);
   }, [children]);
-  console.log("childs >", childs);
 
   const commitFolderCreation = (name) => {
     addFolder({
       id: id,
       name: name,
     });
-    console.log("commitFolderCreation", id, " -- ", name);
-    // setEditing(false);
   };
   const commitFileCreation = (name) => {
     addFile(
@@ -64,14 +61,12 @@ const Folder = ({
         // setIsOpen(false);
       }
     );
-    console.log("commitFileCreation", id, " -- ", name);
     // setEditing(false);
   };
   const commitDeleteFolder = () => {
     console.log("commitDeleteFolder", id, " -- ");
   };
   const commitFolderEdit = (name) => {
-    console.log("commitFolderEdit", id, " -- ", name);
     setEditing(false);
   };
 
@@ -83,7 +78,6 @@ const Folder = ({
   const handleNodeClick = React.useCallback(
     (event) => {
       event.stopPropagation();
-      console.log(name, id, node, onNodeClick);
       onNodeClick({ node });
     },
     [node]

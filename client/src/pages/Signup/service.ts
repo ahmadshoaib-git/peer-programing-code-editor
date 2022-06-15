@@ -7,7 +7,6 @@ const callSignup = async (name: String, email: String, password: String) => {
     email: email,
     password: password,
   };
-  console.log("creds >", creds);
   return await axios<any>({
     method: "POST",
     url: `${BASE_URL}/user`,

@@ -24,7 +24,6 @@ const Header: React.FC<Props> = ({ noSideBar }) => {
       onClick: async () => {
         await localStorage.clear();
         await dispatch(setLoggedIn({ loggedIn: false }));
-        console.log("Logout");
         navigate(`/login`);
       },
     },

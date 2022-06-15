@@ -19,31 +19,23 @@ const Tree = (props) => {
 
   const onFileClickHandler = (node) => {
     try {
-      console.log("node >", node);
       const newData = findNodeById(folderStructure, node.id);
       node.id = "34hkj3h4jkgkjg3b";
       node.parentNode = newData;
       if (newData?.children) newData.children = [...newData.children, node];
       else newData.children = [node];
-      console.log(node);
     } catch (err) {
       console.log(err);
     }
   };
   const addFile = (data, callback) => {
-    console.log("hereeeeeeeeeee");
     const newData = findNodeById(folderStructure, data.id);
     data.id = "34hkj3h4jkgkjg3b";
     data.parentNode = newData;
     if (newData?.children) newData.children = [...newData.children, data];
     else newData.children = [data];
     callback();
-    console.log(folderStructure);
-    // console.log("newData >", newData);
-    // console.log(`folderStructure > ${folderStructure}`);
   };
-  // console.log(`folderStructure > ${JSON.stringify(folderStructure)}`);
-  console.log(JSON.stringify(folderStructure));
   return (
     <StyledTree>
       <TreeRecusive

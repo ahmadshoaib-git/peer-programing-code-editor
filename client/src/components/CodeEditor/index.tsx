@@ -18,12 +18,6 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
   const { lockedFiles } = useSelector((state: RootState) => {
     return state.general;
   });
-  // console.log("projectData >", projectData);
-  // useEffect(() => {
-  //   if (monaco) {
-  //     console.log("here is the monaco instance:", monaco);
-  //   }
-  // }, [monaco]);
 
   useEffect(() => {
     setCode(codeData);
@@ -31,16 +25,11 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
 
   useEffect(() => {
     if (lockedFiles.length > 0) {
-      console.log(">>", data[0].id);
       const tempFile = lockedFiles.find((lFile) => lFile.fileId == data[0].id);
       const email = localStorage.getItem("email");
-      console.log("-->>", lockedFiles);
-      console.log("-->>", email);
-      console.log(">> ", tempFile);
       const notMyFile = tempFile?.editorEmail
         ? tempFile?.editorEmail !== email
         : false;
-      console.log("notMyFile >>", notMyFile);
       setLockFile(notMyFile);
     } else setLockFile(false);
   }, [lockedFiles]);
@@ -49,25 +38,12 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
     editorRef.current = editor;
   }
 
-  console.log("editorRef >", editorRef);
-
-  // useEffect(() => {
-  //   try {
-  //     if (codeData !== code) {
-  //       console.log("code changed");
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [data, code]);
-
   const handleEditorChange = (value: any) => {
     if (!lockFile) {
       setCode(value);
       setNewCode([{ id: data[0].id, code: value }]);
     }
   };
-  // console.log("Inside code editor >>>>>> ", data);
 
   const editorOptions = {
     // value: code,

@@ -1,10 +1,10 @@
 import React from "react";
-import io from "socket.io-client";
 import { Tooltip } from "antd";
 import { BsFileEarmarkLock } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "src/redux/store";
+import CustomSocket from "src/sockets";
 import { useQuery } from "react-query";
 import { useParams, Navigate } from "react-router-dom";
 import { CgOptions } from "react-icons/cg";
@@ -75,7 +75,6 @@ const Editor = () => {
   const param = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
-  const [socket, setSocket] = React.useState<any>(io(`http://localhost:8082`));
   const [projectData, setProjectData] = React.useState<any>(undefined);
   const [codeData, setCodeData] = React.useState<any>(undefined);
   const [newCodeData, setNewCodeData] = React.useState<any>(undefined);
@@ -94,66 +93,44 @@ const Editor = () => {
     fetchData(param.id);
   }, []);
 
-  // React.useEffect(() => {
-  //   const newSocket: any = io(`http://localhost:8082`);
-  //   setSocket(newSocket);
-  //   newSocket.on("connect", () => {
-  //     socket.emit('room', room);
-  //   });
-  //   newSocket.on("connection", () => {});
-  //   newSocket.on("user-disconnect", (msg: any) => {
-  //     console.log("User Disconnected > ", msg);
-  //   });
-  //   // newSocket.emit("file_locked", { id: "342342", name: "index.js" });
-  //   newSocket.on("file_locked", function (msg: any) {
-  //     console.log("file_locked >", msg);
-  //     dispatch(setLockedFilesPayload({ lockedFiles: msg }));
-  //   });
-  //   return () => newSocket.close();
-  // }, [setSocket]);
-
   React.useEffect(() => {
     try {
+      const Socket = new CustomSocket();
+      Socket.getSocket();
       if (projectData?._id) {
-        const newSocket: any = io(`http://localhost:8082`);
-        setSocket(newSocket);
-        newSocket.on("connect", () => {
-          socket.emit("room", projectData._id);
-        });
-        newSocket.on("connection", () => {});
-        newSocket.on("user-disconnect", (msg: any) => {
-          console.log("User Disconnected > ", msg);
-        });
-        // newSocket.emit("file_locked", { id: "342342", name: "index.js" });
-        newSocket.on("file_locked", function (msg: any) {
+        Socket.onConnect(projectData._id, () => {});
+        Socket.onConnection(() => {});
+        Socket.onUserDisconnect((msg: any) =>
+          console.log("User Disconnected > ", msg)
+        );
+        Socket.onFileLocked((msg: any) => {
           console.log("file_locked >", msg);
           dispatch(setLockedFilesPayload({ lockedFiles: msg }));
         });
         const editorEmail = localStorage.getItem("email");
         const editorName = localStorage.getItem("name");
-        socket.emit("join", {
+        Socket.emitJoin({
           contributorName: editorName,
           contributorEmail: editorEmail,
           projectId: projectData._id,
         });
-        socket.on("join", function (msg: any) {
-          console.log("join >", msg);
-        });
-        return () => newSocket.close();
+        Socket.onJoin((msg: any) => console.log("joined >", msg));
+        return () => Socket.onSocketClose();
       }
     } catch (err) {
       console.log(err);
     }
-  }, [setSocket, projectData]);
+  }, [projectData]);
 
   React.useEffect(() => {
     try {
       const editorEmail = localStorage.getItem("email");
       const editorName = localStorage.getItem("name");
+      const Socket = new CustomSocket();
       if (codeData[0]?.code !== newCodeData[0]?.code) {
         setEnableSave(true);
         dispatch(setCodeChanged({ codeChanged: true }));
-        socket.emit("file_locked", {
+        Socket.emitFileLocked({
           name: openFileName,
           fileId: newCodeData[0].id,
           editorEmail: editorEmail,
@@ -162,7 +139,7 @@ const Editor = () => {
         });
       } else {
         dispatch(setCodeChanged({ codeChanged: false }));
-        socket.emit("file_locked", {
+        Socket.emitFileLocked({
           name: openFileName,
           fileId: newCodeData[0].id,
           editorEmail: editorEmail,
@@ -204,14 +181,6 @@ const Editor = () => {
           treeData: treeData,
         })
       );
-      // const email = localStorage.getItem("email");
-      // const editorName = localStorage.getItem("name");
-      // socket.emit("file_locked", {
-      //   fileId: tempData[0].id,
-      //   name: "index.js",
-      //   editorEmail: email,
-      //   editorName: editorName,
-      // });
       return data.data;
     } catch (err) {
       console.log(">> ", err);
@@ -247,18 +216,7 @@ const Editor = () => {
 
   const fetchCodeByNodeId = async (nodeId: any, name: String) => {
     try {
-      console.log("name >", name);
-      const fileId = codeData[0]?.id;
       const result = await getProjectFileDataById(projectData._id, nodeId);
-      // socket.emit("file_unlocked", {
-      //   id: projectData._id,
-      //   fileId: fileId,
-      //   name: openFileName,
-      // });
-      const unlockFileData = {
-        fileId: fileId,
-        name: openFileName,
-      };
       const newResult: any = JSON.parse(result.data);
       setCodeData([
         {
@@ -273,20 +231,6 @@ const Editor = () => {
         },
       ]);
       setOpenFileName(name);
-      const email = localStorage.getItem("email");
-      const editorName = localStorage.getItem("name");
-      console.log({
-        id: projectData._id,
-        name: name,
-        fileId: nodeId,
-        editorEmail: email,
-      });
-      // socket.emit("file_locked", {
-      //   name: name,
-      //   fileId: nodeId,
-      //   editorEmail: email,
-      //   editorName: editorName,
-      // });
     } catch (err: any) {
       console.log(err);
     }
@@ -343,7 +287,6 @@ const Editor = () => {
         codeData
       );
       Notify(`New file created successfully`, "success");
-      console.log("res >", res?.data);
     } catch (err) {
       console.log(err);
     }
@@ -359,7 +302,6 @@ const Editor = () => {
           fetchCodeByNodeId={fetchCodeByNodeId}
           codeData={codeData}
           setNewCodeData={setNewCodeData}
-          setNewCodeNewFile={setNewCodeNewFile}
           updateCodeDataForNewFile={updateCodeDataForNewFile}
           updateProjectCodeFileName={updateProjectCodeFileName}
           deleteProjectDataFun={deleteProjectDataFun}
@@ -384,7 +326,6 @@ const LayoutEditor: React.FC<Props> = ({
   fetchCodeByNodeId,
   setNewCodeData,
   enableSaveBtn,
-  setNewCodeNewFile,
   updateCodeDataForNewFile,
   updateProjectCodeFileName,
   deleteProjectDataFun,
@@ -404,14 +345,12 @@ const LayoutEditor: React.FC<Props> = ({
     {
       label: "Open Details",
       onClick: () => {
-        console.log("Open!!");
         setOpenProjectDetailModal(true);
       },
     },
     {
       label: "Open Contributors",
       onClick: () => {
-        console.log("Open!!");
         setOpenContributorModal(true);
       },
     },
@@ -421,25 +360,17 @@ const LayoutEditor: React.FC<Props> = ({
     projectMenu.push({
       label: "Edit Contributors",
       onClick: () => {
-        console.log("Open!!");
         setOpenEditContributorModal(true);
       },
     });
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    // event.preventDefault();
     let charCode = String.fromCharCode(event.which).toLowerCase();
     if ((event.ctrlKey || event.metaKey) && charCode === "s") {
       event.preventDefault();
-      console.log("SAVE !!!");
       saveFileDataFun();
     }
-    // else if((event.ctrlKey || event.metaKey) && charCode === 'c') {
-    //   alert("CTRL+C Pressed");
-    // }else if((event.ctrlKey || event.metaKey) && charCode === 'v') {
-    //   alert("CTRL+V Pressed");
-    // }
   };
 
   const { showEditorSideBar, lockedFiles } = useSelector((state: RootState) => {
@@ -462,12 +393,9 @@ const LayoutEditor: React.FC<Props> = ({
             data={projectData}
             fetchCodeByNodeId={fetchCodeByNodeId}
             enableSaveBtn={enableSaveBtn}
-            setNewCodeNewFile={(tree: any, fileId: any, status: boolean) =>
-              updateCodeDataForNewFile(tree, fileId, status)
-            }
+            updateCodeDataForNewFile={updateCodeDataForNewFile}
             updateProjectCodeFileName={updateProjectCodeFileName}
             deleteProjectData={deleteProjectDataFun}
-            saveFileDataFun={saveFileDataFun}
             openFileName={openFileName}
           />
         }

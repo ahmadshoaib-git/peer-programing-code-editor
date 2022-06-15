@@ -11,19 +11,14 @@ import { PlaceholderInput } from "src/components/NewTree/TreePlaceholderInput";
 import FILE_ICONS from "src/components/NewTree/FileIcons";
 
 const File = ({ name, id, node, onNodeClick }) => {
-  // console.log(name, id, node, onNodeClick);
-  // const { dispatch, isImparative, onNodeClick } = useTreeContext();
   const [isEditing, setEditing] = useState(false);
   const ext = useRef("");
-
-  console.log("isEditing >>", isEditing);
 
   let splitted = name?.split(".");
   ext.current = splitted[splitted.length - 1];
 
   const toggleEditing = () => setEditing(!isEditing);
   const commitEditing = (name) => {
-    console.log("commitEditing >", name);
     setEditing(false);
   };
   const commitDelete = () => {
@@ -33,7 +28,6 @@ const File = ({ name, id, node, onNodeClick }) => {
   const handleNodeClick = React.useCallback(
     (e) => {
       e.stopPropagation();
-      console.log(name, id, node, onNodeClick);
       onNodeClick({ node }, () => setEditing(false));
     },
     [node]

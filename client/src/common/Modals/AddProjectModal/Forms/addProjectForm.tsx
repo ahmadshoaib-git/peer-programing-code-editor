@@ -37,9 +37,7 @@ const AddProjectModal: React.FC<Props> = (props) => {
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
-      console.log("Received values of form: ", values);
       const response = await addProject(projectName, contributors, email || "");
-      console.log(`Data > ${response}`);
       await Notify(`${projectName} added successfully!`, "success");
       props.refreshData && props.refreshData();
       props.closeModal();

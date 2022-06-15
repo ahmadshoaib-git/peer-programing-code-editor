@@ -17,7 +17,6 @@ const responseInterceptor = (callback: () => void) => {
   axios.interceptors.response.use(
     (response) => response,
     (error) => {
-      console.log("errorrrrrr >", error);
       if (error.response.status === 401) {
         console.log(error);
         localStorage.clear();

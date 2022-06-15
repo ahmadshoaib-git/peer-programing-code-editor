@@ -14,8 +14,6 @@ const LoginForm = () => {
     // const {confirm-password, password} = values;
     try {
       const response = await callLogin(values.email, values.password);
-      console.log("Received values of form: ", values);
-      console.log("API data >", response, response.data);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("email", response.data.email);
       localStorage.setItem("name", response.data.name);

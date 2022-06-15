@@ -59,7 +59,6 @@ const ProjectEditorSlice = createSlice({
       state: ProjectEditorReducerState,
       action: PayloadAction<NewTreeDataPayload>
     ) => {
-      console.log("NewTreeData > Action.Payload > ", action.payload);
       state.newTreeData = action.payload.newTreeData;
     },
     setProjectInitialState: (

@@ -19,14 +19,15 @@ const Tree = (props) => {
   useEffect(() => {
     const {
       setNewTree,
-      setNewCodeNewFile,
       deleteProjectData,
       updateProjectCodeFileName,
+      updateCodeDataForNewFile,
     } = props;
     const tree = getTree(state, state);
     // setNewTree(tree);
     if (newActionType === "creation") {
-      if (newFileType !== "folder") setNewCodeNewFile(tree, newFileId, true);
+      if (newFileType !== "folder")
+        updateCodeDataForNewFile(tree, newFileId, true);
     }
     if (newActionType === "deletion") {
       deleteProjectData(tree, newFileId);
@@ -56,7 +57,6 @@ const Tree = (props) => {
 
   const onNodeClickHandler = React.useCallback((node, name) => {
     try {
-      console.log("name >", node, name);
       props.onNodeClick(node);
     } catch (err) {
       console.log(err);
@@ -66,12 +66,6 @@ const Tree = (props) => {
   const getTree = (data) => {
     return data?.length > 0
       ? data.map((item) => {
-          // item.parentNode = parentNode;
-          // if (!parentNode) {
-          //   item.parentNode = data;
-          // }
-          // if (!item.id) item.id = v4();
-          console.log("item >", item);
           if (item.type === "file") {
             return {
               name: item.name,

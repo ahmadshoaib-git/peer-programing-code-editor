@@ -3,7 +3,6 @@ import { searchDFS, createFile, createFolder } from "../utils";
 import { FILE, FOLDER } from "./constants";
 
 const reducer = (state, action) => {
-  console.log(state);
   let newState = _cloneDeep(state);
   let node = null;
   let parent = null;

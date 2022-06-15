@@ -12,11 +12,6 @@ import { File } from "src/components/Tree/File/TreeFile";
 const Tree = (props) => {
   const [state, dispatch] = useReducer(reducer, props?.data);
 
-  useEffect(() => {
-    const tree = getTree(state, state);
-    console.log(tree);
-  }, [state]);
-
   useLayoutEffect(() => {
     dispatch({ type: "SET_DATA", payload: props?.data });
   }, [props?.data]);
@@ -40,12 +35,6 @@ const Tree = (props) => {
   const getTree = (data) => {
     return data?.length > 0
       ? data.map((item) => {
-          // item.parentNode = parentNode;
-          // if (!parentNode) {
-          //   item.parentNode = data;
-          // }
-          // if (!item.id) item.id = v4();
-          console.log("item >", item);
           if (item.type === "file") {
             return {
               name: item.name,

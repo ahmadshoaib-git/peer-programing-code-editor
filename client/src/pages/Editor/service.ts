@@ -45,7 +45,6 @@ const saveFileData = async (
     fileId: fileId,
     fileCode: fileCode,
   };
-  console.log("creds >", creds);
   return await axios({
     method: "POST",
     url: `${BASE_URL}/project/saveFileData`,

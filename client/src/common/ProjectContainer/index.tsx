@@ -52,21 +52,18 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
     {
       label: "Open Project",
       onClick: () => {
-        console.log("Open!!");
         navigate(`/editor/${_id}`);
       },
     },
     {
       label: "Open Details",
       onClick: () => {
-        console.log("Open!!");
         setOpenProjectDetailModal(true);
       },
     },
     {
       label: "Open Contributors",
       onClick: () => {
-        console.log("Open!!");
         setOpenContributorModal(true);
       },
     },
@@ -76,7 +73,6 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
     projectMenu.push({
       label: "Edit Contributors",
       onClick: () => {
-        console.log("Open!!");
         setOpenEditContributorModal(true);
       },
     });
@@ -99,7 +95,6 @@ const ProjectContainer: React.FC<Props> = ({ data, owner }) => {
     if (owner === "self") return owner;
     else return ownerName;
   };
-  console.log("Rendered !!");
   return (
     <ProjectContainerWrapper>
       <ProjectNameSection>

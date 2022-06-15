@@ -54,13 +54,11 @@ const Folder = ({
 
   const commitFolderCreation = async (name) => {
     const nodeId = await getId();
-    console.log(nodeId);
     setNewFiledIdAndType(nodeId, "folder", "creation");
     dispatch({ type: FOLDER.CREATE, payload: { id, name, nodeId } });
   };
   const commitFileCreation = async (name) => {
     const nodeId = await getId();
-    console.log(nodeId);
     setNewFiledIdAndType(nodeId, "file", "creation");
     dispatch({ type: FILE.CREATE, payload: { id, name, nodeId } });
   };

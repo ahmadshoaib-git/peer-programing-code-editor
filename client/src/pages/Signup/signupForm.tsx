@@ -24,7 +24,6 @@ const SignupForm = () => {
       } else {
         Notify("Password and confirm password dont match!", "error");
       }
-      console.log("Received values of form: ", values);
     } catch (err: any) {
       console.log(err);
       let message = "Unable to Signup User";

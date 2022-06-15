@@ -14,7 +14,6 @@ export interface Props {
 const AddContributorModal: React.FC<Props> = (props) => {
   const onFinish = async (values: any) => {
     try {
-      console.log("Received values of form: ", values);
       props.handleContributorAddition({
         name: values.name,
         email: values.email,

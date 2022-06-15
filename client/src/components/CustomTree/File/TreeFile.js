@@ -42,15 +42,10 @@ const File = ({
   const lockedFile =
     lockedFiles.length > 0
       ? lockedFiles?.filter((lFile) => {
-          console.log("lock => ", lFile.fileId, id);
           return lFile.fileId == id;
         })
       : null;
-  console.log("file_locked >", lockedFiles, lockedFile, lockedFiles.length > 0);
-  console.log(`projectData > ${codeChanged}`);
   const ext = useRef("");
-  console.log("openFileName >", openFileName);
-  console.log("name >", name);
 
   let splitted = name?.split(".");
   ext.current = splitted[splitted.length - 1];
@@ -68,7 +63,6 @@ const File = ({
   };
   const handleNodeClick = (e) => {
     e.stopPropagation();
-    console.log("****** >>>> codeChanged >", codeChanged);
     if (codeChanged) {
       setOpenConfirmationModal(true);
     } else onNodeClick({ node, name });

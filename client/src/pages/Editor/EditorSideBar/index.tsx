@@ -14,20 +14,18 @@ export interface Props {
   data?: any;
   fetchCodeByNodeId: (nodeId: any, name: String) => void;
   enableSaveBtn: boolean;
-  setNewCodeNewFile: any;
   deleteProjectData?: (tree: any, fileId: any) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
-  saveFileDataFun: () => void;
+  updateCodeDataForNewFile: (tree: any, fileId: any, status: any) => void;
   openFileName: String;
 }
 const EditorSideBar: React.FC<Props> = ({
   data,
   enableSaveBtn,
   fetchCodeByNodeId,
-  setNewCodeNewFile,
   updateProjectCodeFileName,
+  updateCodeDataForNewFile,
   deleteProjectData,
-  saveFileDataFun,
   openFileName,
 }) => {
   const treeData = data ? JSON.parse(data?.projectDetail?.fileTree) : [];
@@ -44,11 +42,11 @@ const EditorSideBar: React.FC<Props> = ({
         projectData={data}
         treeData={treeData}
         fetchCodeByNodeId={fetchCodeByNodeId}
-        setNewCodeNewFile={setNewCodeNewFile}
         updateProjectCodeFileName={updateProjectCodeFileName}
         deleteProjectData={deleteProjectData}
         openFileName={openFileName}
         enableSaveBtn={enableSaveBtn}
+        updateCodeDataForNewFile={updateCodeDataForNewFile}
       />
     </CustomEditorSideBarWrapper>
   );

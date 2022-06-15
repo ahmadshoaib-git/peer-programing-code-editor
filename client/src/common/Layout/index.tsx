@@ -19,7 +19,6 @@ export interface Props {
 }
 
 const Layout: React.FC<Props> = ({ children, sideBarContent }) => {
-  console.log(!sideBarContent);
   const { showEditorSideBar } = useSelector((state: RootState) => {
     return state.general;
   });

@@ -11,8 +11,8 @@ export interface Props {
   treeData?: any;
   fetchCodeByNodeId: (nodeId: any, name: String) => void;
   deleteProjectData?: (tree: any, fileId: any) => void;
+  updateCodeDataForNewFile: (tree: any, fileId: any, status: any) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
-  setNewCodeNewFile: any;
   openFileName: String;
   enableSaveBtn: Boolean;
 }
@@ -21,9 +21,9 @@ const Collapse: React.FC<Props> = ({
   projectData,
   treeData,
   fetchCodeByNodeId,
-  setNewCodeNewFile,
   deleteProjectData,
   updateProjectCodeFileName,
+  updateCodeDataForNewFile,
   openFileName,
   enableSaveBtn,
 }) => {
@@ -45,7 +45,6 @@ const Collapse: React.FC<Props> = ({
   }
   const genExtra = () => <></>;
   const text = "This is a dummy text";
-  console.log("--- ", text);
   return (
     <CustomCollapse
       defaultActiveKey={["1"]}
@@ -62,8 +61,8 @@ const Collapse: React.FC<Props> = ({
             data={data}
             onUpdate={handleUpdate}
             onNodeClick={handleClick}
-            setNewCodeNewFile={setNewCodeNewFile}
             deleteProjectData={deleteProjectData}
+            updateCodeDataForNewFile={updateCodeDataForNewFile}
             updateProjectCodeFileName={updateProjectCodeFileName}
             openFileName={openFileName}
             enableSaveBtn={enableSaveBtn}
