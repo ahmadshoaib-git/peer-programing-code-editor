@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { loginUserReqSchema, registerUserReqSchema } from "./req.validator";
 import { UserModel } from "../../models/index";
 import { getErrorMessage } from "../../utils";
 import { generateJWT } from "../../middlewares/auth";
@@ -18,6 +19,8 @@ async function createUser(req: Request, res: Response) {
   };
   try {
     const { name, email, password } = req.body;
+    const check = registerUserReqSchema.validate({ name, password, email });
+    console.log(check);
     const tempData = await saveData(name, email, password);
     let data: any = {
       email: tempData.email,
@@ -54,10 +57,14 @@ async function userConfirmation(req: Request, res: Response) {
 async function userLogin(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
+    const check = loginUserReqSchema.validate({ email, password });
+    console.log(check);
+    if (check.error) throw check.error;
     const users = await UserModel.find({
       email: email,
       password: password,
     });
+
     if (!users || users?.length === 0)
       throw "User not found! Please register new user.";
     console.log(users[0]);
