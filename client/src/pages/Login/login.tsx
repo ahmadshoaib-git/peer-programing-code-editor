@@ -14,14 +14,17 @@ const LoginForm = () => {
     // const {confirm-password, password} = values;
     try {
       const response = await callLogin(values.email, values.password);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("email", response.data.email);
-      localStorage.setItem("name", response.data.name);
+      if (!response.data) throw response;
+      console.log(response);
+      localStorage.setItem("token", response?.data?.token);
+      localStorage.setItem("email", response?.data?.email);
+      localStorage.setItem("name", response?.data?.name);
       dispatch(setLoggedIn({ loggedIn: true }));
-      Notify(`Welcome back ${response.data.name}`, "success");
+      Notify(`Welcome back ${response?.data?.name}`, "success");
       navigate(`/`);
     } catch (err: any) {
       let message = "Unable to Login User";
+      console.log(err);
       if (err?.response) {
         message = err?.response?.data?.message;
         console.log(err?.response.data?.message); // => the response payload
