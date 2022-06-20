@@ -1,4 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+import bcrypt from "bcryptjs";
+import createError from "http-errors";
 import { loginUserReqSchema, registerUserReqSchema } from "./req.validator";
 import { UserModel } from "../../models/index";
 import { getErrorMessage } from "../../utils";
@@ -21,7 +23,11 @@ async function createUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
     const check = registerUserReqSchema.validate({ name, password, email });
     console.log(check);
-    const tempData = await saveData(name, email, password);
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+
+    console.log("Hash >", hash);
+    const tempData = await saveData(name, email, hash);
     let data: any = {
       email: tempData.email,
       name: tempData.name,
@@ -54,32 +60,37 @@ async function userConfirmation(req: Request, res: Response) {
   }
 }
 
-async function userLogin(req: Request, res: Response) {
+async function userLogin(req: Request, res: Response, next: NextFunction) {
   try {
     const { email, password } = req.body;
     const check = loginUserReqSchema.validate({ email, password });
-    console.log(check);
-    if (check.error) throw check.error;
-    const users = await UserModel.find({
+    if (check.error) return createError(400, check.error.message);
+    const users = await UserModel.findOne({
       email: email,
-      password: password,
     });
 
-    if (!users || users?.length === 0)
-      throw "User not found! Please register new user.";
-    console.log(users[0]);
-    const clonedUser = JSON.parse(JSON.stringify(users[0]));
+    if (!users || users?.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.password,
+      users.password
+    );
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ message: "Wrong email or password!" });
+    }
+    const clonedUser = JSON.parse(JSON.stringify(users));
     delete clonedUser["password"];
     delete clonedUser["passcode"];
     delete clonedUser["confirmed"];
     delete clonedUser["projects"];
     const token = await generateJWT(clonedUser, "8h");
     clonedUser["token"] = token;
-    console.log(`>> token :${token}`);
     return res.status(200).json(clonedUser);
   } catch (err: any) {
     const message = getErrorMessage(err);
-    console.log(message);
+    console.log("Error >>", message);
     return res.status(400).json({ message: message });
   }
 }

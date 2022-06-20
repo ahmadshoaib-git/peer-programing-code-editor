@@ -3,9 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const http_errors_1 = __importDefault(require("http-errors"));
+const req_validator_1 = require("./req.validator");
 const index_1 = require("../../models/index");
 const utils_1 = require("../../utils");
+const auth_1 = require("../../middlewares/auth");
 const jwtSecretKey = "Asfoi94293894kj4";
 async function createUser(req, res) {
     const saveData = async (name, email, password) => {
@@ -21,22 +24,19 @@ async function createUser(req, res) {
     };
     try {
         const { name, email, password } = req.body;
-        console.log(req.body);
-        const tempData = await saveData(name, email, password);
-        // console.log(`tempData :${tempData}`);
-        // sa
+        const check = req_validator_1.registerUserReqSchema.validate({ name, password, email });
+        console.log(check);
+        const salt = bcryptjs_1.default.genSaltSync(10);
+        const hash = bcryptjs_1.default.hashSync(password, salt);
+        console.log("Hash >", hash);
+        const tempData = await saveData(name, email, hash);
         let data = {
             email: tempData.email,
             name: tempData.name,
             userId: tempData._id,
         };
-        const token = await jsonwebtoken_1.default.sign(data, jwtSecretKey, {
-            expiresIn: "2h",
-        });
-        // const token = jwt.sign(data, jwtSecretKey);
+        const token = await (0, auth_1.generateJWT)(data, "8h");
         data["token"] = token;
-        console.log(`>> token :${token}`);
-        console.log(`>> data :${data}`);
         return res.status(200).json(data);
     }
     catch (err) {
@@ -64,31 +64,34 @@ async function userConfirmation(req, res) {
         return res.status(400).json({ message: err.message });
     }
 }
-async function userLogin(req, res) {
+async function userLogin(req, res, next) {
     try {
         const { email, password } = req.body;
-        const users = await index_1.UserModel.find({
+        const check = req_validator_1.loginUserReqSchema.validate({ email, password });
+        if (check.error)
+            return (0, http_errors_1.default)(400, check.error.message);
+        const users = await index_1.UserModel.findOne({
             email: email,
-            password: password,
         });
-        if (!users || users?.length === 0)
-            throw "User not found! Please register new user.";
-        console.log(users, users[0]);
-        const clonedUser = JSON.parse(JSON.stringify(users[0]));
+        if (!users || users?.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const isPasswordCorrect = await bcryptjs_1.default.compare(req.body.password, users.password);
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: "Wrong email or password!" });
+        }
+        const clonedUser = JSON.parse(JSON.stringify(users));
         delete clonedUser["password"];
         delete clonedUser["passcode"];
         delete clonedUser["confirmed"];
-        const token = await jsonwebtoken_1.default.sign(clonedUser, jwtSecretKey, {
-            expiresIn: "2h",
-        });
+        delete clonedUser["projects"];
+        const token = await (0, auth_1.generateJWT)(clonedUser, "8h");
         clonedUser["token"] = token;
-        console.log(`>> token :${token}`);
-        console.log(`>> clonedUser :${clonedUser}`);
         return res.status(200).json(clonedUser);
     }
     catch (err) {
         const message = (0, utils_1.getErrorMessage)(err);
-        console.log(message);
+        console.log("Error >>", message);
         return res.status(400).json({ message: message });
     }
 }
