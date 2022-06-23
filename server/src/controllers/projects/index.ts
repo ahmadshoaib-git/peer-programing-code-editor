@@ -287,7 +287,7 @@ async function getProjectsAllFilesData(req: Request, res: Response) {
     filesCode.forEach((element: any) => {
       codeData = `${codeData} ${element.code}`;
     });
-    // codeData = JSON.stringify(tempfilesCode);
+    // codeData = JSON.stringify(tempfilesCode);//
     console.log("=============>>>>> ", codeData);
     return res.status(200).json(codeData);
   } catch (err: any) {
