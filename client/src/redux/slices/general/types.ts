@@ -1,5 +1,6 @@
 export type GeneralReducerState = {
   showEditorSideBar: boolean;
+  showOutputSection: boolean;
   onlineContributors: Array<any>;
   lockedFiles: Array<any>;
 };
@@ -7,6 +8,10 @@ export type GeneralReducerState = {
 export type ShowEditorSideBarPayload = {
   showEditorSideBar: boolean;
 }; //onlineContributors
+
+export type ShowOutputSideBarPayload = {
+  showOutputSection: boolean;
+};
 
 export type OnlineContributorsPayload = {
   onlineContributors: Array<any>;

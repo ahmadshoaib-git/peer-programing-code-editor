@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Tooltip } from "antd";
 import { BsFileEarmarkLock } from "react-icons/bs";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,8 @@ import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
+import { MdPlayCircleOutline } from "react-icons/md";
+import { VscCode } from "react-icons/vsc";
 import {
   setShowEditorSideBar,
   setLockedFilesPayload,
@@ -28,6 +30,7 @@ import {
   IconButton,
   Dropdown,
   CustomTooltip,
+  OutputConsole,
 } from "src/components";
 import {
   ProjectDetailsModal,
@@ -35,8 +38,10 @@ import {
   EditContributor,
 } from "src/common";
 import { setProjectInitialState } from "src/pages/Editor/slice";
+import { setShowOutputSection } from "src/redux/slices/general";
 import {
   getProjectById,
+  getProjectAllFilesData,
   getProjectFileDataById,
   editProjectFileFolderName,
   saveProjectData,
@@ -45,6 +50,7 @@ import {
 } from "./service";
 import {
   EditorHeaderSection,
+  EditorFooterSection,
   SpanWrapper,
   SpanWrapperSave,
   FileLocked,
@@ -80,7 +86,6 @@ const Editor = () => {
   const [newCodeData, setNewCodeData] = React.useState<any>(undefined);
   const [enableSave, setEnableSave] = React.useState<boolean>(false);
   const [openFileName, setOpenFileName] = React.useState<String>("index.js");
-  const [newCodeNewFile, setNewCodeNewFile] = React.useState<boolean>(false);
 
   const [openProjectDetailModal, setOpenProjectDetailModal] =
     React.useState<boolean>(false);
@@ -262,15 +267,12 @@ const Editor = () => {
   ) => {
     try {
       const codeData = `
-      import React, {useState} from "react";
   
       const NewComp = () => {
         return (
           <div>Hello World from NewComp!</div>
         )
       }
-      
-      export default NewComp;
       `;
       const tempCode = [
         {
@@ -340,6 +342,31 @@ const LayoutEditor: React.FC<Props> = ({
   setOpenEditContributorModal,
 }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false);
+  const [allCode, setAllCode] = React.useState("");
+  const { showEditorSideBar, lockedFiles, showOutputSection } = useSelector(
+    (state: RootState) => {
+      return state.general;
+    }
+  );
+  useEffect(() => {
+    if (showOutputSection) {
+      fetchAllCode();
+    }
+  }, [showOutputSection]);
+
+  const fetchAllCode = async () => {
+    try {
+      setLoading(true);
+      const tempProjectData = await getProjectAllFilesData(projectData._id);
+      setAllCode(tempProjectData.data);
+      console.log(tempProjectData.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
   const email = localStorage.getItem("email");
   const projectMenu: Array<MenuItemsProp> = [
     {
@@ -372,10 +399,6 @@ const LayoutEditor: React.FC<Props> = ({
       saveFileDataFun();
     }
   };
-
-  const { showEditorSideBar, lockedFiles } = useSelector((state: RootState) => {
-    return state.general;
-  });
 
   const toggleSideBar = () => {
     dispatch(setShowEditorSideBar({ showEditorSideBar: !showEditorSideBar }));
@@ -446,10 +469,36 @@ const LayoutEditor: React.FC<Props> = ({
           </SpanWrapperSave>
         )}
 
-        <CodeEditor
-          data={codeData}
-          setNewCode={(tempCode: any) => setNewCodeData(tempCode)}
-        />
+        {!showOutputSection ? (
+          <CodeEditor
+            data={codeData}
+            setNewCode={(tempCode: any) => setNewCodeData(tempCode)}
+          />
+        ) : (
+          <OutputConsole loading={loading} code={allCode} />
+        )}
+        <EditorFooterSection>
+          <div
+            className="clickable"
+            onClick={() => {
+              dispatch(
+                setShowOutputSection({ showOutputSection: !showOutputSection })
+              );
+            }}
+          >
+            {!showOutputSection ? (
+              <div>
+                <MdPlayCircleOutline className="play" />
+                <span>Run</span>
+              </div>
+            ) : (
+              <div>
+                <VscCode className="editor" />
+                <span>Editor</span>
+              </div>
+            )}
+          </div>
+        </EditorFooterSection>
       </Layout>
 
       <ProjectDetailsModal

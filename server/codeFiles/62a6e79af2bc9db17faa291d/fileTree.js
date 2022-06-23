@@ -1,1 +1,0 @@
-[{"type":"folder","name":"src","id":"2a9bad07-762e-45a1-b733-9e619da6166a","children":[{"type":"file","name":"index.js","id":"56e23557-fd24-4f43-af67-b13d058b30b6"},{"type":"file","name":"app.js","id":"ef08756c-663b-42c1-b78d-101f9a2bec4d"}]}]

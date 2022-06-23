@@ -54,5 +54,12 @@ ProjectRouter.post(
   verifyAuth,
   ProjectController.deleteProjectData
 );
-// getProjectsByContributorsEmail getProjectData getProjectFileData deleteProjectData
+
+ProjectRouter.get(
+  "/allProjectFilesData",
+  verifyAuth,
+  ProjectController.getProjectsAllFilesData
+);
+
+// getProjectsByContributorsEmail getProjectData getProjectFileData deleteProjectData getProjectsAllFilesData
 export default ProjectRouter;

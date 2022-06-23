@@ -257,6 +257,64 @@ async function getProjectFileData(req: Request, res: Response) {
   }
 }
 
+async function getProjectsAllFilesData(req: Request, res: Response) {
+  try {
+    const { projectId } = req.query;
+    const projects = await ProjectModel.find({
+      _id: projectId,
+    });
+    if (!projects || projects?.length === 0) throw "Project not found!";
+    const selectedProject = projects[0];
+    const dirPath = `${CODE_DIR_NAME}/${selectedProject._id.toString()}`;
+    const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+    const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
+    console.log(dirFilesCode);
+    console.log(dirFileTree);
+    const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
+      encoding: "utf8",
+    });
+    const tempfilesTree = await fsPromise.readFile(dirFileTree, {
+      encoding: "utf8",
+    });
+    const filesCode = JSON.parse(tempfilesCode);
+    const filesTree = JSON.parse(tempfilesTree);
+    // let dataaa = getFileIdsFromTree([], filesTree);
+    // dataaa = dataaa.flat(Infinity).filter(Boolean);
+    // console.log("dataaa ===>", dataaa);
+    console.log("===> ", tempfilesTree);
+    console.log("===> ", tempfilesCode);
+    let codeData = "";
+    filesCode.forEach((element: any) => {
+      codeData = `${codeData} ${element.code}`;
+    });
+    // codeData = JSON.stringify(tempfilesCode);
+    console.log("=============>>>>> ", codeData);
+    return res.status(200).json(codeData);
+  } catch (err: any) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
+}
+
+const getFileIdsFromTree = (data: any, tree: any) => {
+  console.log("tree >", tree);
+  console.log("data >", data);
+  console.log("typeof tree >", typeof tree);
+  console.log("tree?.length >", tree?.length);
+  return (
+    tree?.length > 0 &&
+    tree.map((item: any, index: any) => {
+      if (item.type === "file") {
+        data.push(item.id);
+        if (index + 1 === tree?.length) return data;
+      }
+      if (item.type === "folder" && item?.children?.length > 0) {
+        return getFileIdsFromTree(data, item.children);
+      }
+    })
+  );
+};
+
 async function saveProjectData(req: Request, res: Response) {
   try {
     const { projectId, fileTree, fileId, fileCode } = req.body;
@@ -408,6 +466,7 @@ const ProjectController = {
   getprojectsByUserEmail,
   getProjectNodesUUID,
   getProjectFileData,
+  getProjectsAllFilesData,
   saveProjectData,
   deleteProjectData,
   saveFileData,

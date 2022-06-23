@@ -14,15 +14,15 @@ export const MainWrapper = styled.main<SidebarProps>`
   width: ${({ theme: { layout } }) => layout.main.width};
   height: ${({ theme: { layout } }) => layout.main.height};
   display: flex;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
   .inner-section {
     width: ${({ noSideBar, theme: { layout } }) =>
       noSideBar ? "100%" : layout.Editor.width};
     position: relative;
     height: 100%;
-    padding: 1rem;
+    /* padding: 1rem; */
     padding-right: 0;
-    overflow-y: auto;
+    overflow-y: hidden;
     > section {
       margin-top: 2%;
       height: 98%;

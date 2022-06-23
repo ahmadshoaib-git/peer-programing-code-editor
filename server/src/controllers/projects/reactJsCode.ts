@@ -1,19 +1,16 @@
 import { v4 } from "uuid";
 
 const codeData = `
-  import React, {useState} from "react";
 
 const ReactComp = () => {
   return (
-    <div>Hello World from IndexComp!</div>
+    <div>Hello World from ReactComp!</div>
   )
 }
 
-export default ReactComp;
   `;
 
 const codeDataIndex = `
-  import React, {useState} from "react";
 
 const IndexComp = () => {
   return (
@@ -21,11 +18,9 @@ const IndexComp = () => {
   )
 }
 
-export default IndexComp;
   `;
 
 const codeDataApp = `
-  import React, {useState} from "react";
 
 const AppComp = () => {
   return (
@@ -33,7 +28,6 @@ const AppComp = () => {
   )
 }
 
-export default AppComp;
   `;
 
 // const structure = [

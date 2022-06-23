@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const EditorHeaderSection = styled.div`
   background: ${({ theme: { colors } }) => `${colors.headingColor}!important`};
@@ -29,6 +29,58 @@ export const EditorHeaderSection = styled.div`
   svg {
     cursor: pointer;
     font-size: 1.1rem;
+  }
+`;
+
+export const EditorFooterSection = styled.div`
+  background: ${({ theme: { colors } }) => `${colors.black}!important`};
+
+  color: ${({ theme: { colors } }) => `${colors.white}!important`};
+
+  border-color: ${({ theme: { colors } }) => `${colors.black}!important`};
+
+  width: 100%;
+  height: fit-content !important;
+  padding: 0 1rem;
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: ${({ theme: { fonts } }) => fonts.primary};
+  font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
+
+  svg {
+    cursor: pointer;
+    font-size: 1.1rem;
+    /* color: ${({ theme: { colors } }) => `${colors.pink}!important`}; */
+  }
+
+  .clickable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
+    color: ${({ theme: { colors } }) => `${colors.white}`};
+  }
+
+  .play {
+    color: #29ab87;
+  }
+  .editor {
+    color: ${({ theme: { colors } }) => `${colors.pink}`};
+  }
+  div div svg {
+    margin-right: 5px;
+  }
+
+  div div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 
