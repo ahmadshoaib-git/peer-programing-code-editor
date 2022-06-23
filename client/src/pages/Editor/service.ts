@@ -7,6 +7,12 @@ const getProjectById = async (id: String) => {
     url: `${BASE_URL}/project/individual?id=${id}`,
   });
 };
+const getProjectAllFilesData = async (projectId: String) => {
+  return await axios({
+    method: "GET",
+    url: `${BASE_URL}/project/allProjectFilesData?projectId=${projectId}`,
+  });
+};
 
 const getProjectFileDataById = async (projectId: String, fileId: String) => {
   return await axios({
@@ -93,6 +99,7 @@ const editProjectFileFolderName = async (
 
 export {
   getProjectById,
+  getProjectAllFilesData,
   getProjectFileDataById,
   editProjectFileFolderName,
   saveProjectData,

@@ -253,6 +253,32 @@ async function getProjectFileData(req, res) {
         return res.status(400).json({ message: err.message });
     }
 }
+async function getProjectsAllFilesData(req, res) {
+    try {
+        const { projectId } = req.query;
+        const projects = await models_1.ProjectModel.find({
+            _id: projectId,
+        });
+        if (!projects || projects?.length === 0)
+            throw "Project not found!";
+        const selectedProject = projects[0];
+        const dirPath = `${CODE_DIR_NAME}/${selectedProject._id.toString()}`;
+        const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+        const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
+            encoding: "utf8",
+        });
+        const filesCode = JSON.parse(tempfilesCode);
+        let codeData = filesCode.reduce((data, currentData) => {
+            data = `${data} ${currentData}`;
+        }, "");
+        codeData = JSON.stringify(codeData);
+        return res.status(200).json(codeData);
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(400).json({ message: err.message });
+    }
+}
 async function saveProjectData(req, res) {
     try {
         const { projectId, fileTree, fileId, fileCode } = req.body;
@@ -389,6 +415,7 @@ const ProjectController = {
     getprojectsByUserEmail,
     getProjectNodesUUID,
     getProjectFileData,
+    getProjectsAllFilesData,
     saveProjectData,
     deleteProjectData,
     saveFileData,

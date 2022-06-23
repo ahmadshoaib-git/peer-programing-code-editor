@@ -16,6 +16,7 @@ import IconButton from "./IconButton";
 import Modal from "./Modal";
 import Timer from "./Timer";
 import PageLoader from "./PageLoader";
+import OutputConsole from "./OutputConsole";
 
 export {
   Avatar,
@@ -37,4 +38,5 @@ export {
   Timer,
   PageLoader,
   CustomTooltip,
+  OutputConsole,
 };

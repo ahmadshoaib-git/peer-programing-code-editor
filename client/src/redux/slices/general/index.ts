@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   GeneralReducerState,
   ShowEditorSideBarPayload,
+  ShowOutputSideBarPayload,
   OnlineContributorsPayload,
   LockedFilesPayload,
 } from "./types";
 
 const initialState: GeneralReducerState = {
   showEditorSideBar: true,
+  showOutputSection: false,
   onlineContributors: [],
   lockedFiles: [],
 };
@@ -21,6 +23,12 @@ const generalSlice = createSlice({
       action: PayloadAction<ShowEditorSideBarPayload>
     ) => {
       state.showEditorSideBar = action.payload.showEditorSideBar;
+    },
+    setShowOutputSection: (
+      state: GeneralReducerState,
+      action: PayloadAction<ShowOutputSideBarPayload>
+    ) => {
+      state.showOutputSection = action.payload.showOutputSection;
     },
     setOnlineContributorsPayload: (
       state: GeneralReducerState,
@@ -41,6 +49,7 @@ export const {
   setShowEditorSideBar,
   setOnlineContributorsPayload,
   setLockedFilesPayload,
+  setShowOutputSection,
 } = generalSlice.actions;
 
 export default generalSlice.reducer;
