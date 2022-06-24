@@ -54,22 +54,22 @@ const Folder = ({
 
   const commitFolderCreation = async (name) => {
     const nodeId = await getId();
-    setNewFiledIdAndType(nodeId, "folder", "creation");
+    setNewFiledIdAndType(nodeId, "folder", "creation", name);
     dispatch({ type: FOLDER.CREATE, payload: { id, name, nodeId } });
   };
   const commitFileCreation = async (name) => {
     const nodeId = await getId();
-    setNewFiledIdAndType(nodeId, "file", "creation");
+    setNewFiledIdAndType(nodeId, "file", "creation", name);
     dispatch({ type: FILE.CREATE, payload: { id, name, nodeId } });
   };
   const commitDeleteFolder = () => {
-    setNewFiledIdAndType(id, "folder", "deletion");
+    setNewFiledIdAndType(id, "folder", "deletion", name);
     dispatch({ type: FOLDER.DELETE, payload: { id } });
   };
   const commitFolderEdit = (name) => {
     dispatch({ type: FOLDER.EDIT, payload: { id, name } });
     setUpdatedFileName(name);
-    setNewFiledIdAndType(id, "folder", "edit");
+    setNewFiledIdAndType(id, "folder", "edit", name);
     setEditing(false);
   };
 

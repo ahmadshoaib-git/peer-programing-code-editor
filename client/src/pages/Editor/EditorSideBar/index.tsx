@@ -16,7 +16,12 @@ export interface Props {
   enableSaveBtn: boolean;
   deleteProjectData?: (tree: any, fileId: any) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
-  updateCodeDataForNewFile: (tree: any, fileId: any, status: any) => void;
+  updateCodeDataForNewFile: (
+    tree: any,
+    fileId: any,
+    status: any,
+    name: any
+  ) => void;
   openFileName: String;
 }
 const EditorSideBar: React.FC<Props> = ({

@@ -15,6 +15,7 @@ const Tree = (props) => {
   const [newFileType, setNewFileType] = React.useState("folder");
   const [updatedFileName, setUpdatedFileName] = React.useState("");
   const [newActionType, setNewActionType] = React.useState(null);
+  const [fileName, setFileName] = React.useState("");
 
   useEffect(() => {
     const {
@@ -27,7 +28,7 @@ const Tree = (props) => {
     // setNewTree(tree);
     if (newActionType === "creation") {
       if (newFileType !== "folder")
-        updateCodeDataForNewFile(tree, newFileId, true);
+        updateCodeDataForNewFile(tree, newFileId, true, fileName);
     }
     if (newActionType === "deletion") {
       deleteProjectData(tree, newFileId);
@@ -49,10 +50,11 @@ const Tree = (props) => {
     }
   }, [state]);
 
-  const setNewFiledIdAndType = (id, type, action) => {
+  const setNewFiledIdAndType = (id, type, action, name) => {
     setNewFileId(id);
     setNewFileType(type);
     setNewActionType(action);
+    setFileName(name);
   }; //updateProjectCodeFileName
 
   const onNodeClickHandler = React.useCallback((node, name) => {

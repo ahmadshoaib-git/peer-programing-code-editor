@@ -7,9 +7,10 @@ import { setNewCodeData } from "src/pages/Editor/slice";
 
 export interface Props {
   data?: any;
+  fileName: any;
   setNewCode: (tempCode: any) => void;
 }
-const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
+const CodeEditor: React.FC<Props> = ({ data, fileName, setNewCode }) => {
   const editorRef = React.useRef(null);
   const dispatch = useDispatch();
   const codeData = data && data.length > 0 ? data[0]?.code : "";
@@ -18,6 +19,14 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
   const { lockedFiles } = useSelector((state: RootState) => {
     return state.general;
   });
+  let fileType = "javascript";
+  try {
+    if (fileName.split(".")[1] === "js") fileType = "javascript";
+    else if (fileName.split(".")[1] === "css") fileType = "css";
+    else if (fileName.split(".")[1] === "html") fileType = "html";
+  } catch (err) {
+    console.log(err);
+  }
 
   useEffect(() => {
     setCode(codeData);
@@ -34,6 +43,8 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
     } else setLockFile(false);
   }, [lockedFiles]);
 
+  console.log(fileName, fileType);
+
   function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
   }
@@ -47,7 +58,7 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
 
   const editorOptions = {
     // value: code,
-    language: "javascript",
+    language: fileType,
     theme: "vs-light",
     automaticLayout: true,
     minimap: {
@@ -58,6 +69,13 @@ const CodeEditor: React.FC<Props> = ({ data, setNewCode }) => {
     tabSize: 2,
     readOnly: lockFile,
   };
+
+  // useEffect(() => {
+  //   const model:any = editorRef?.current?.monaco.editor.getModel();
+  //   editorRef?.current?.editor?.setModelLanguage(model, lang);
+  // },[editorRef?.current]);
+
+  console.log("editorRef >", editorRef);
 
   return (
     <>

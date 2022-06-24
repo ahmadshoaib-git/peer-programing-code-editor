@@ -278,17 +278,62 @@ async function getProjectsAllFilesData(req: Request, res: Response) {
     });
     const filesCode = JSON.parse(tempfilesCode);
     const filesTree = JSON.parse(tempfilesTree);
-    // let dataaa = getFileIdsFromTree([], filesTree);
-    // dataaa = dataaa.flat(Infinity).filter(Boolean);
-    // console.log("dataaa ===>", dataaa);
-    console.log("===> ", tempfilesTree);
-    console.log("===> ", tempfilesCode);
-    let codeData = "";
-    filesCode.forEach((element: any) => {
-      codeData = `${codeData} ${element.code}`;
-    });
+    console.log("filesTree >", filesTree);
+    let jsFiles = getFileIdsFromTree([], filesTree, "js");
+    jsFiles = jsFiles.flat(Infinity).filter(Boolean);
+    console.log(
+      "======================================================================="
+    );
+    // console.log("jsFiles ===>", jsFiles);
+    let cssFiles = getFileIdsFromTree([], filesTree, "css");
+    cssFiles = cssFiles.flat(Infinity).filter(Boolean);
+    console.log("cssFiles ===>", cssFiles);
+    let htmlFiles = getFileIdsFromTree([], filesTree, "html");
+    htmlFiles = htmlFiles.flat(Infinity).filter(Boolean);
+    console.log("htmlFiles ===>", htmlFiles);
+    // console.log("===> ", tempfilesTree);
+    // console.log("===> ", tempfilesCode);
+    const codeData = await filesCode.reduce((code: any, currentFile: any) => {
+      // console.log("currentFile >", currentFile);
+      const pushToCodeObj = (type: any, codeData: any) => {
+        if (!code[type]) {
+          code[type] = [codeData];
+        } else {
+          code[type] = [...code[type], codeData];
+        }
+      };
+      let foundFlag = false;
+      for (const fileId of jsFiles) {
+        // console.log("js File Comparison > ", fileId, currentFile.id);
+        if (foundFlag) break;
+        else if (fileId === currentFile.id) {
+          foundFlag = true;
+          pushToCodeObj("js", currentFile.code);
+        }
+      }
+      for (const fileId of cssFiles) {
+        if (foundFlag) break;
+        else if (fileId === currentFile.id) {
+          foundFlag = true;
+          pushToCodeObj("css", currentFile.code);
+        }
+        console.log("css File Comparison > ", fileId, currentFile.id);
+      }
+      for (const fileId of htmlFiles) {
+        // console.log("html File Comparison > ", fileId, currentFile.id);
+        if (foundFlag) break;
+        else if (fileId === currentFile.id) {
+          foundFlag = true;
+          pushToCodeObj("html", currentFile.code);
+        }
+      }
+      return code;
+    }, {});
     // codeData = JSON.stringify(tempfilesCode);//
     console.log("=============>>>>> ", codeData);
+    console.log(
+      "======================================================================="
+    );
     return res.status(200).json(codeData);
   } catch (err: any) {
     console.log(err);
@@ -296,20 +341,23 @@ async function getProjectsAllFilesData(req: Request, res: Response) {
   }
 }
 
-const getFileIdsFromTree = (data: any, tree: any) => {
-  console.log("tree >", tree);
-  console.log("data >", data);
-  console.log("typeof tree >", typeof tree);
-  console.log("tree?.length >", tree?.length);
+const getFileIdsFromTree = (data: any, tree: any, extension: any) => {
+  // console.log("tree >", tree);
+  // console.log("data >", data);
+  // console.log("typeof tree >", typeof tree);
+  // console.log("tree?.length >", tree?.length);
   return (
     tree?.length > 0 &&
     tree.map((item: any, index: any) => {
+      const currentExtension = item.name.split(".")[1];
+      // console.log("extension >", extension);
+      // console.log("currentExtension >", currentExtension);
       if (item.type === "file") {
-        data.push(item.id);
+        if (currentExtension === extension) data.push(item.id);
         if (index + 1 === tree?.length) return data;
       }
       if (item.type === "folder" && item?.children?.length > 0) {
-        return getFileIdsFromTree(data, item.children);
+        return getFileIdsFromTree(data, item.children, extension);
       }
     })
   );

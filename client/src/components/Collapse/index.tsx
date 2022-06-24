@@ -11,7 +11,12 @@ export interface Props {
   treeData?: any;
   fetchCodeByNodeId: (nodeId: any, name: String) => void;
   deleteProjectData?: (tree: any, fileId: any) => void;
-  updateCodeDataForNewFile: (tree: any, fileId: any, status: any) => void;
+  updateCodeDataForNewFile: (
+    tree: any,
+    fileId: any,
+    status: any,
+    name: any
+  ) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   openFileName: String;
   enableSaveBtn: Boolean;

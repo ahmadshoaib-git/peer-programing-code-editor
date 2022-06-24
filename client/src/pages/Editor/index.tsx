@@ -61,7 +61,12 @@ export interface Props {
   codeData: any;
   fetchCodeByNodeId: (nodeId: any, name: String) => void;
   deleteProjectDataFun: (tree: any, fileId: any) => void;
-  updateCodeDataForNewFile: (tree: any, fileId: any, status: any) => void;
+  updateCodeDataForNewFile: (
+    tree: any,
+    fileId: any,
+    status: any,
+    name: any
+  ) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   saveFileDataFun: () => void;
   setNewCodeData?: any;
@@ -263,17 +268,36 @@ const Editor = () => {
   const updateCodeDataForNewFile = async (
     tree: any,
     fileId: any,
-    status: any
+    status: any,
+    name: any
   ) => {
+    console.log(name);
     try {
-      const codeData = `
+      const extension = name.split(".")[1];
+      let codeData = "";
+      if (extension === "js") {
+        codeData = `
   
-      const NewComp = () => {
-        return (
-          <div>Hello World from NewComp!</div>
-        )
+        const NewComp = () => {
+          return (
+            <div>Hello World from NewComp!</div>
+          )
+        }
+        `;
+      } else if (extension === "css") {
+        codeData = `
+  
+        .temp-class {
+          margin: 0;
+          padding: 0;
+        }
+        `;
+      } else if (extension === "html") {
+        codeData = `
+  
+        <div className="temp-class"></div>
+        `;
       }
-      `;
       const tempCode = [
         {
           id: fileId,
@@ -472,6 +496,7 @@ const LayoutEditor: React.FC<Props> = ({
         {!showOutputSection ? (
           <CodeEditor
             data={codeData}
+            fileName={openFileName}
             setNewCode={(tempCode: any) => setNewCodeData(tempCode)}
           />
         ) : (
