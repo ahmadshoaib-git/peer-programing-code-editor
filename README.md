@@ -1,6 +1,17 @@
 # peer-programing-code-editor
 
-This application will allow developers to set up their react project in an online code editor and code at the same time.
+In the current era of remote work environments, the concept of peer programming is reduced to sharing a common codebase and going back and forth with changes, or in best case getting on a zoom meet and screen sharing.
+We want to remove the hindrance and give developers the power of peer programming in an online environment.
+
+This online application allows developers to set up their react project in an online code editor and code at the same time.
+
+Application will work as follows:
+
+1. Setting online code works similar to any online code-editor e.g. codepen or codesandbox etc.
+2. Project is pre-configured with react setup similar to create-react-app structure.
+3. Peer/Parallel code editing will work similar to google docs where multiple user can access the same codebase structure and make edit at the same time.
+
+This application will allow developers to set up their react project in an online code editor and code at the same time on a single codebase simultaneously.
 
 Following is the tech-stack around which the application revolves.
 
