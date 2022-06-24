@@ -30,8 +30,8 @@ export const CustomTabs = styled(Tabs)<TabDataProp>`
   }
   .ant-tabs-nav {
     /* padding-right: 1rem; */
-    height: 2rem;
-    width: 100%;
+    height: 3rem;
+    width: 98%;
   }
   .ant-tabs-content-holder {
     height: calc(100% - 2rem);
