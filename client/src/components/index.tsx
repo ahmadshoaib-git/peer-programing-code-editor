@@ -17,6 +17,7 @@ import Modal from "./Modal";
 import Timer from "./Timer";
 import PageLoader from "./PageLoader";
 import OutputConsole from "./OutputConsole";
+import ErrorBoundaryWrapper from "./ErrorBoundaryWrapper";
 
 export {
   Avatar,
@@ -39,4 +40,5 @@ export {
   PageLoader,
   CustomTooltip,
   OutputConsole,
+  ErrorBoundaryWrapper,
 };

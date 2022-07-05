@@ -11,9 +11,7 @@ import {
 } from "./EditorSideBar.style";
 
 export interface Props {
-  data?: any;
-  fetchCodeByNodeId: (nodeId: any, name: String) => void;
-  enableSaveBtn: boolean;
+  fetchCodeByNodeId: (nodeId: any, name: string) => void;
   deleteProjectData?: (tree: any, fileId: any) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   updateCodeDataForNewFile: (
@@ -22,35 +20,30 @@ export interface Props {
     status: any,
     name: any
   ) => void;
-  openFileName: String;
 }
 const EditorSideBar: React.FC<Props> = ({
-  data,
-  enableSaveBtn,
   fetchCodeByNodeId,
   updateProjectCodeFileName,
   updateCodeDataForNewFile,
   deleteProjectData,
-  openFileName,
 }) => {
-  const treeData = data ? JSON.parse(data?.projectDetail?.fileTree) : [];
+  const { projectData } = useSelector((state: RootState) => {
+    return state.projectEditor;
+  });
+  const projectName = projectData?.projectDetail?.name || "";
   return (
     <CustomEditorSideBarWrapper>
       <CustomEditorSideBarHeader>
         <h2>
           <BiWorld />
-          <span>Project X</span>
+          <span>{projectName}</span>
         </h2>
         <Timer />
       </CustomEditorSideBarHeader>
       <Collapse
-        projectData={data}
-        treeData={treeData}
         fetchCodeByNodeId={fetchCodeByNodeId}
         updateProjectCodeFileName={updateProjectCodeFileName}
         deleteProjectData={deleteProjectData}
-        openFileName={openFileName}
-        enableSaveBtn={enableSaveBtn}
         updateCodeDataForNewFile={updateCodeDataForNewFile}
       />
     </CustomEditorSideBarWrapper>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "src/redux/store";
 import Tree from "../CustomTree";
 import { IoMdArrowDropdown, IoMdArrowDropright } from "react-icons/io";
 import { VscSymbolFile } from "react-icons/vsc";
@@ -7,9 +9,7 @@ import { reducer } from "src/components/Tree/state";
 import { CustomCollapse, CustomPanel } from "./collapse.style";
 
 export interface Props {
-  projectData?: any;
-  treeData?: any;
-  fetchCodeByNodeId: (nodeId: any, name: String) => void;
+  fetchCodeByNodeId: (nodeId: any, name: string) => void;
   deleteProjectData?: (tree: any, fileId: any) => void;
   updateCodeDataForNewFile: (
     tree: any,
@@ -18,20 +18,19 @@ export interface Props {
     name: any
   ) => void;
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
-  openFileName: String;
-  enableSaveBtn: Boolean;
 }
 
 const Collapse: React.FC<Props> = ({
-  projectData,
-  treeData,
   fetchCodeByNodeId,
   deleteProjectData,
   updateProjectCodeFileName,
   updateCodeDataForNewFile,
-  openFileName,
-  enableSaveBtn,
 }) => {
+  const { projectData, treeData, enableSave, fileOpenedName } = useSelector(
+    (state: RootState) => {
+      return state.projectEditor;
+    }
+  );
   let [data, setData] = useState<any>(treeData);
   const handleClick = (node: any) => {
     if (node.node.type === "folder") return;
@@ -50,6 +49,7 @@ const Collapse: React.FC<Props> = ({
   }
   const genExtra = () => <></>;
   const text = "This is a dummy text";
+  if (!projectData || !data) return <></>;
   return (
     <CustomCollapse
       defaultActiveKey={["1"]}
@@ -69,8 +69,8 @@ const Collapse: React.FC<Props> = ({
             deleteProjectData={deleteProjectData}
             updateCodeDataForNewFile={updateCodeDataForNewFile}
             updateProjectCodeFileName={updateProjectCodeFileName}
-            openFileName={openFileName}
-            enableSaveBtn={enableSaveBtn}
+            openFileName={fileOpenedName}
+            enableSaveBtn={enableSave}
           />
         </div>
       </CustomPanel>

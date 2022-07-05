@@ -31,6 +31,7 @@ import {
   Dropdown,
   CustomTooltip,
   OutputConsole,
+  ErrorBoundaryWrapper,
 } from "src/components";
 import {
   ProjectDetailsModal,
@@ -39,6 +40,11 @@ import {
 } from "src/common";
 import {
   setProjectInitialState,
+  setNewCodeData,
+  setCodeData,
+  setCombinedCodeData,
+  setFileOpenedName,
+  setEnableSave,
   setOpenContributorModal,
   setOpenEditContributorModal,
   setOpenProjectDetailModal,
@@ -64,7 +70,7 @@ import {
 export interface Props {
   projectData?: any;
   codeData: any;
-  fetchCodeByNodeId: (nodeId: any, name: String) => void;
+  fetchCodeByNodeId: (nodeId: any, name: string) => void;
   deleteProjectDataFun: (tree: any, fileId: any) => void;
   updateCodeDataForNewFile: (
     tree: any,
@@ -75,20 +81,19 @@ export interface Props {
   updateProjectCodeFileName: (tree: any, fileId: any, fileName: String) => void;
   saveFileDataFun: () => void;
   setNewCodeData?: any;
-  enableSaveBtn: boolean;
   setNewCodeNewFile?: any;
-  openFileName: String;
 }
 
 const Editor = () => {
   const param = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
-  const [projectData, setProjectData] = React.useState<any>(undefined);
-  const [codeData, setCodeData] = React.useState<any>(undefined);
-  const [newCodeData, setNewCodeData] = React.useState<any>(undefined);
-  const [enableSave, setEnableSave] = React.useState<boolean>(false);
-  const [openFileName, setOpenFileName] = React.useState<String>("index.js");
+
+  const { projectData, codeData, newCodeData, fileOpenedName } = useSelector(
+    (state: RootState) => {
+      return state.projectEditor;
+    }
+  );
 
   React.useEffect(() => {
     if (!param.id) <Navigate to="/" />;
@@ -129,11 +134,12 @@ const Editor = () => {
       const editorEmail = localStorage.getItem("email");
       const editorName = localStorage.getItem("name");
       const Socket = new CustomSocket();
+      debugger;
       if (codeData[0]?.code !== newCodeData[0]?.code) {
-        setEnableSave(true);
+        dispatch(setEnableSave({ enableSave: true }));
         dispatch(setCodeChanged({ codeChanged: true }));
         Socket.emitFileLocked({
-          name: openFileName,
+          name: fileOpenedName,
           fileId: newCodeData[0].id,
           editorEmail: editorEmail,
           editorName: editorName,
@@ -142,13 +148,13 @@ const Editor = () => {
       } else {
         dispatch(setCodeChanged({ codeChanged: false }));
         Socket.emitFileLocked({
-          name: openFileName,
+          name: fileOpenedName,
           fileId: newCodeData[0].id,
           editorEmail: editorEmail,
           editorName: editorName,
           type: "unlock",
         });
-        setEnableSave(false);
+        dispatch(setEnableSave({ enableSave: false }));
       }
     } catch (err) {
       console.log(err);
@@ -159,17 +165,20 @@ const Editor = () => {
     try {
       setLoading(true);
       const data = await getProjectById(id);
-      setLoading(false);
-      setProjectData(data?.data);
+      debugger;
       const newFiles = JSON.parse(data?.data?.projectDetail?.filesCode);
+      console.log(newFiles);
       const tempData = [
         {
           id: newFiles[0]?.id,
           code: newFiles[0]?.code,
         },
       ];
-      setCodeData(tempData);
-      setNewCodeData(tempData);
+      // dispatch(
+      //   setCombinedCodeData({ codeData: tempData, newCodeData: tempData })
+      // );setCodeData
+      dispatch(setCodeData({ codeData: tempData }));
+      dispatch(setNewCodeData({ newCodeData: tempData }));
       const treeData = data?.data
         ? JSON.parse(data?.data?.projectDetail?.fileTree)
         : [];
@@ -177,7 +186,7 @@ const Editor = () => {
       Notify(`Welcome to ${data?.data?.projectDetail?.name}`, "success");
       dispatch(
         setProjectInitialState({
-          codeData: newFiles[0]?.code,
+          // codeData: newFiles[0]?.code,
           fetchCodeByNodeId: fetchCodeByNodeId,
           projectData: data?.data,
           treeData: treeData,
@@ -208,7 +217,7 @@ const Editor = () => {
         newCodeData[0]?.id,
         newCodeData[0]?.code
       );
-      setEnableSave(false);
+      dispatch(setEnableSave({ enableSave: false }));
       Notify(`File saved successfully`, "success");
       console.log(res);
     } catch (err) {
@@ -216,23 +225,19 @@ const Editor = () => {
     }
   };
 
-  const fetchCodeByNodeId = async (nodeId: any, name: String) => {
+  const fetchCodeByNodeId = async (nodeId: any, name: string) => {
     try {
       const result = await getProjectFileDataById(projectData._id, nodeId);
       const newResult: any = JSON.parse(result.data);
-      setCodeData([
+      const data = [
         {
           id: newResult?.id,
           code: newResult?.code,
         },
-      ]);
-      setNewCodeData([
-        {
-          id: newResult?.id,
-          code: newResult?.code,
-        },
-      ]);
-      setOpenFileName(name);
+      ];
+      dispatch(setCodeData({ codeData: data }));
+      dispatch(setNewCodeData({ newCodeData: data }));
+      dispatch(setFileOpenedName({ fileOpenedName: name }));
     } catch (err: any) {
       console.log(err);
     }
@@ -296,8 +301,8 @@ const Editor = () => {
           code: codeData,
         },
       ];
-      setCodeData(tempCode);
-      setNewCodeData(tempCode);
+      dispatch(setCodeData({ codeData: tempCode }));
+      dispatch(setNewCodeData({ newCodeData: tempCode }));
       const res = await saveProjectData(
         projectData._id,
         fileId,
@@ -315,34 +320,28 @@ const Editor = () => {
       {loading ? (
         <PageLoader />
       ) : (
-        <LayoutEditor
-          projectData={projectData}
-          fetchCodeByNodeId={fetchCodeByNodeId}
-          codeData={codeData}
-          setNewCodeData={setNewCodeData}
-          updateCodeDataForNewFile={updateCodeDataForNewFile}
-          updateProjectCodeFileName={updateProjectCodeFileName}
-          deleteProjectDataFun={deleteProjectDataFun}
-          saveFileDataFun={saveFileDataFun}
-          enableSaveBtn={enableSave}
-          openFileName={openFileName}
-        />
+        <ErrorBoundaryWrapper>
+          <LayoutEditor
+            fetchCodeByNodeId={fetchCodeByNodeId}
+            codeData={codeData}
+            updateCodeDataForNewFile={updateCodeDataForNewFile}
+            updateProjectCodeFileName={updateProjectCodeFileName}
+            deleteProjectDataFun={deleteProjectDataFun}
+            saveFileDataFun={saveFileDataFun}
+          />
+        </ErrorBoundaryWrapper>
       )}
     </>
   );
 };
 
 const LayoutEditor: React.FC<Props> = ({
-  projectData,
   codeData,
   fetchCodeByNodeId,
-  setNewCodeData,
-  enableSaveBtn,
   updateCodeDataForNewFile,
   updateProjectCodeFileName,
   deleteProjectDataFun,
   saveFileDataFun,
-  openFileName,
 }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
@@ -356,6 +355,9 @@ const LayoutEditor: React.FC<Props> = ({
     openProjectDetailModal,
     openContributorModal,
     openEditContributorModal,
+    projectData,
+    fileOpenedName,
+    enableSave,
   } = useSelector((state: RootState) => {
     return state.projectEditor;
   });
@@ -370,7 +372,6 @@ const LayoutEditor: React.FC<Props> = ({
       setLoading(true);
       const tempProjectData = await getProjectAllFilesData(projectData._id);
       setAllCode(tempProjectData.data);
-      console.log(tempProjectData.data);
     } catch (err) {
       console.log(err);
     } finally {
@@ -425,13 +426,10 @@ const LayoutEditor: React.FC<Props> = ({
       <Layout
         sideBarContent={
           <EditorSideBar
-            data={projectData}
             fetchCodeByNodeId={fetchCodeByNodeId}
-            enableSaveBtn={enableSaveBtn}
             updateCodeDataForNewFile={updateCodeDataForNewFile}
             updateProjectCodeFileName={updateProjectCodeFileName}
             deleteProjectData={deleteProjectDataFun}
-            openFileName={openFileName}
           />
         }
       >
@@ -452,7 +450,7 @@ const LayoutEditor: React.FC<Props> = ({
                 </FileLocked>{" "}
               </Tooltip>
             )}
-            {openFileName || ""}
+            {fileOpenedName || ""}
           </div>
         </EditorHeaderSection>
 
@@ -468,7 +466,7 @@ const LayoutEditor: React.FC<Props> = ({
           </SpanWrapper>
         </Dropdown>
 
-        {enableSaveBtn && (
+        {enableSave && (
           <SpanWrapperSave
             onClick={() => {
               console.log("SAVE !!!");
@@ -482,11 +480,7 @@ const LayoutEditor: React.FC<Props> = ({
         )}
 
         {!showOutputSection ? (
-          <CodeEditor
-            data={codeData}
-            fileName={openFileName}
-            setNewCode={(tempCode: any) => setNewCodeData(tempCode)}
-          />
+          <CodeEditor />
         ) : (
           <OutputConsole loading={loading} code={allCode} />
         )}

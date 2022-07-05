@@ -66,6 +66,7 @@ const Tree = (props) => {
   }, []);
 
   const getTree = (data) => {
+    if (!data) return null;
     return data?.length > 0
       ? data.map((item) => {
           if (item.type === "file") {
@@ -92,7 +93,9 @@ const Tree = (props) => {
       : [];
   };
 
+  console.log(props.data);
   const isImparative = props.data && !props.children;
+  if (!props.data) return <></>;
   return (
     <ThemeProvider theme={{ indent: 20 }}>
       <TreeContext.Provider
@@ -105,20 +108,24 @@ const Tree = (props) => {
           },
         }}
       >
-        <StyledTree>
-          {isImparative ? (
-            <TreeRecusive
-              data={state}
-              parentNode={state}
-              setNewCodeNewFile={props.setNewCodeNewFile}
-              setUpdatedFileName={setUpdatedFileName}
-              setNewFiledIdAndType={setNewFiledIdAndType}
-              openFileName={props.openFileName}
-            />
-          ) : (
-            props?.children
-          )}
-        </StyledTree>
+        {state ? (
+          <StyledTree>
+            {isImparative ? (
+              <TreeRecusive
+                data={state}
+                parentNode={state}
+                setNewCodeNewFile={props.setNewCodeNewFile}
+                setUpdatedFileName={setUpdatedFileName}
+                setNewFiledIdAndType={setNewFiledIdAndType}
+                openFileName={props.openFileName}
+              />
+            ) : (
+              props?.children
+            )}
+          </StyledTree>
+        ) : (
+          <></>
+        )}
       </TreeContext.Provider>
     </ThemeProvider>
   );
@@ -133,39 +140,40 @@ const TreeRecusive = ({
 }) => {
   return data?.length > 0
     ? data.map((item) => {
-        item.parentNode = parentNode;
+        const tempItem = JSON.parse(JSON.stringify(item));
+        tempItem.parentNode = parentNode;
         if (!parentNode) {
-          item.parentNode = data;
+          tempItem.parentNode = data;
         }
-        // if (!item.id) item.id = v4();
+        // if (!tempItem.id) tempItem.id = v4();
 
-        if (item.type === "file") {
+        if (tempItem.type === "file") {
           return (
             <File
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              node={item}
+              key={tempItem.id}
+              id={tempItem.id}
+              name={tempItem.name}
+              node={tempItem}
               setNewFiledIdAndType={setNewFiledIdAndType}
               setUpdatedFileName={setUpdatedFileName}
               openFileName={openFileName}
             />
           );
         }
-        if (item.type === "folder") {
+        if (tempItem.type === "folder") {
           return (
             <Folder
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              node={item}
+              key={tempItem.id}
+              id={tempItem.id}
+              name={tempItem.name}
+              node={tempItem}
               setNewFiledIdAndType={setNewFiledIdAndType}
               setUpdatedFileName={setUpdatedFileName}
               openFileName={openFileName}
             >
               <TreeRecusive
-                parentNode={item}
-                data={item.children}
+                parentNode={tempItem}
+                data={tempItem.children}
                 setNewFiledIdAndType={setNewFiledIdAndType}
                 setUpdatedFileName={setUpdatedFileName}
                 openFileName={openFileName}

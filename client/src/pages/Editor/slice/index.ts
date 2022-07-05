@@ -6,9 +6,12 @@ import {
   FetchCodeByNodeIdFuncPayload,
   CodeDataPayload,
   NewCodeDataPayload,
+  CombinedCodeUpdatePayload,
   TreeDataPayload,
   NewTreeDataPayload,
   CodeChangedPayload,
+  EnableSaveBtnPayload,
+  FileOpenedNamePayload,
   OpenProjectDetailModalPayload,
   OpenContributorModalPayload,
   OpenEditContributorModalPayload,
@@ -22,6 +25,8 @@ const initialState: ProjectEditorReducerState = {
   treeData: null,
   newTreeData: null,
   codeChanged: false,
+  enableSave: false,
+  fileOpenedName: "index.js",
   openProjectDetailModal: false,
   openContributorModal: false,
   openEditContributorModal: false,
@@ -55,12 +60,20 @@ const ProjectEditorSlice = createSlice({
     ) => {
       state.newCodeData = action.payload.newCodeData;
     },
+    setCombinedCodeData: (
+      state: ProjectEditorReducerState,
+      action: PayloadAction<CombinedCodeUpdatePayload>
+    ) => {
+      debugger;
+      state.newCodeData = action.payload.newCodeData;
+      state.codeData = action.payload.codeData;
+    },
     setTreeData: (
       state: ProjectEditorReducerState,
       action: PayloadAction<TreeDataPayload>
     ) => {
       state.treeData = action.payload.treeData;
-    }, //NewTreeDataPayload
+    }, //NewTreeDataPayload  CombinedCodeUpdatePayload
     setNewTreeData: (
       state: ProjectEditorReducerState,
       action: PayloadAction<NewTreeDataPayload>
@@ -73,7 +86,7 @@ const ProjectEditorSlice = createSlice({
     ) => {
       state.projectData = action.payload.projectData;
       state.fetchCodeByNodeId = action.payload.fetchCodeByNodeId;
-      state.codeData = action.payload.codeData;
+      // state.codeData = action.payload.codeData;
       state.treeData = action.payload.treeData;
     },
     setCodeChanged: (
@@ -81,6 +94,19 @@ const ProjectEditorSlice = createSlice({
       action: PayloadAction<CodeChangedPayload>
     ) => {
       state.codeChanged = action.payload.codeChanged;
+    },
+    setEnableSave: (
+      state: ProjectEditorReducerState,
+      action: PayloadAction<EnableSaveBtnPayload>
+    ) => {
+      state.enableSave = action.payload.enableSave;
+    },
+    //EnableSaveBtnPayload
+    setFileOpenedName: (
+      state: ProjectEditorReducerState,
+      action: PayloadAction<FileOpenedNamePayload>
+    ) => {
+      state.fileOpenedName = action.payload.fileOpenedName;
     },
     setOpenProjectDetailModal: (
       state: ProjectEditorReducerState,
@@ -106,8 +132,12 @@ const ProjectEditorSlice = createSlice({
 export const {
   setProjectData,
   setProjectInitialState,
+  setCodeData,
   setNewCodeData,
+  setCombinedCodeData,
   setCodeChanged,
+  setFileOpenedName,
+  setEnableSave,
   setOpenProjectDetailModal,
   setOpenContributorModal,
   setOpenEditContributorModal,

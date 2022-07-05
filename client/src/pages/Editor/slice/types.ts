@@ -6,6 +6,8 @@ export type ProjectEditorReducerState = {
   treeData?: any;
   newTreeData?: any;
   codeChanged?: boolean;
+  fileOpenedName: string;
+  enableSave: boolean;
   openProjectDetailModal: boolean;
   openContributorModal: boolean;
   openEditContributorModal: boolean;
@@ -14,8 +16,13 @@ export type ProjectEditorReducerState = {
 export type InitialStatePayload = {
   projectData: any;
   fetchCodeByNodeId: any;
-  codeData: any;
+  codeData?: any;
   treeData: any;
+};
+
+export type CombinedCodeUpdatePayload = {
+  codeData: any;
+  newCodeData?: any;
 };
 
 export type ProjectDataPayload = {
@@ -46,6 +53,13 @@ export type CodeChangedPayload = {
   codeChanged: any;
 };
 
+export type FileOpenedNamePayload = {
+  fileOpenedName: string;
+};
+
+export type EnableSaveBtnPayload = {
+  enableSave: boolean;
+};
 export type OpenProjectDetailModalPayload = {
   openProjectDetailModal: any;
 };
