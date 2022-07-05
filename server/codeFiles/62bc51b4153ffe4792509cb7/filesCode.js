@@ -1,0 +1,1 @@
+[{"id":"13265319-b86a-4e0a-a164-fa975b511ad4","code":"\n\nconst IndexComp = () => {\n  return (\n    <div>Hello World from IndexComp!</div>\n  )\n}\n\n  "},{"id":"81efad0e-e21b-49ee-aff6-94e26ea3583b","code":"\n\nconst AppComp = () => {\n  return (\n    <div>Hello World from AppComp!</div>\n  )\n}\n\n  "}]

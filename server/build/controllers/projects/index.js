@@ -264,14 +264,73 @@ async function getProjectsAllFilesData(req, res) {
         const selectedProject = projects[0];
         const dirPath = `${CODE_DIR_NAME}/${selectedProject._id.toString()}`;
         const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+        const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
+        console.log(dirFilesCode);
+        console.log(dirFileTree);
         const tempfilesCode = await fsPromise.readFile(dirFilesCode, {
             encoding: "utf8",
         });
+        const tempfilesTree = await fsPromise.readFile(dirFileTree, {
+            encoding: "utf8",
+        });
         const filesCode = JSON.parse(tempfilesCode);
-        let codeData = filesCode.reduce((data, currentData) => {
-            data = `${data} ${currentData}`;
-        }, "");
-        codeData = JSON.stringify(codeData);
+        const filesTree = JSON.parse(tempfilesTree);
+        console.log("filesTree >", filesTree);
+        let jsFiles = getFileIdsFromTree([], filesTree, "js");
+        jsFiles = jsFiles.flat(Infinity).filter(Boolean);
+        console.log("=======================================================================");
+        // console.log("jsFiles ===>", jsFiles);
+        let cssFiles = getFileIdsFromTree([], filesTree, "css");
+        cssFiles = cssFiles.flat(Infinity).filter(Boolean);
+        console.log("cssFiles ===>", cssFiles);
+        let htmlFiles = getFileIdsFromTree([], filesTree, "html");
+        htmlFiles = htmlFiles.flat(Infinity).filter(Boolean);
+        console.log("htmlFiles ===>", htmlFiles);
+        // console.log("===> ", tempfilesTree);
+        // console.log("===> ", tempfilesCode);
+        const codeData = await filesCode.reduce((code, currentFile) => {
+            // console.log("currentFile >", currentFile);
+            const pushToCodeObj = (type, codeData) => {
+                if (!code[type]) {
+                    code[type] = [codeData];
+                }
+                else {
+                    code[type] = [...code[type], codeData];
+                }
+            };
+            let foundFlag = false;
+            for (const fileId of jsFiles) {
+                // console.log("js File Comparison > ", fileId, currentFile.id);
+                if (foundFlag)
+                    break;
+                else if (fileId === currentFile.id) {
+                    foundFlag = true;
+                    pushToCodeObj("js", currentFile.code);
+                }
+            }
+            for (const fileId of cssFiles) {
+                if (foundFlag)
+                    break;
+                else if (fileId === currentFile.id) {
+                    foundFlag = true;
+                    pushToCodeObj("css", currentFile.code);
+                }
+                console.log("css File Comparison > ", fileId, currentFile.id);
+            }
+            for (const fileId of htmlFiles) {
+                // console.log("html File Comparison > ", fileId, currentFile.id);
+                if (foundFlag)
+                    break;
+                else if (fileId === currentFile.id) {
+                    foundFlag = true;
+                    pushToCodeObj("html", currentFile.code);
+                }
+            }
+            return code;
+        }, {});
+        // codeData = JSON.stringify(tempfilesCode);//
+        console.log("=============>>>>> ", codeData);
+        console.log("=======================================================================");
         return res.status(200).json(codeData);
     }
     catch (err) {
@@ -279,6 +338,27 @@ async function getProjectsAllFilesData(req, res) {
         return res.status(400).json({ message: err.message });
     }
 }
+const getFileIdsFromTree = (data, tree, extension) => {
+    // console.log("tree >", tree);
+    // console.log("data >", data);
+    // console.log("typeof tree >", typeof tree);
+    // console.log("tree?.length >", tree?.length);
+    return (tree?.length > 0 &&
+        tree.map((item, index) => {
+            const currentExtension = item.name.split(".")[1];
+            // console.log("extension >", extension);
+            // console.log("currentExtension >", currentExtension);
+            if (item.type === "file") {
+                if (currentExtension === extension)
+                    data.push(item.id);
+                if (index + 1 === tree?.length)
+                    return data;
+            }
+            if (item.type === "folder" && item?.children?.length > 0) {
+                return getFileIdsFromTree(data, item.children, extension);
+            }
+        }));
+};
 async function saveProjectData(req, res) {
     try {
         const { projectId, fileTree, fileId, fileCode } = req.body;
