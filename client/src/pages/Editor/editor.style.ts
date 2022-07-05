@@ -68,7 +68,7 @@ export const EditorFooterSection = styled.div`
   }
 
   .play {
-    color: #29ab87;
+    color: ${({ theme: { colors } }) => `${colors.green}`};
   }
   .editor {
     color: ${({ theme: { colors } }) => `${colors.pink}`};

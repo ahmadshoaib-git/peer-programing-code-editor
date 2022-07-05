@@ -6,8 +6,10 @@ const theme = {
   colors: {
     black: "#1c2d41",
     white: "#FFFFFF",
+    green: "#29ab87",
     pink: "rgba(255, 20, 147, 1)",
     backgroundPink: "rgba(255, 20, 147, 0.1)",
+    grey: "#9c9c9c",
     borderWhite: "#cfcfcf",
     tooltipColor: "#2f54eb",
     tooltipBackground: "rgb(47 84 235 / 10%)",
@@ -22,6 +24,7 @@ const theme = {
     basic: "0.6rem",
     paragraph: "0.8rem",
     subHeading: "1rem",
+    miniIcon: "1.1rem",
     icon: "1.3rem",
     heading: "1.4rem",
     headingTitle: "1.7rem",
