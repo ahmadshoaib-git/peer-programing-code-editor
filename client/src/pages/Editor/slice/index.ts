@@ -9,6 +9,9 @@ import {
   TreeDataPayload,
   NewTreeDataPayload,
   CodeChangedPayload,
+  OpenProjectDetailModalPayload,
+  OpenContributorModalPayload,
+  OpenEditContributorModalPayload,
 } from "./types";
 
 const initialState: ProjectEditorReducerState = {
@@ -19,6 +22,9 @@ const initialState: ProjectEditorReducerState = {
   treeData: null,
   newTreeData: null,
   codeChanged: false,
+  openProjectDetailModal: false,
+  openContributorModal: false,
+  openEditContributorModal: false,
 };
 
 const ProjectEditorSlice = createSlice({
@@ -76,6 +82,24 @@ const ProjectEditorSlice = createSlice({
     ) => {
       state.codeChanged = action.payload.codeChanged;
     },
+    setOpenProjectDetailModal: (
+      state: ProjectEditorReducerState,
+      action: PayloadAction<OpenProjectDetailModalPayload>
+    ) => {
+      state.openProjectDetailModal = action.payload.openProjectDetailModal;
+    },
+    setOpenContributorModal: (
+      state: ProjectEditorReducerState,
+      action: PayloadAction<OpenContributorModalPayload>
+    ) => {
+      state.openContributorModal = action.payload.openContributorModal;
+    },
+    setOpenEditContributorModal: (
+      state: ProjectEditorReducerState,
+      action: PayloadAction<OpenEditContributorModalPayload>
+    ) => {
+      state.openEditContributorModal = action.payload.openEditContributorModal;
+    },
   },
 });
 
@@ -84,6 +108,9 @@ export const {
   setProjectInitialState,
   setNewCodeData,
   setCodeChanged,
+  setOpenProjectDetailModal,
+  setOpenContributorModal,
+  setOpenEditContributorModal,
 } = ProjectEditorSlice.actions;
 
 export default ProjectEditorSlice.reducer;

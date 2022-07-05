@@ -37,7 +37,12 @@ import {
   ContributorDetailModal,
   EditContributor,
 } from "src/common";
-import { setProjectInitialState } from "src/pages/Editor/slice";
+import {
+  setProjectInitialState,
+  setOpenContributorModal,
+  setOpenEditContributorModal,
+  setOpenProjectDetailModal,
+} from "src/pages/Editor/slice";
 import { setShowOutputSection } from "src/redux/slices/general";
 import {
   getProjectById,
@@ -73,13 +78,6 @@ export interface Props {
   enableSaveBtn: boolean;
   setNewCodeNewFile?: any;
   openFileName: String;
-
-  openProjectDetailModal: any;
-  setOpenProjectDetailModal: any;
-  openContributorModal: any;
-  setOpenContributorModal: any;
-  openEditContributorModal: any;
-  setOpenEditContributorModal: any;
 }
 
 const Editor = () => {
@@ -92,12 +90,6 @@ const Editor = () => {
   const [enableSave, setEnableSave] = React.useState<boolean>(false);
   const [openFileName, setOpenFileName] = React.useState<String>("index.js");
 
-  const [openProjectDetailModal, setOpenProjectDetailModal] =
-    React.useState<boolean>(false);
-  const [openContributorModal, setOpenContributorModal] =
-    React.useState<boolean>(false);
-  const [openEditContributorModal, setOpenEditContributorModal] =
-    React.useState<boolean>(false);
   React.useEffect(() => {
     if (!param.id) <Navigate to="/" />;
     fetchData(param.id);
@@ -334,12 +326,6 @@ const Editor = () => {
           saveFileDataFun={saveFileDataFun}
           enableSaveBtn={enableSave}
           openFileName={openFileName}
-          openProjectDetailModal={openProjectDetailModal}
-          setOpenProjectDetailModal={setOpenProjectDetailModal}
-          openContributorModal={openContributorModal}
-          setOpenContributorModal={setOpenContributorModal}
-          openEditContributorModal={openEditContributorModal}
-          setOpenEditContributorModal={setOpenEditContributorModal}
         />
       )}
     </>
@@ -357,13 +343,6 @@ const LayoutEditor: React.FC<Props> = ({
   deleteProjectDataFun,
   saveFileDataFun,
   openFileName,
-
-  openProjectDetailModal,
-  setOpenProjectDetailModal,
-  openContributorModal,
-  setOpenContributorModal,
-  openEditContributorModal,
-  setOpenEditContributorModal,
 }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
@@ -373,6 +352,13 @@ const LayoutEditor: React.FC<Props> = ({
       return state.general;
     }
   );
+  const {
+    openProjectDetailModal,
+    openContributorModal,
+    openEditContributorModal,
+  } = useSelector((state: RootState) => {
+    return state.projectEditor;
+  });
   useEffect(() => {
     if (showOutputSection) {
       fetchAllCode();
@@ -396,13 +382,13 @@ const LayoutEditor: React.FC<Props> = ({
     {
       label: "Open Details",
       onClick: () => {
-        setOpenProjectDetailModal(true);
+        dispatch(setOpenProjectDetailModal({ openProjectDetailModal: true }));
       },
     },
     {
       label: "Open Contributors",
       onClick: () => {
-        setOpenContributorModal(true);
+        dispatch(setOpenContributorModal({ openContributorModal: true }));
       },
     },
   ];
@@ -411,7 +397,9 @@ const LayoutEditor: React.FC<Props> = ({
     projectMenu.push({
       label: "Edit Contributors",
       onClick: () => {
-        setOpenEditContributorModal(true);
+        dispatch(
+          setOpenEditContributorModal({ openEditContributorModal: true })
+        );
       },
     });
   }
@@ -529,19 +517,27 @@ const LayoutEditor: React.FC<Props> = ({
       <ProjectDetailsModal
         title=""
         isModalVisible={openProjectDetailModal}
-        closeModal={() => setOpenProjectDetailModal(false)}
+        closeModal={() =>
+          dispatch(setOpenProjectDetailModal({ openProjectDetailModal: false }))
+        }
         data={projectData}
       />
       <ContributorDetailModal
         title=""
         isModalVisible={openContributorModal}
-        closeModal={() => setOpenContributorModal(false)}
+        closeModal={() =>
+          dispatch(setOpenContributorModal({ openContributorModal: false }))
+        }
         contributors={projectData?.contributor}
       />
       <EditContributor
         title=""
         isModalVisible={openEditContributorModal}
-        closeModal={() => setOpenEditContributorModal(false)}
+        closeModal={() =>
+          dispatch(
+            setOpenEditContributorModal({ openEditContributorModal: false })
+          )
+        }
         contributors={projectData?.contributor?.map((obj: any) => {
           return {
             name: obj.name,

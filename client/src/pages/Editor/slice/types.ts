@@ -5,7 +5,10 @@ export type ProjectEditorReducerState = {
   newCodeData?: any;
   treeData?: any;
   newTreeData?: any;
-  codeChanged?: Boolean;
+  codeChanged?: boolean;
+  openProjectDetailModal: boolean;
+  openContributorModal: boolean;
+  openEditContributorModal: boolean;
 };
 
 export type InitialStatePayload = {
@@ -41,4 +44,16 @@ export type NewTreeDataPayload = {
 
 export type CodeChangedPayload = {
   codeChanged: any;
+};
+
+export type OpenProjectDetailModalPayload = {
+  openProjectDetailModal: any;
+};
+
+export type OpenContributorModalPayload = {
+  openContributorModal: any;
+};
+
+export type OpenEditContributorModalPayload = {
+  openEditContributorModal: any;
 };

@@ -28,6 +28,11 @@ const CodeEditor: React.FC<Props> = ({ data, fileName, setNewCode }) => {
     console.log(err);
   }
 
+  // useEffect(() => {
+  //   if(editorRef?.current)
+  //   editorRef.current?.focus();
+  // }, [editorRef]);
+
   useEffect(() => {
     setCode(codeData);
   }, [data]);
@@ -84,7 +89,7 @@ const CodeEditor: React.FC<Props> = ({ data, fileName, setNewCode }) => {
         width="100%"
         // defaultValue={code}
         value={code}
-        defaultLanguage="javascript"
+        defaultLanguage={fileType}
         options={editorOptions}
         onChange={handleEditorChange}
         onMount={handleEditorDidMount}
