@@ -66,3 +66,12 @@ Schema description language and data validator for JavaScript
 #### 12. Socket.io
 
 Socket.IO is an event-driven JavaScript library for real-time web applications. It enables real-time, bi-directional communication between web clients and servers. It has two parts: a client-side library that runs in the browser, and a server-side library for Node.js. Both components have a nearly identical API.
+
+#### 13. React Hook Form
+
+React Hook Form is a library that helps you validate forms in React. It is a minimal library without any other dependencies, while being performant and straightforward to use, requiring developers to write fewer lines of code than other form libraries.
+React Hook Form reduces the amount of code we need to write while removing unnecessary re-renders.
+
+#### 14. Yup
+
+Yup is a JavaScript schema builder for value parsing and validation. Define a schema, transform a value to match, validate the shape of an existing value, or both. Yup schema are extremely expressive and allow modeling complex, interdependent validations, or value transformations.
