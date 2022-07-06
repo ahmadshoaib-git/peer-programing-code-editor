@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button } from "antd";
+import { Button, Form } from "antd";
 
 export const Container = styled.div`
   width: 100%;
@@ -39,6 +39,35 @@ export const DependencyList = styled.ul`
       }
     }
   }
+`;
+
+export const CustomForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  .ant-form-item-explain-error,
+  .ant-form-item-with-help .ant-form-item-explain {
+    font-family: ${({ theme: { fonts } }) => fonts.primary};
+    font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
+  }
+  .flex-dir-column {
+    width: 100%;
+    button {
+      width: 100%;
+    }
+  }
+`;
+
+export const ErrorBar = styled.div`
+  width: 100%;
+  height: auto;
+  min-height: 1rem;
+  margin-bottom: 0.5rem;
+  font-family: ${({ theme: { fonts } }) => fonts.primary};
+  font-size: ${({ theme: { fontSizes } }) => fontSizes.formError};
+  color: ${({ theme: { colors } }) => `${colors.pink}`};
 `;
 
 export const CustomButton = styled(Button)`

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "src/redux/store";
 import Tree from "../CustomTree";
-import Dependencies from "../Dependencies";
+import Dependencies from "src/common/Dependencies";
 import { IoMdArrowDropdown, IoMdArrowDropright } from "react-icons/io";
 import { VscSymbolFile } from "react-icons/vsc";
 import { structure } from "./folderStructure.config";

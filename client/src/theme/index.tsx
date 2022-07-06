@@ -22,6 +22,7 @@ const theme = {
   },
   fontSizes: {
     basic: "0.6rem",
+    formError: "0.7rem",
     paragraph: "0.8rem",
     subHeading: "1rem",
     miniIcon: "1.1rem",
