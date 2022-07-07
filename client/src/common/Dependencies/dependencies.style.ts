@@ -12,6 +12,7 @@ export const DependencyList = styled.ul`
   height: auto;
   width: 100%;
   max-height: 10rem;
+  padding-left: 0.2rem;
   li {
     list-style-type: none;
     display: flex;
@@ -24,6 +25,11 @@ export const DependencyList = styled.ul`
           color: ${({ theme: { colors } }) => colors.grey}!important;
         }
       }
+    }
+    .svg-lower {
+      margin-right: 0.6rem;
+      margin-left: 0.1rem;
+      font-size: ${({ theme: { fontSizes } }) => fontSizes.paragraph};
     }
     svg {
       font-size: ${({ theme: { fontSizes } }) => fontSizes.subHeading};

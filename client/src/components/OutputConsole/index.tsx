@@ -2,11 +2,13 @@ import React from "react";
 import { Container } from "./outputConsole.style";
 import PageLoader from "../PageLoader";
 export interface Props {
-  loading: Boolean;
+  loading: boolean;
   code: any;
+  dependencyFile: Array<any>;
 }
 
-const OutputConsole: React.FC<Props> = ({ loading, code }) => {
+const OutputConsole: React.FC<Props> = ({ loading, code, dependencyFile }) => {
+  console.log("dependencyFile >", dependencyFile);
   let html = code?.html?.reduce((str: any, currentStr: any) => {
     str = `${str} ${currentStr}`;
     return str;
@@ -19,16 +21,19 @@ const OutputConsole: React.FC<Props> = ({ loading, code }) => {
     str = `${str} ${currentStr}`;
     return str;
   }, "");
+  const dependencies = dependencyFile?.reduce((str: any, data: any) => {
+    str = `${str} <script src=${data.cdn}></script>`;
+    return str;
+  }, "");
   console.log("html >", html);
   console.log("css >", css);
   console.log("js >", js);
+  console.log("dependencies >", dependencies);
   const reconstructHTML = `
   <!DOCTYPE>
 <html>
 <head>
-  <script src="https://unpkg.com/react/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.js"></script>
+  ${dependencies}
   <style>
     ${css ? css : ""}
   </style>

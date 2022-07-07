@@ -174,9 +174,6 @@ const Editor = () => {
           code: newFiles[0]?.code,
         },
       ];
-      // dispatch(
-      //   setCombinedCodeData({ codeData: tempData, newCodeData: tempData })
-      // );setCodeData
       dispatch(setCodeData({ codeData: tempData }));
       dispatch(setNewCodeData({ newCodeData: tempData }));
       const treeData = data?.data
@@ -186,7 +183,6 @@ const Editor = () => {
       Notify(`Welcome to ${data?.data?.projectDetail?.name}`, "success");
       dispatch(
         setProjectInitialState({
-          // codeData: newFiles[0]?.code,
           fetchCodeByNodeId: fetchCodeByNodeId,
           projectData: data?.data,
           treeData: treeData,
@@ -482,7 +478,13 @@ const LayoutEditor: React.FC<Props> = ({
         {!showOutputSection ? (
           <CodeEditor />
         ) : (
-          <OutputConsole loading={loading} code={allCode} />
+          <OutputConsole
+            loading={loading}
+            code={allCode}
+            dependencyFile={
+              JSON.parse(projectData?.projectDetail?.dependencyFile) || []
+            }
+          />
         )}
         <EditorFooterSection>
           <div

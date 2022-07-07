@@ -60,7 +60,12 @@ const Collapse: React.FC<Props> = ({
         isActive ? <IoMdArrowDropdown /> : <IoMdArrowDropright />
       }
     >
-      <CustomPanel header="Files" key="1" extra={genExtra()}>
+      <CustomPanel
+        header="Files"
+        key="1"
+        extra={genExtra()}
+        className="remove-padding"
+      >
         <div>
           <Tree
             children={undefined}

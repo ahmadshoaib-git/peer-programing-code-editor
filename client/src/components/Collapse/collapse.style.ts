@@ -5,6 +5,9 @@ const { Panel } = Collapse;
 export const CustomCollapse = styled(Collapse)`
   border-right: 0.1rem solid #348dd633;
   /* box-shadow: inset -1px 0px #348dd633; */
+  .remove-padding > .ant-collapse-content > .ant-collapse-content-box {
+    padding-left: 0;
+  }
   .ant-collapse {
     background: #348dd633;
   }
