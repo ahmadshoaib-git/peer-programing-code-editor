@@ -76,4 +76,29 @@ const getInitialCodeDataAppIndex = (uuid1: any, uuid2: any) => {
   ];
 };
 
-export { getInitialCodeData, getInitialCodeDataAppIndex, createStructure };
+const getInitialDependencyData = () => {
+  return [
+    {
+      name: "ReactJs",
+      cdn: "https://unpkg.com/react/umd/react.development.js",
+      type: "permanent",
+    },
+    {
+      name: "React DOM",
+      cdn: "https://unpkg.com/react-dom/umd/react-dom.development.js",
+      type: "permanent",
+    },
+    {
+      name: "Babel",
+      cdn: "https://unpkg.com/@babel/standalone/babel.js",
+      type: "permanent",
+    },
+  ];
+};
+
+export {
+  getInitialCodeData,
+  getInitialCodeDataAppIndex,
+  createStructure,
+  getInitialDependencyData,
+};

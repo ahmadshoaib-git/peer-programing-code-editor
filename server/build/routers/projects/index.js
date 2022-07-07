@@ -22,5 +22,7 @@ ProjectRouter.post("/saveFileData", auth_1.verifyAuth, controllers_1.ProjectCont
 ProjectRouter.post("/editFileFolderName", auth_1.verifyAuth, controllers_1.ProjectController.saveFileFolderName);
 ProjectRouter.post("/deleteProjectData", auth_1.verifyAuth, controllers_1.ProjectController.deleteProjectData);
 ProjectRouter.get("/allProjectFilesData", auth_1.verifyAuth, controllers_1.ProjectController.getProjectsAllFilesData);
-// getProjectsByContributorsEmail getProjectData getProjectFileData deleteProjectData getProjectsAllFilesData
+ProjectRouter.post("/saveDependencyFile", auth_1.verifyAuth, controllers_1.ProjectController.saveDependencyFile);
+ProjectRouter.get("/getProjectDependencies", auth_1.verifyAuth, controllers_1.ProjectController.getProjectDependencies);
+// getProjectDependencies saveDependencyFile
 exports.default = ProjectRouter;

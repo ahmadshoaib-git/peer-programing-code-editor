@@ -12,6 +12,7 @@ const fsPromise = require("fs/promises");
 const CODE_DIR_NAME = "codeFiles";
 const FILE_TREE_NAME = "fileTree.js";
 const FILES_CODE_NAME = "filesCode.js";
+const FILES_CODE_DEPENDENCIES = "dependencies.js";
 async function createProject(req, res) {
     const createAndSaveProjectInUser = async (reqData) => {
         const getProjectData = async (userData) => {
@@ -40,6 +41,7 @@ async function createProject(req, res) {
         const dirPath = `${CODE_DIR_NAME}/${projectData._id.toString()}`;
         const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
         const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+        const dependencyFile = `${dirPath}/${FILES_CODE_DEPENDENCIES}`;
         const uuid1 = (0, uuid_1.v4)();
         const uuid2 = (0, uuid_1.v4)();
         const uuid3 = (0, uuid_1.v4)();
@@ -62,6 +64,13 @@ async function createProject(req, res) {
                             throw err;
                         }
                         console.log(`${dirFilesCode} was created and data was saved`);
+                        fs.writeFile(dependencyFile, JSON.stringify((0, reactJsCode_1.getInitialDependencyData)()), function (err) {
+                            if (err) {
+                                console.log(err);
+                                throw err;
+                            }
+                            console.log(`${dependencyFile} was created and data was saved`);
+                        });
                     });
                 });
             }
@@ -99,14 +108,19 @@ async function getProjectData(req, res) {
         const dirPath = `${CODE_DIR_NAME}/${selectedProject._id.toString()}`;
         const dirFileTree = `${dirPath}/${FILE_TREE_NAME}`;
         const dirFilesCode = `${dirPath}/${FILES_CODE_NAME}`;
+        const dependencyFile = `${dirPath}/${FILES_CODE_DEPENDENCIES}`;
         const fileTree = await fsPromise.readFile(dirFileTree, {
             encoding: "utf8",
         });
         const filesCode = await fsPromise.readFile(dirFilesCode, {
             encoding: "utf8",
         });
+        const dependenciesFile = await fsPromise.readFile(dependencyFile, {
+            encoding: "utf8",
+        });
         selectedProject.projectDetail.fileTree = fileTree;
         selectedProject.projectDetail.filesCode = filesCode;
+        selectedProject.projectDetail.dependencyFile = dependenciesFile;
         return res.status(200).json(selectedProject);
     }
     catch (err) {
@@ -484,6 +498,59 @@ async function saveFileFolderName(req, res) {
         return res.status(400).json({ message: err.message });
     }
 }
+async function saveDependencyFile(req, res) {
+    try {
+        const { projectId, dependencyName, dependencyCDN } = req.body;
+        const dirPath = `${CODE_DIR_NAME}/${projectId}`;
+        const dependencyFile = `${dirPath}/${FILES_CODE_DEPENDENCIES}`;
+        const tempDependencyFile = await fsPromise.readFile(dependencyFile, {
+            encoding: "utf8",
+        });
+        let currentDependencies = JSON.parse(tempDependencyFile);
+        currentDependencies = [
+            ...currentDependencies,
+            {
+                name: dependencyName,
+                cdn: dependencyCDN,
+                type: "temporary",
+            },
+        ];
+        await fs.writeFile(dependencyFile, JSON.stringify(currentDependencies), function (err) {
+            if (err) {
+                console.log(err);
+                throw err;
+            }
+            console.log(`${dependencyFile} was updated`);
+        });
+        const message = `Dependencies of Project Id ${projectId} has been modified successfully`;
+        return res
+            .status(200)
+            .json({ message: message, dependencies: currentDependencies });
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(400).json({ message: err.message });
+    }
+}
+async function getProjectDependencies(req, res) {
+    try {
+        const { projectId } = req.body;
+        const dirPath = `${CODE_DIR_NAME}/${projectId}`;
+        const dependencyFile = `${dirPath}/${FILES_CODE_DEPENDENCIES}`;
+        const tempDependencyFile = await fsPromise.readFile(dependencyFile, {
+            encoding: "utf8",
+        });
+        let currentDependencies = JSON.parse(tempDependencyFile);
+        const message = `Dependencies of Project Id ${projectId} fetched successfully`;
+        return res
+            .status(200)
+            .json({ message: message, dependencies: currentDependencies });
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(400).json({ message: err.message });
+    }
+}
 const ProjectController = {
     createProject,
     getProjectData,
@@ -500,5 +567,7 @@ const ProjectController = {
     deleteProjectData,
     saveFileData,
     saveFileFolderName,
+    saveDependencyFile,
+    getProjectDependencies,
 };
 exports.default = ProjectController;

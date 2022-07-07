@@ -61,5 +61,23 @@ ProjectRouter.get(
   ProjectController.getProjectsAllFilesData
 );
 
-// getProjectsByContributorsEmail getProjectData getProjectFileData deleteProjectData getProjectsAllFilesData
+ProjectRouter.post(
+  "/saveNewDependency",
+  verifyAuth,
+  ProjectController.saveDependencyFile
+);
+
+ProjectRouter.get(
+  "/getProjectDependencies",
+  verifyAuth,
+  ProjectController.getProjectDependencies
+);
+
+ProjectRouter.delete(
+  "/deleteProjectDependency",
+  verifyAuth,
+  ProjectController.deleteProjectDependency
+);
+
+// getProjectDependencies saveDependencyFile deleteProjectDependency
 export default ProjectRouter;
